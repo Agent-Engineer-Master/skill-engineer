@@ -1,0 +1,64 @@
+{
+  "skill": "analyzing-feedback",
+  "version": "1.0.0",
+  "description": "Eval cases for the analyzing-feedback skill. Cover: happy path, ambiguous input, single-mention threshold, negative trigger, multi-source conflict.",
+  "cases": [
+    {
+      "id": "happy-path-multi-theme",
+      "description": "Happy path: multiple pieces of concrete feedback, clear codebase, multiple themes",
+      "prompt": "Here's feedback from our last user survey:\n- 'The checkout button is grayed out and I can't click it' (8 users)\n- 'I don't understand why my cart empties when I come back' (5 users)\n- 'The loading spinner on the product page spins forever on mobile' (3 users)\nPlease analyze this feedback and propose codebase edits.",
+      "assertions": [
+        "Categorizes all 3 themes before scanning codebase",
+        "Presents a categorization table with severity and pattern counts",
+        "Asks for human confirmation before proceeding to Step 3",
+        "Produces 3 options (A/B/C) for each theme in Step 4",
+        "Each option includes file names, change type, and rationale quoting original feedback words",
+        "Ends Step 4 with a gate asking which options to implement"
+      ]
+    },
+    {
+      "id": "ambiguous-vague-input",
+      "description": "Edge case: single vague sentence with no concrete behaviour",
+      "prompt": "Our users say the app feels slow and confusing. Can you propose code changes?",
+      "assertions": [
+        "Does NOT immediately scan the codebase",
+        "Asks exactly one clarifying question about what users were trying to do",
+        "Does not proceed to Step 2 until a concrete behaviour is provided"
+      ]
+    },
+    {
+      "id": "single-mention-threshold",
+      "description": "Edge case: mix of multi-mention and single-mention feedback",
+      "prompt": "Feedback from this week:\n- 'The password reset email never arrives' (1 user)\n- 'I can't delete my account' (4 users)\n- 'The font is hard to read on Android' (1 user)",
+      "assertions": [
+        "Flags the password reset item as single-mention",
+        "Flags the font item as single-mention",
+        "Advances the account deletion item (4 mentions)",
+        "Asks user whether to override single-mention items before advancing them",
+        "Does not silently drop single-mention items"
+      ]
+    },
+    {
+      "id": "negative-trigger-pr-comment",
+      "description": "Negative trigger: input is a developer PR/code review comment, not customer feedback",
+      "prompt": "Please analyze this feedback and propose code changes:\n'In PR #142: this function is not handling the null case on line 47, and the variable name is misleading. Also the test is missing an assertion.'",
+      "assertions": [
+        "Recognizes this as internal code review feedback, not customer feedback",
+        "Does NOT activate the full analyzing-feedback workflow",
+        "Suggests using receiving-code-review skill instead",
+        "Does not proceed to categorization or codebase scanning"
+      ]
+    },
+    {
+      "id": "multi-source-conflict-resolution",
+      "description": "Edge case: conflicting feedback from different user segments",
+      "prompt": "We have two user segments giving opposite feedback:\n- Power users (12 responses): 'Add more advanced filtering options — the current filters are too basic'\n- New users (9 responses): 'The filters are overwhelming, I don't know where to start'\nPropose codebase edits.",
+      "assertions": [
+        "Identifies the conflict explicitly in the categorization step",
+        "Does not silently pick one side",
+        "Surfaces the conflict to the user at the Step 2 gate before scanning",
+        "If proceeding, proposes options that acknowledge both segments (e.g. progressive disclosure, user-type-based defaults)"
+      ]
+    }
+  ]
+}
