@@ -1,0 +1,58 @@
+{
+  "skill": "fix-from-logs",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "happy-path-none-return",
+      "description": "Happy path: single Python traceback showing AttributeError from unguarded None return",
+      "prompt": "Here are the logs from our CI run. Fix the bug and write a test to prevent it coming back.\n\n```\n2026-04-04 09:12:33 ERROR cart.py:87 in process_checkout\n  AttributeError: 'NoneType' object has no attribute 'charge_id'\nTraceback (most recent call last):\n  File \"cart.py\", line 87, in process_checkout\n    receipt = payment_gateway.charge(order.total)\n    return receipt.charge_id\nAttributeError: 'NoneType' object has no attribute 'charge_id'\n```",
+      "assertions": [
+        "skill enters plan mode (EnterPlanMode called) before any file edit",
+        "plan contains a root cause statement identifying that payment_gateway.charge() can return None",
+        "a pytest test function is written before the code fix",
+        "test name contains 'none' or 'returns_none' or 'charge_returns_none'",
+        "test uses unittest.mock.patch or MagicMock to mock payment_gateway",
+        "test mock is configured to return None (the failure condition)",
+        "fix is a guard or None-check at the call site or a raised exception, not a refactor",
+        "pytest is run after the fix and result is confirmed green"
+      ]
+    },
+    {
+      "id": "cascading-failure-db-down",
+      "description": "Cascading failure: 40+ errors across 5 modules all caused by a single DB connection failure",
+      "prompt": "Production logs from last night. Multiple modules failing, need this fixed.\n\n```\n2026-04-04 02:01:05 ERROR orders/repository.py:34 in get_order\n  sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not connect to server\n2026-04-04 02:01:05 ERROR orders/service.py:61 in fetch_pending_orders\n  AttributeError: 'NoneType' object has no attribute 'status'\n2026-04-04 02:01:05 ERROR notifications/sender.py:22 in notify_user\n  AttributeError: 'NoneType' object has no attribute 'email'\n2026-04-04 02:01:05 ERROR billing/invoicer.py:88 in generate_invoice\n  AttributeError: 'NoneType' object has no attribute 'total'\n2026-04-04 02:01:05 ERROR api/orders_endpoint.py:15 in list_orders\n  TypeError: 'NoneType' object is not iterable\n```",
+      "assertions": [
+        "skill clusters the 5 errors into 1 root-cause cluster (not 5 separate bugs)",
+        "root cause identified as orders/repository.py DB connection failure, not the downstream AttributeErrors",
+        "plan presents the cascade explanation before proposing fixes",
+        "fix targets the DB connection handling (retry logic, circuit breaker, or error propagation), not the downstream None checks",
+        "regression test mocks the DB session to raise OperationalError",
+        "plan mode entered before any file edits"
+      ]
+    },
+    {
+      "id": "negative-trigger-refactor-request",
+      "description": "Negative trigger: user asks for a refactor with no logs — skill should NOT activate",
+      "prompt": "Can you refactor the orders module to use a repository pattern? The current code mixes DB calls and business logic.",
+      "assertions": [
+        "skill does NOT activate",
+        "no Phase 1 triage is run",
+        "no test is written",
+        "no EnterPlanMode call is made in response to this request",
+        "response addresses the refactor request directly without running the fix-from-logs workflow"
+      ]
+    },
+    {
+      "id": "intermittent-ci-failure",
+      "description": "Edge case: intermittent CI failure suggesting a time-dependent or ordering bug",
+      "prompt": "This test fails in CI about 30% of the time but never locally. Here's the CI log:\n\n```\nFAILED tests/test_scheduler.py::test_task_runs_at_scheduled_time\nAssertionError: assert datetime(2026, 4, 4, 9, 0, 1) == datetime(2026, 4, 4, 9, 0, 0)\n  Actual:   2026-04-04 09:00:01\n  Expected: 2026-04-04 09:00:00\n```",
+      "assertions": [
+        "skill identifies this as a time-dependent / flaky test (intermittent failure pattern)",
+        "root cause hypothesis mentions datetime.now() or time.time() non-determinism",
+        "fix recommendation includes freezegun or a time-injection approach",
+        "regression test uses freezegun.freeze_time decorator or patches datetime",
+        "plan mode entered before any changes"
+      ]
+    }
+  ]
+}
