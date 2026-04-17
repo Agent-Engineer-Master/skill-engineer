@@ -1,0 +1,41 @@
+{
+  "skill": "analyzing-dtc-stores",
+  "cases": [
+    {
+      "id": "happy_path_well_known_brand",
+      "prompt": "Give me a DTC teardown of https://athleticgreens.com",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/resources/*dtc-teardown-athletic-greens*.md"},
+        {"type": "contains", "text": "§0 Research confidence"},
+        {"type": "contains", "text": "§15 Investor verdict"},
+        {"type": "contains", "text": "§16 Sources"},
+        {"type": "contains", "text": "ImportYeti"},
+        {"type": "contains", "text": "Meta Ad Library"},
+        {"type": "contains_regex", "pattern": "CM[123]|contribution margin"},
+        {"type": "contains_regex", "pattern": "change my mind"},
+        {"type": "min_sources", "count": 5, "location": "§16"},
+        {"type": "not_contains", "text": "revolutionary"},
+        {"type": "not_contains", "text": "disruptive"},
+        {"type": "validate_script_passes", "script": "scripts/validate_report.py"}
+      ]
+    },
+    {
+      "id": "edge_case_tiny_brand_under_50k_traffic",
+      "prompt": "Quick teardown of this micro-DTC store: https://example-tiny-dtc.myshopify.com",
+      "assertions": [
+        {"type": "contains", "text": "directional only"},
+        {"type": "contains_regex", "pattern": "triangulat|cross-check"},
+        {"type": "not_contains_precise_visitor_count", "rule": "no precise monthly visitor number if <50K/mo"},
+        {"type": "contains", "text": "ImportYeti"}
+      ]
+    },
+    {
+      "id": "negative_trigger_seo_audit",
+      "prompt": "Can you audit my website's SEO and give me a fix list?",
+      "assertions": [
+        {"type": "skill_should_not_activate", "skill": "analyzing-dtc-stores"},
+        {"type": "note", "text": "SEO audit is explicitly excluded in the skill description — routing should go elsewhere"}
+      ]
+    }
+  ]
+}

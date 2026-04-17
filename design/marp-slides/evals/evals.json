@@ -1,0 +1,93 @@
+[
+  {
+    "id": "happy-path-create",
+    "skill": "marp-slides",
+    "description": "Happy path: create a new deck from scratch",
+    "query": "Create a MARP presentation deck for a Q1 sales review. 10 slides. Dark theme. Show revenue growth, top deals, and next quarter pipeline.",
+    "expected_behavior": [
+      "Reads references/learnings.md before generating",
+      "Asks the 4-question intake (topic/count/theme/brand) before generating any slides",
+      "Presents 3 layout direction options for user to choose",
+      "Waits for approval before generating the full deck",
+      "Generated deck uses `-` for list items, not `*`",
+      "Generated deck has slide titles ≤35 characters",
+      "Generated deck rotates layout types — no same layout used 3+ slides in a row",
+      "Generated deck includes speaker notes on content slides",
+      "Verifies or creates .marprc.yml at project root",
+      "Shows export commands from references/cli-guide.md"
+    ],
+    "failure_modes_to_catch": [
+      "Generates full deck without intake questions",
+      "Uses `*` bullets instead of `-`",
+      "Repeats same heading+bullets layout throughout",
+      "No speaker notes"
+    ]
+  },
+  {
+    "id": "edit-existing",
+    "skill": "marp-slides",
+    "description": "Edit mode: modify a specific slide in an existing deck",
+    "query": "Update slide 4 in my revenue deck — change the chart to show month-over-month instead of quarterly.",
+    "expected_behavior": [
+      "Detects Mode B (Edit) from request signals",
+      "Reads the existing .md file before making changes",
+      "Parses slide boundaries to identify slide 4",
+      "Makes targeted edit without rewriting other slides",
+      "Re-checks modified slide against quality-rules.md after edit",
+      "Does NOT present intake questions (those are for Mode A only)"
+    ],
+    "failure_modes_to_catch": [
+      "Asks intake questions for an edit request",
+      "Rewrites the whole deck when only one slide was requested",
+      "Edits the wrong slide"
+    ]
+  },
+  {
+    "id": "negative-trigger-infographic",
+    "skill": "marp-slides",
+    "description": "Negative trigger: static infographic request should NOT activate this skill",
+    "query": "Create a single-image infographic showing our product roadmap timeline.",
+    "expected_behavior": [
+      "Does NOT activate the marp-slides skill",
+      "Recognizes this as a static image/design request, not a slide deck",
+      "Either declines the request or routes to an appropriate alternative (e.g. generate-image skill)"
+    ],
+    "failure_modes_to_catch": [
+      "Activates marp-slides skill and creates a MARP deck for what is clearly a single image request"
+    ]
+  },
+  {
+    "id": "theme-only-mode-c",
+    "skill": "marp-slides",
+    "description": "Mode C: theme-only request generates CSS, not a full deck",
+    "query": "Generate a light theme for my team retro deck using Plus Jakarta Sans.",
+    "expected_behavior": [
+      "Detects Mode C (Theme) from 'theme only' / 'just the styles' signals",
+      "Asks about brand colors and mood before generating",
+      "Presents 3 palette directions",
+      "Generates CSS with `/* @theme name */` header comment",
+      "Does NOT generate a full deck with slides"
+    ],
+    "failure_modes_to_catch": [
+      "Generates a full deck with slides instead of just a theme CSS file",
+      "Skips the 3 palette directions step",
+      "Omits the `/* @theme name */` comment from the CSS output"
+    ]
+  },
+  {
+    "id": "edge-allow-local-files",
+    "skill": "marp-slides",
+    "description": "Edge case: ensure .marprc.yml with allow-local-files is created/verified on export",
+    "query": "I've finished the deck. Export it to PDF.",
+    "expected_behavior": [
+      "Checks for .marprc.yml before showing export commands",
+      "Creates .marprc.yml with `allow-local-files: true` if missing",
+      "Shows the correct marp --pdf --allow-local-files command",
+      "Does NOT show export command without the allow-local-files flag"
+    ],
+    "failure_modes_to_catch": [
+      "Provides export command without --allow-local-files",
+      "Does not check for or create .marprc.yml"
+    ]
+  }
+]

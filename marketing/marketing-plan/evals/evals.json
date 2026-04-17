@@ -1,0 +1,122 @@
+{
+  "skill": "marketing-plan",
+  "version": "2.0",
+  "description": "Test cases for the marketing-plan skill v2. Covers happy paths, edge cases, and negative triggers. Updated to assert competitive landscape, budget allocation, messaging, journey map, retention campaigns, and measurement setup.",
+  "cases": [
+    {
+      "id": "happy-saas",
+      "name": "SaaS product — skill-as-a-service platform",
+      "category": "happy_path",
+      "prompt": "Build a marketing plan for a new SaaS platform that lets developers deploy AI skills as paid APIs. Product is fully online, bootstrapped, pre-launch, targeting US developers first. No existing customers.",
+      "assertions": [
+        "Output file named marketing-plan-*.md is created in the working directory",
+        "Output contains section '## 2. Target Market' with a JTBD statement",
+        "Output contains section '## 3. Competitive Landscape' with a terrain map table",
+        "Output contains section '## 4. Positioning + Messaging' with a positioning one-liner AND primary message + supporting messages",
+        "Output contains section '## 5. Channel Strategy' with a buyer journey map table AND primary, supporting, and retention channels",
+        "Output contains 'GEV' or 'Generative Engine' in the channel strategy section",
+        "Output contains section '## 6. Budget Allocation' with a spend allocation table",
+        "Output contains section '## 8. Content Strategy' with retention email campaigns (welcome series, activation nudge, win-back)",
+        "Output contains section '## 9. 90-Day Launch Timeline' with Phase 0, Phase 1, Phase 2",
+        "Output contains section '## 12. KPI Framework' with AARRR metrics table AND pre-launch analytics checklist",
+        "Skill presented 3 ICP options before proceeding (Gate A fired)",
+        "Skill presented 3 positioning directions before proceeding (Gate B fired)",
+        "Skill presented 3 channel mixes before proceeding (Gate C fired)"
+      ]
+    },
+    {
+      "id": "happy-dtc",
+      "name": "DTC ecommerce — home goods brand",
+      "category": "happy_path",
+      "prompt": "Create a marketing plan for a dropship home goods DTC brand called True Norma. Selling minimalist Nordic-style kitchen and living accessories. Online only, bootstrapped, pre-launch, US market. No customers yet.",
+      "assertions": [
+        "Output file named marketing-plan-*.md is created",
+        "Output contains DTC-appropriate channels (Meta, TikTok, or Instagram mentioned)",
+        "Output references email list or owned channel as retention lever",
+        "Output contains competitive landscape section with at least 3 competitors mapped",
+        "Output contains budget allocation with $0 or minimal paid spend (bootstrapped)",
+        "Output contains 90-day launch timeline with Phase 0 pre-launch validation",
+        "Output contains ROAS or CAC or LTV in KPI section",
+        "Output includes GEV or AI search tactic",
+        "Phase 0 mentions inventory confirmation or supplier validation",
+        "Output contains retention email campaigns (welcome series at minimum)",
+        "Output contains messaging section with channel-specific hooks"
+      ]
+    },
+    {
+      "id": "happy-service",
+      "name": "Service business — fractional CMO",
+      "category": "happy_path",
+      "prompt": "Write a marketing plan for a new fractional CMO service targeting early-stage B2B SaaS founders. Online delivery, bootstrapped, 2 pilot clients, US market.",
+      "assertions": [
+        "Output file named marketing-plan-*.md is created",
+        "Output references LinkedIn as a primary or supporting channel",
+        "Output includes direct outreach or referral mechanism",
+        "Output contains positioning one-liner AND primary message",
+        "Output includes revenue per client or LTV as a KPI",
+        "Output includes case studies or testimonials as content type",
+        "Output contains competitive landscape with named alternatives",
+        "Output contains budget allocation appropriate for bootstrapped service business"
+      ]
+    },
+    {
+      "id": "happy-personal-brand",
+      "name": "SaaS with existing personal brand — flywheel modifier",
+      "category": "happy_path",
+      "prompt": "Build a marketing plan for a new online course platform teaching AI engineering skills. I have a LinkedIn following of 5,000 developers who engage regularly with my posts about AI tools. Product is $49/month subscription, bootstrapped, pre-launch, global English-speaking market.",
+      "assertions": [
+        "Output identifies personal brand flywheel as active",
+        "Output uses personal brand as primary or top channel (not just supporting)",
+        "Output channel strategy references warm audience activation, not cold outreach",
+        "Output budget allocation shifts spend toward content production and email, away from paid ads",
+        "Output first customer motion references activating existing audience, not cold seeding",
+        "Output contains competitive landscape section"
+      ]
+    },
+    {
+      "id": "edge-no-budget",
+      "name": "Edge case — pre-launch, zero budget, unknown ICP",
+      "category": "edge_case",
+      "prompt": "Build a marketing plan for a new online marketplace connecting independent artists with buyers. Pre-launch, bootstrapped with zero marketing budget, not sure who the primary ICP is yet (artists or buyers?).",
+      "assertions": [
+        "Skill identifies the cold-start / two-sided marketplace challenge",
+        "Skill recommends resolving supply vs demand side sequencing",
+        "Channel recommendations are zero-cost or organic only (no paid ads recommended for bootstrapped zero budget)",
+        "Budget allocation shows $0 paid spend with focus on founder time allocation",
+        "Output flags ICP ambiguity and prompts user to choose artist vs buyer as primary ICP before proceeding",
+        "Output file created with plan after ICP is clarified"
+      ]
+    },
+    {
+      "id": "edge-context-file",
+      "name": "Edge case — existing context file present",
+      "category": "edge_case",
+      "prompt": "Build a marketing plan for our DTC store. [Assume product-marketing-context.md exists in working directory with product details pre-filled]",
+      "assertions": [
+        "Skill checks for existing context file before asking all 7 intake questions",
+        "Skill pre-fills answers from context file and only asks for missing information",
+        "Output plan reflects information from the context file"
+      ]
+    },
+    {
+      "id": "negative-content-request",
+      "name": "Negative trigger — individual content piece request",
+      "category": "negative_trigger",
+      "prompt": "Write me a welcome email sequence for new customers of my SaaS product.",
+      "assertions": [
+        "Skill does NOT activate — this is a content creation task, not a marketing plan task",
+        "Response directs user to a content creation skill or handles the task directly without invoking marketing-plan process"
+      ]
+    },
+    {
+      "id": "negative-audit-request",
+      "name": "Negative trigger — existing marketing audit",
+      "category": "negative_trigger",
+      "prompt": "Audit my current marketing strategy and tell me what's not working. We've been running Facebook ads for 6 months with declining ROAS.",
+      "assertions": [
+        "Skill does NOT activate — this is an audit of existing marketing, not a plan for a new business",
+        "Response addresses the audit question directly without running the marketing-plan GTM process"
+      ]
+    }
+  ]
+}

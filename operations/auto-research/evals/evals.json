@@ -1,0 +1,85 @@
+[
+  {
+    "id": "happy-path-linkedin",
+    "description": "Standard run: LinkedIn writer skill + 2 Level 1 criteria",
+    "prompt": "Run auto-research on .claude/skills/content/SKILL.md. Use these two criteria: (1) Hook must be under 136 characters — Level 1. (2) Bullet points must use hyphens only — Level 1. Cap at 5 iterations.",
+    "expected_behavior": [
+      "Reads references/learnings.md at startup",
+      "Reads the target skill file in full",
+      "Presents exactly the 2 specified criteria with Level 1 classification and waits for approval",
+      "Generates at least 5 test inputs and writes them to harness/test-inputs.md",
+      "Runs baseline 5 times before starting the loop",
+      "Logs baseline to results.md",
+      "Spawns test-runner sub-agent (not evaluating outputs itself) in each iteration",
+      "Spawns eval-deterministic sub-agent for Level 1 criteria",
+      "Presents an iteration dashboard using assets/dashboard-template.md format",
+      "Waits for human approval before writing to the original skill file"
+    ],
+    "assertions": [
+      "harness/test-inputs.md is created and contains at least 5 inputs",
+      "results.md contains a run block with baseline score",
+      "Dashboard table has at least one row per iteration",
+      "Skill file is NOT overwritten until approval is given"
+    ]
+  },
+  {
+    "id": "trade-off-detection",
+    "description": "Two criteria where optimizing one risks degrading the other",
+    "prompt": "Run auto-research on .claude/skills/content/SKILL.md. Criteria: (1) Hook must be under 136 characters — Level 1. (2) Hook must open with a question — Level 2. Cap at 5 iterations.",
+    "expected_behavior": [
+      "Monitors both criteria every iteration, not just the one being actively optimized",
+      "If hook length improves but question format fails (or vice versa), flags the trade-off before deciding keep/discard",
+      "Does not keep a hypothesis that improves one criterion by more than 5% while degrading the other"
+    ],
+    "assertions": [
+      "Dashboard shows scores for BOTH criteria in every iteration row",
+      "If any criterion regresses in an iteration, the dashboard notes it explicitly"
+    ]
+  },
+  {
+    "id": "negative-trigger-new-skill",
+    "description": "Skill should NOT activate when user wants to build a new skill from scratch",
+    "prompt": "I want to build a new skill that helps me draft RFQ emails to suppliers. Walk me through it.",
+    "expected_behavior": [
+      "auto-research does NOT activate",
+      "skill-engineer-master activates instead (or user is directed to it)",
+      "No harness or criteria design is started"
+    ],
+    "assertions": [
+      "No harness/test-inputs.md is created",
+      "No results.md run block is started",
+      "Response references skill-engineer-master or the skill-building process"
+    ]
+  },
+  {
+    "id": "mixed-criteria-levels",
+    "description": "Run with both Level 1 and Level 2 criteria — correct sub-agent routing",
+    "prompt": "Run auto-research on .claude/skills/content/SKILL.md. Criteria: (1) Sentences must be 5–12 words — Level 1. (2) Post must follow PAS, IDA, or CPF writing framework — Level 2. Cap at 5 iterations.",
+    "expected_behavior": [
+      "Correctly classifies criterion 1 as Level 1 and criterion 2 as Level 2",
+      "For Level 1: spawns eval-deterministic sub-agent",
+      "For Level 2: spawns eval-judge sub-agent with criterion + framework reference",
+      "Does not use the LLM judge for the deterministic criterion",
+      "Does not use the deterministic evaluator for the style criterion"
+    ],
+    "assertions": [
+      "Dashboard distinguishes evaluation method per criterion",
+      "Both criteria appear in every iteration row of the dashboard"
+    ]
+  },
+  {
+    "id": "non-binary-criterion-refusal",
+    "description": "Skill must stop and ask for reformulation if a criterion is not binary",
+    "prompt": "Run auto-research on .claude/skills/content/SKILL.md. Criterion: posts should be more engaging and feel natural.",
+    "expected_behavior": [
+      "Identifies that 'more engaging' and 'feel natural' are not binary conditions",
+      "Does NOT proceed to harness setup",
+      "Asks the human to reformulate as a binary condition",
+      "Suggests specific binary alternatives (e.g. 'hook must be a question', 'sentences must be under 15 words')"
+    ],
+    "assertions": [
+      "No harness/test-inputs.md is created before criterion approval",
+      "Response contains at least one suggested binary reformulation"
+    ]
+  }
+]
