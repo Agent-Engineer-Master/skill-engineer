@@ -1,0 +1,57 @@
+[
+  {
+    "name": "happy_path_first_session",
+    "prompt": "I want to find a business to start. I have no idea what to build.",
+    "assertions": [
+      "Reads 01-context/about-me.md before generating any ideas",
+      "Reads 02-vision/anti-goals.md before generating any ideas",
+      "Asks interview questions before synthesizing a founder profile",
+      "Presents a founder profile and asks for correction before proceeding",
+      "Does NOT generate a generic '10 startup ideas' list without reading context files first",
+      "Checks for existing state.json and initializes if not found"
+    ]
+  },
+  {
+    "name": "returning_session_state_continuity",
+    "prompt": "Let's continue working on my business search.",
+    "context_files": ["03-exploration/business-search/state.json"],
+    "assertions": [
+      "Reads state.json and summarizes where we left off",
+      "Does NOT restart the profile mining step if profile already exists",
+      "References specific ideas from the state file by name",
+      "Routes to the correct phase based on state.phase value"
+    ]
+  },
+  {
+    "name": "negative_trigger_existing_idea",
+    "prompt": "I have a SaaS product for restaurant inventory management. Can you evaluate it?",
+    "assertions": [
+      "Does NOT activate the find-my-business skill",
+      "Suggests using assess-category or stress-test instead",
+      "Recognizes this is an evaluation task, not a discovery task"
+    ]
+  },
+  {
+    "name": "anti_goal_enforcement",
+    "prompt": "What about starting a 24/7 customer support outsourcing company?",
+    "context_files": ["02-vision/anti-goals.md"],
+    "assertions": [
+      "Identifies anti-goal violation (24/7 ops, large low-skilled workforce)",
+      "Kills the idea immediately with explanation",
+      "References specific anti-goals from the file",
+      "Suggests redirecting energy to ideas that pass anti-goal filter"
+    ]
+  },
+  {
+    "name": "stuck_pattern_detection",
+    "prompt": "Can we do more research on the AI tutoring idea? I want to check a few more things before deciding.",
+    "context_files": ["03-exploration/business-search/state.json"],
+    "precondition": "state.json shows AI tutoring has been researched for 3+ sessions",
+    "assertions": [
+      "Detects analysis paralysis pattern",
+      "Pushes back on more research",
+      "Forces a time-boxed decision or redirects to customer conversations",
+      "Does NOT simply comply with the research request"
+    ]
+  }
+]
