@@ -1,0 +1,86 @@
+[
+  {
+    "name": "marp-slides",
+    "path": "design/marp-slides",
+    "domain": "design",
+    "description": "Creates MARP presentation decks (.md files rendered to PDF/HTML/PPTX via marp CLI) with custom CSS themes, SVG inline charts, dashboard components, and speaker notes.",
+    "tags": ["presentations", "marp", "slides", "data-visualization", "css-themes"]
+  },
+  {
+    "name": "fix-from-logs",
+    "path": "engineering/fix-from-logs",
+    "domain": "engineering",
+    "description": "Diagnoses bugs from raw error logs, stack traces, or CI failure output — triages and clusters errors, localizes root cause (file → function → line), enters plan mode with a structured fix + test proposal for human approval, writes a typed pytest regression test using mocks first, then implements a targeted code fix and verifies the test turns green.",
+    "tags": ["debugging", "bug-fix", "ci-failures", "regression-testing", "root-cause-analysis"]
+  },
+  {
+    "name": "security-mindset-master",
+    "path": "engineering/security-mindset-master",
+    "domain": "engineering",
+    "description": "Gates implementation of API endpoints, auth logic, database queries, and user input handling with threat surface analysis, secure defaults verification, and attacker's eye pass before any code ships.",
+    "tags": ["security", "threat-modeling", "api-security", "authentication", "secure-coding"]
+  },
+  {
+    "name": "compliance-check",
+    "path": "legal/compliance-check",
+    "domain": "legal",
+    "description": "Assesses US regulatory compliance likelihood for any consumer product before listing for US sale — classifies product category, determines applicable standards, gathers market evidence, and produces a structured verdict.",
+    "tags": ["compliance", "us-regulations", "product-safety", "consumer-goods", "regulatory-assessment"]
+  },
+  {
+    "name": "analyzing-dtc-stores",
+    "path": "marketing/analyzing-dtc-stores",
+    "domain": "marketing",
+    "description": "Produces an investor-grade teardown of a DTC brand from its public URL, covering brand, market, unit economics, supply chain, channel mix, marketing, reviews, agentic-commerce readiness, risks, and a falsifiable verdict.",
+    "tags": ["dtc-analysis", "brand-teardown", "competitor-research", "investor-memo", "ecommerce-audit"]
+  },
+  {
+    "name": "audit-brand",
+    "path": "marketing/audit-brand",
+    "domain": "marketing",
+    "description": "Audits and evolves brand positioning, voice consistency, and messaging for an existing brand — runs a structured audit across positioning, voice, visual direction, and content pillars, then produces a scorecard with specific fix recommendations.",
+    "tags": ["brand-audit", "positioning", "brand-voice", "messaging-framework", "content-pillars"]
+  },
+  {
+    "name": "marketing-plan",
+    "path": "marketing/marketing-plan",
+    "domain": "marketing",
+    "description": "Develops a full go-to-market marketing plan for a new online business covering ICP, competitive landscape, channel strategy, budget allocation, pricing, content strategy with retention, 90-day launch timeline, and KPI framework.",
+    "tags": ["go-to-market", "gtm-strategy", "channel-strategy", "launch-planning", "marketing-plan"]
+  },
+  {
+    "name": "auto-research",
+    "path": "operations/auto-research",
+    "domain": "operations",
+    "description": "Autonomously optimizes any Claude skill (SKILL.md) or CLAUDE.md file through a closed hypothesis→test→evaluate→keep/discard loop, producing an updated skill file and an iteration dashboard.",
+    "tags": ["skill-optimization", "autonomous-evals", "self-improving", "hypothesis-testing", "skill-engineering"]
+  },
+  {
+    "name": "morning-brief",
+    "path": "operations/morning-brief",
+    "domain": "operations",
+    "description": "Generates a structured morning brief and writes it to the daily review file — pulls from current priorities, active task board, latest competitor digest, and content pipeline status.",
+    "tags": ["daily-planning", "morning-brief", "task-board", "priorities", "productivity"]
+  },
+  {
+    "name": "stress-test",
+    "path": "operations/stress-test",
+    "domain": "operations",
+    "description": "Three-phase strategic decision analysis combining verbalized sampling, customizable analytical lenses, and a structured decision brief — surfaces tail-distribution insights that mode-collapsed prompting misses.",
+    "tags": ["decision-analysis", "strategy", "verbalized-sampling", "risk-assessment", "founder-tools"]
+  },
+  {
+    "name": "analyzing-feedback",
+    "path": "product/analyzing-feedback",
+    "domain": "product",
+    "description": "Parses raw customer feedback (app reviews, support tickets, interview transcripts) into categorized severity-ranked themes, scans the codebase to identify affected files, and proposes 3 structural edit options per theme.",
+    "tags": ["customer-feedback", "user-research", "product-engineering", "feedback-analysis", "code-proposals"]
+  },
+  {
+    "name": "find-my-business",
+    "path": "product/find-my-business",
+    "domain": "product",
+    "description": "Guides a founder interactively from 'no idea' through idea generation, rapid validation, and commitment to a business — synthesizing PG, YC, Lean Startup, Mom Test, JTBD, and gstack office-hours methodology.",
+    "tags": ["startup-ideas", "idea-validation", "founder-tools", "business-discovery", "lean-startup"]
+  }
+]
