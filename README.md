@@ -172,6 +172,8 @@ Need a skill that isn't in this library? [Skill Engineer](https://agentengineerm
 
 Commission a custom skill at **https://agentengineermaster.com**
 
+Learn the craft — skill engineering guides, patterns, and production standards on the blog: **https://agentengineermaster.com/blog**
+
 ---
 
 ## Keywords
