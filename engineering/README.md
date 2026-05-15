@@ -6,6 +6,7 @@ Skills for software engineers and technical teams who need AI agents to diagnose
 
 | Skill | Description | When to Use |
 |---|---|---|
+| [debriefing-code-changes](debriefing-code-changes/) | Debriefs AI-assisted coding sessions from git diffs/commits with architecture explanations, caveats, concepts, and a practical quiz loop | User wants to learn from what they just vibe-coded, review a diff/commit for learning, or be quizzed on an AI-coded change |
 | [fix-from-logs](fix-from-logs/) | Diagnoses bugs from raw error logs, stack traces, or CI failure output — triages and clusters errors, localizes root cause, proposes a targeted fix and writes a typed pytest regression test | User pastes logs wanting the underlying bug fixed with tests that prevent recurrence; CI output shows failures needing code changes |
 | [security-mindset-master](security-mindset-master/) | Gates implementation of API endpoints, auth logic, database queries, and user input handling with threat surface analysis, secure defaults verification, and attacker's eye pass before any code ships | Implementing or modifying any API endpoint, authentication or authorization logic, database queries, session/token management, file uploads, or any feature that stores or transmits user data |
 

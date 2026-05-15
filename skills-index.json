@@ -7,6 +7,13 @@
     "tags": ["presentations", "marp", "slides", "data-visualization", "css-themes"]
   },
   {
+    "name": "debriefing-code-changes",
+    "path": "engineering/debriefing-code-changes",
+    "domain": "engineering",
+    "description": "Debriefs a developer after an AI-assisted coding session by inspecting git diffs or commits, explaining the actual architecture decisions, design patterns, tradeoffs, caveats, and learning concepts with file/function references, then generating a practical quiz and follow-up study notes.",
+    "tags": ["ai-coding", "learning", "git-diff", "code-debrief", "developer-education"]
+  },
+  {
     "name": "fix-from-logs",
     "path": "engineering/fix-from-logs",
     "domain": "engineering",

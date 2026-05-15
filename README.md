@@ -64,6 +64,7 @@ Code quality, security, and debugging skills for software engineers and technica
 
 | Skill | Description | When to Use |
 |---|---|---|
+| [debriefing-code-changes](engineering/debriefing-code-changes/) | Debriefs AI-assisted coding sessions from git diffs/commits with architecture explanations, caveats, concepts, and quiz loop | User wants to learn from a diff/commit after vibe coding with AI |
 | [fix-from-logs](engineering/fix-from-logs/) | Diagnoses bugs from raw error logs, stack traces, or CI failure output — triages and clusters errors, localizes root cause, proposes a fix + regression test | User pastes logs and wants the underlying bug fixed with tests |
 | [security-mindset-master](engineering/security-mindset-master/) | Gates implementation of API endpoints, auth logic, database queries, and user input handling with threat surface analysis, secure defaults verification, and attacker's eye pass | Implementing or modifying any feature that stores or transmits user data |
 

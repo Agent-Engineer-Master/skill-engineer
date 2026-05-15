@@ -1,0 +1,17 @@
+name: "Debriefing Code Changes"
+slug: "debriefing-code-changes"
+description: "Debrief an AI-assisted coding session from git diffs or commits, explaining architecture decisions, patterns, caveats, tradeoffs, and generating a practical quiz so the developer actually learns what changed"
+target_user: "Developers using Claude Code or other AI coding agents who ship code faster than they absorb it"
+trigger: "debrief what I just built / learn from this diff / explain my last commit / quiz me on this AI-coded change"
+
+example_input: |
+  I just vibe coded a checkout refactor with Claude. Debrief me on the last commit and quiz me so I actually learn it.
+
+example_output: |
+  Start with the diff, not the chat transcript. The report identifies the 3-7 files worth understanding, explains the design rationale and tradeoffs per file, calls out edge cases/performance/security/tech debt, maps only evidence-backed concepts, then quizzes you on the actual change.
+
+limitations: "Requires a concrete git diff, commit range, or PR. Does not replace security review, deploy approval, or bug fixing. Large diffs may need narrowing to the highest-learning-value files."
+
+reddit_hook: "I built a skill for exactly this: it starts from the git diff, explains why the code is shaped the way it is, flags caveats, maps real concepts only when the code proves them, and ends with a practical quiz."
+
+reddit_question: "Would you want the quiz to be harder on architecture tradeoffs or on debugging edge cases?"

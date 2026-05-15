@@ -1,0 +1,39 @@
+{
+  "skill": "debriefing-code-changes",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "happy-path-last-commit",
+      "description": "Developer asks to learn from the last AI-generated commit",
+      "prompt": "I just vibe coded a checkout refactor with Claude. Debrief me on what I built from the last commit and quiz me so I actually learn it.",
+      "assertions": [
+        "skill activates and asks for or inspects the concrete git diff/last commit",
+        "report starts from changed files and commit facts, not chat transcript",
+        "explains 3-7 highest-learning-value files rather than every file mechanically",
+        "every named pattern or concept includes a file/function reference",
+        "includes caveats for edge cases, performance, security/privacy, and tech debt",
+        "quiz questions are practical and specific to the diff"
+      ]
+    },
+    {
+      "id": "negative-generic-code-review",
+      "description": "User wants a code review, not a learning debrief",
+      "prompt": "Please review this PR for bugs and approve whether it can deploy.",
+      "assertions": [
+        "skill does NOT activate as the primary workflow",
+        "response routes to code review rather than producing a learning quiz",
+        "does not treat deploy approval as part of the debrief output"
+      ]
+    },
+    {
+      "id": "no-diff-blocker",
+      "description": "User asks for a debrief but provides no repository or diff",
+      "prompt": "Explain what I just built from our chat so I can learn it.",
+      "assertions": [
+        "skill refuses to debrief from chat alone",
+        "asks for git diff, commit range, PR URL, or repository access",
+        "does not invent architecture decisions or patterns"
+      ]
+    }
+  ]
+}
