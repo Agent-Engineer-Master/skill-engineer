@@ -1,0 +1,153 @@
+[
+  {
+    "id": "happy-path-coding-agent",
+    "description": "Happy path: generates a coding agent system prompt with all required production elements",
+    "prompt": "Create a system prompt for a coding agent that works inside a live GitHub repository.",
+    "assertions": [
+      {
+        "type": "contains",
+        "value": "known_failure_patterns",
+        "description": "Output must include a known_failure_patterns section (XML tag or prose heading)"
+      },
+      {
+        "type": "contains_any",
+        "values": ["at most", "no more than", "one sentence", "two sentences", "three sentences"],
+        "description": "Output must include at least one numeric anchor for response style"
+      },
+      {
+        "type": "contains_any",
+        "values": ["Variant A", "Variant B", "XML", "prose variant"],
+        "description": "For an agent prompt, two structural variants must be offered"
+      },
+      {
+        "type": "not_contains",
+        "value": "Be concise",
+        "description": "Vague style directives must not appear — numeric anchors required instead"
+      },
+      {
+        "type": "not_contains",
+        "value": "be helpful",
+        "description": "Vague behavioural directives must not appear"
+      }
+    ]
+  },
+  {
+    "id": "simple-task-prose-only",
+    "description": "Simple task prompts must use lightweight prose, not full XML architecture",
+    "prompt": "Write a prompt for summarising a news article into three bullet points.",
+    "assertions": [
+      {
+        "type": "not_contains",
+        "value": "<system_policy",
+        "description": "Simple single-purpose prompts must NOT use the XML skeleton — it's over-engineering"
+      },
+      {
+        "type": "not_contains",
+        "value": "<known_failure_patterns",
+        "description": "XML tags must not appear in a simple prose prompt"
+      },
+      {
+        "type": "contains_any",
+        "values": ["Role", "Objective", "Output", "Rules", "Steps", "Format"],
+        "description": "Simple prompts should use 5-section prose structure"
+      },
+      {
+        "type": "single_variant",
+        "description": "Simple prompts must NOT offer two variants — only one output"
+      }
+    ]
+  },
+  {
+    "id": "negative-trigger-explanation",
+    "description": "Negative trigger: skill must NOT activate for a prompt engineering explanation request",
+    "prompt": "Can you explain what prompt engineering is and why it matters?",
+    "assertions": [
+      {
+        "type": "not_produces_prompt_block",
+        "description": "This is an educational question, not a generation request — skill should not produce a copy-pasteable prompt block"
+      },
+      {
+        "type": "responds_conversationally",
+        "description": "Response should be an explanation, not a structured system prompt output"
+      }
+    ]
+  },
+  {
+    "id": "trust-boundary-rag-agent",
+    "description": "RAG agent prompts must separate policy from retrieved context using distinct trust boundaries",
+    "prompt": "Create a system prompt for an agent that answers HR policy questions by searching our internal Confluence docs.",
+    "assertions": [
+      {
+        "type": "contains_any",
+        "values": ["retrieved_context_policy", "trust=\"untrusted\"", "retrieved context", "treat retrieved"],
+        "description": "Output must include explicit trust boundary handling for retrieved documents"
+      },
+      {
+        "type": "contains_any",
+        "values": ["do not obey", "treat as evidence", "not as policy"],
+        "description": "Output must include a rule preventing prompt injection from retrieved documents"
+      },
+      {
+        "type": "contains",
+        "value": "known_failure_patterns",
+        "description": "Output must include failure patterns section"
+      }
+    ]
+  },
+  {
+    "id": "rule-motivation-present",
+    "description": "Non-obvious rules in generated prompts must include motivation (Why: / How to apply:)",
+    "prompt": "Create a prompt for a customer support agent that can issue refunds up to $50.",
+    "assertions": [
+      {
+        "type": "contains_any",
+        "values": ["Why:", "Why ", "because", "so that", "to prevent", "to ensure"],
+        "description": "At least one non-obvious rule must include a motivation line"
+      },
+      {
+        "type": "contains_any",
+        "values": ["risk_policy", "confirmation", "ask before", "confirm before"],
+        "description": "Irreversible action (issuing refund) must have an explicit confirmation gate"
+      }
+    ]
+  },
+  {
+    "id": "research-runs-for-agent-prompt",
+    "description": "Research step must run for agent/system prompts — synthesis block must appear before structure selection",
+    "prompt": "Create a system prompt for an AI customer support agent that can look up order history and issue refunds.",
+    "assertions": [
+      {
+        "type": "contains_any",
+        "values": ["Research synthesis", "Prior art", "Track A", "research synthesis", "prior art"],
+        "description": "For an agent prompt, research synthesis block must appear before variant output"
+      },
+      {
+        "type": "contains_any",
+        "values": ["failure mode", "Failure mode", "best practice", "Best practice", "domain", "practitioner"],
+        "description": "Domain research findings must be referenced in the synthesis block"
+      }
+    ]
+  },
+  {
+    "id": "research-skipped-for-simple-prompt",
+    "description": "Research step must be skipped for simple single-purpose task prompts",
+    "prompt": "Write a prompt to classify customer emails into: billing, technical support, or cancellation.",
+    "assertions": [
+      {
+        "type": "not_contains",
+        "value": "Track A",
+        "description": "Prior art research should not run for a simple classification prompt"
+      },
+      {
+        "type": "not_contains",
+        "value": "librarian",
+        "description": "Librarian agent should not be spawned for a simple classification prompt"
+      },
+      {
+        "type": "not_contains",
+        "value": "<system_policy",
+        "description": "Simple classification prompt must not use full XML skeleton"
+      }
+    ]
+  }
+]
