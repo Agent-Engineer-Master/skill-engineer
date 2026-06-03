@@ -1,0 +1,90 @@
+{
+  "skill": "analyze-demand",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "name": "happy_path_b2b_jtbd_segmented_substitution_named",
+      "prompt": "Run analyze-demand on us-ambient-scribe-medtech (B2B, focal layer: vendor). Five Forces has flagged AI-native generalist substitutes as a threat.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/us-ambient-scribe-medtech/**/demand.md OR standalone/analyze-demand-*.md"},
+        {"type": "string_in_file", "path_pattern": "demand.md", "string": "functional"},
+        {"type": "string_in_file", "path_pattern": "demand.md", "string": "emotional"},
+        {"type": "string_in_file", "path_pattern": "demand.md", "string": "social"},
+        {"type": "regex_in_file", "path_pattern": "demand.md", "regex": "(?i)hir(e|ing) (the )?(product|solution|service|category) to"},
+        {"type": "string_in_file", "path_pattern": "demand.md", "string": "switching cost"},
+        {"type": "regex_in_file", "path_pattern": "demand.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "regex_in_file", "path_pattern": "demand.md", "regex": "next_skills"}
+      ]
+    },
+    {
+      "name": "rejects_demographic_only_segmentation",
+      "prompt": "Run analyze-demand on a synthetic industry. In the segments section, name segments only as 'Young urban professionals 25-34', 'Mid-market enterprises', and 'Gen-Z consumers' without any JTBD-based restatement.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_demand.py"},
+        {"type": "error_contains", "string": "Demographic-only segment naming"}
+      ]
+    },
+    {
+      "name": "rejects_missing_substitution_analysis",
+      "prompt": "Run analyze-demand on a synthetic industry; include JTBD with all three components and JTBD-based segments and WTP drivers, but omit the substitution-risk section entirely.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_demand.py"},
+        {"type": "error_contains", "string": "substitution-risk section"}
+      ]
+    },
+    {
+      "name": "rejects_missing_emotional_social_jobs_b2b",
+      "prompt": "Run analyze-demand on a B2B industry. Name the functional job in detail but mark emotional and social jobs as 'N/A — B2B is rational'.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_demand.py"},
+        {"type": "error_contains", "string": "JTBD missing required component"}
+      ]
+    },
+    {
+      "name": "rejects_general_competition_substitute",
+      "prompt": "Run analyze-demand on a synthetic industry. In the substitution section, state only 'general competition from other vendors' as the substitute, with switching cost: high and likelihood: moderate, but name no specific candidates.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_demand.py"},
+        {"type": "error_contains", "string": "general competition"}
+      ]
+    },
+    {
+      "name": "rejects_missing_demand_signal",
+      "prompt": "Run analyze-demand on a synthetic industry; produce all sections including substitution and WTP drivers but omit the demand-signal section.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_demand.py"},
+        {"type": "error_contains", "string": "demand-signal section"}
+      ]
+    },
+    {
+      "name": "warns_lagging_indicator_in_signals",
+      "prompt": "Run analyze-demand on a synthetic industry. In demand signals, list 'revenue growth trend' as one of the signals.",
+      "assertions": [
+        {"type": "warning_emitted", "script": "validate_demand.py", "string": "Lagging-indicator"}
+      ]
+    },
+    {
+      "name": "rejects_renamed_substitution_heading",
+      "prompt": "Run analyze-demand on a synthetic industry. Produce all required sections, but rename the substitution section to '## Threat from Adjacent Categories' instead of '## Substitution Risk'. Include named substitute candidates, switching cost, and likelihood within that section.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_demand.py"},
+        {"type": "error_contains", "string": "Missing `## Substitution Risk` section"}
+      ]
+    },
+    {
+      "name": "negative_trigger_product_level_jtbd",
+      "prompt": "Run JTBD analysis on Acme CRM v3 for the next product roadmap planning cycle.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "analyze-demand"}
+      ]
+    },
+    {
+      "name": "negative_trigger_market_sizing",
+      "prompt": "What's the TAM for the global ambient AI scribe market?",
+      "assertions": [
+        {"type": "not_invoked", "skill": "analyze-demand"},
+        {"type": "expected_skill", "skill": "size-market"}
+      ]
+    }
+  ]
+}

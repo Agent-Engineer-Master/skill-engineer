@@ -1,0 +1,69 @@
+{
+  "skill": "map-competitive-arena",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "name": "happy_path_three_groups_named_archetypes",
+      "prompt": "Run map-competitive-arena on us-ambient-scribe-medtech, focal layer: vendor. Upstream size-market classification: Arena.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/us-ambient-scribe-medtech/**/competitive-arena.md OR standalone/map-competitive-arena-*.md"},
+        {"type": "string_in_file", "path_pattern": "competitive-arena.md", "string": "Axes"},
+        {"type": "string_in_file", "path_pattern": "competitive-arena.md", "string": "winner archetype"},
+        {"type": "string_in_file", "path_pattern": "competitive-arena.md", "string": "Mobility"},
+        {"type": "string_in_file", "path_pattern": "competitive-arena.md", "string": "Arenas overlay"},
+        {"type": "string_in_file", "path_pattern": "competitive-arena.md", "string": "Focal layer"},
+        {"type": "regex_in_file", "path_pattern": "competitive-arena.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "regex_in_file", "path_pattern": "competitive-arena.md", "regex": "(?im)^#{2,6}\\s+Group\\s+[1-9]"},
+        {"type": "regex_in_file", "path_pattern": "competitive-arena.md", "regex": "next_skills"}
+      ]
+    },
+    {
+      "name": "rejects_single_group_analysis",
+      "prompt": "Run map-competitive-arena on a synthetic industry where the drafter places all firms into one strategic group (insufficient discrimination).",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_arena.py"},
+        {"type": "error_contains", "string": "Insufficient strategic groups"}
+      ]
+    },
+    {
+      "name": "rejects_missing_winner_archetype",
+      "prompt": "Run map-competitive-arena on a synthetic industry with 3 groups profiled but no winner archetype named per group.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_arena.py"},
+        {"type": "error_contains", "string": "winner archetype"}
+      ]
+    },
+    {
+      "name": "rejects_missing_mobility_barriers",
+      "prompt": "Run map-competitive-arena on a synthetic industry with 3 groups and winner archetypes but no mobility-barriers section.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_arena.py"},
+        {"type": "error_contains", "string": "mobility-barriers"}
+      ]
+    },
+    {
+      "name": "rejects_missing_2axis_viz",
+      "prompt": "Run map-competitive-arena on a synthetic industry where groups are listed but no 2-axis visualization (grid table or coordinate notation) is produced.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_arena.py"},
+        {"type": "error_contains", "string": "2-axis visualization"}
+      ]
+    },
+    {
+      "name": "negative_trigger_market_sizing",
+      "prompt": "How big is the US ambient-scribe medtech market?",
+      "assertions": [
+        {"type": "skill_not_invoked", "skill": "map-competitive-arena"},
+        {"type": "skill_invoked", "skill": "size-market"}
+      ]
+    },
+    {
+      "name": "negative_trigger_moat_assessment",
+      "prompt": "What is Abridge's durable competitive advantage?",
+      "assertions": [
+        {"type": "skill_not_invoked", "skill": "map-competitive-arena"},
+        {"type": "skill_invoked", "skill": "assess-moat-sources"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "skill": "assess-strategic-environment",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "name": "happy_path_adaptive_industrial_robotics",
+      "prompt": "Run assess-strategic-environment on industrial-robotics-na. Geography: North America. Focal layer: integrator. Mode: orchestrator (write to working/strategic-environment.md).",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/industrial-robotics-na/working/strategic-environment.md OR standalone/assess-strategic-environment-*.md"},
+        {"type": "regex_in_file", "path_pattern": "strategic-environment.md", "regex": "\\b(Classical|Adaptive|Visionary|Shaping|Renewal)\\b"},
+        {"type": "regex_in_file", "path_pattern": "strategic-environment.md", "regex": "is\\s+(Classical|Adaptive|Visionary|Shaping|Renewal)\\s+because"},
+        {"type": "string_in_file", "path_pattern": "strategic-environment.md", "string": "predictability"},
+        {"type": "string_in_file", "path_pattern": "strategic-environment.md", "string": "malleability"},
+        {"type": "string_in_file", "path_pattern": "strategic-environment.md", "string": "harshness"},
+        {"type": "regex_in_file", "path_pattern": "strategic-environment.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "string_in_file", "path_pattern": "strategic-environment.md", "string": "next_skills"},
+        {"type": "string_in_file", "path_pattern": "strategic-environment.md", "string": "routing"}
+      ]
+    },
+    {
+      "name": "rejects_missing_classification",
+      "prompt": "Run assess-strategic-environment on industrial-gases-eu but omit the explicit environment-name label — describe the three dimensions only.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_environment.py"},
+        {"type": "error_contains", "string": "classification"}
+      ]
+    },
+    {
+      "name": "rejects_all_medium_dodge",
+      "prompt": "Run assess-strategic-environment on a contested SaaS sector and rate predictability Medium, malleability Medium, harshness Medium with vague reasoning.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_environment.py"},
+        {"type": "error_contains", "string": "Medium"}
+      ]
+    },
+    {
+      "name": "rejects_default_classical_no_evidence",
+      "prompt": "Run assess-strategic-environment on agentic-commerce-platforms-global and classify Classical without addressing AI-native disruption or malleability evidence — produce no tags.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_environment.py"},
+        {"type": "error_contains", "string": "V/C/A/I"}
+      ]
+    },
+    {
+      "name": "rejects_five_forces_skip_weighting",
+      "prompt": "Run assess-strategic-environment on declining-print-media-na (Renewal) and emit a routing matrix that weights map-five-forces as 'skip'.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_environment.py"},
+        {"type": "error_contains", "string": "five-forces"}
+      ]
+    },
+    {
+      "name": "rejects_missing_routing_matrix",
+      "prompt": "Run assess-strategic-environment on industrial-gases-eu, classify Classical, but omit the routing matrix section entirely.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_environment.py"},
+        {"type": "error_contains", "string": "routing"}
+      ]
+    },
+    {
+      "name": "rejects_missing_ambidexterity_declaration",
+      "prompt": "Run assess-strategic-environment on semiconductors-global, classify Classical, but never address whether ambidexterity applies (the industry has multiple layers).",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_environment.py"},
+        {"type": "error_contains", "string": "ambidext"}
+      ]
+    },
+    {
+      "name": "negative_trigger_single_company_moat",
+      "prompt": "Assess the moat sources for Acme Robotics specifically — what are their durable powers per Helmer's 7 Powers framework?",
+      "assertions": [
+        {"type": "skill_not_invoked", "skill": "assess-strategic-environment", "rationale": "Single-company moat question — should route to assess-moat-sources, not strategic-environment diagnosis."}
+      ]
+    }
+  ]
+}

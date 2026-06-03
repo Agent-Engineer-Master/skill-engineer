@@ -89,5 +89,89 @@
     "domain": "product",
     "description": "Guides a founder interactively from 'no idea' through idea generation, rapid validation, and commitment to a business — synthesizing PG, YC, Lean Startup, Mom Test, JTBD, and gstack office-hours methodology.",
     "tags": ["startup-ideas", "idea-validation", "founder-tools", "business-discovery", "lean-startup"]
+  },
+  {
+    "name": "html-output",
+    "path": "design/html-output",
+    "domain": "design",
+    "description": "Renders complex information as a single self-contained HTML file — dashboards, analytical reports, comparison tables, timelines, flow/sequence diagrams, and data explainers — using a brand-token design system, with optional Mermaid or Chart.js via CDN.",
+    "tags": ["html", "dashboards", "reports", "data-visualization", "design-system"]
+  },
+  {
+    "name": "analysis-quality-review",
+    "path": "operations/analysis-quality-review",
+    "domain": "operations",
+    "description": "Review-only multi-mode quality grader for reader-facing analytical deliverables — returns doc-type authoring templates, judges storylines before writing, and audits argument structure (Minto Pyramid, MECE, SCQA, Rumelt kernel) and readability (action titles, so-what, specificity, active voice) of finished documents.",
+    "tags": ["quality-review", "minto-pyramid", "scqa", "readability", "analytical-rigor"]
+  },
+  {
+    "name": "analyze-industry",
+    "path": "strategy/industry-analysis/analyze-industry",
+    "domain": "strategy",
+    "description": "Orchestrates MBB sub-skills (BCG Strategy Palette, McKinsey G3 sizing, Porter Five Forces, Bain profit pools, arenas, S-curve, Helmer 7 Powers, JTBD) into a senior-analyst industry-structure brief shipped as a quality-reviewed HTML report ending in where-to-play / how-to-win.",
+    "tags": ["industry-analysis", "strategy", "porter-five-forces", "market-entry", "private-equity"]
+  },
+  {
+    "name": "reimagine-industry",
+    "path": "strategy/industry-analysis/reimagine-industry",
+    "domain": "strategy",
+    "description": "Produces a ranked shortlist of venture concepts for disrupting an industry via a 6-phase workflow applying Blue Ocean ERRC, Aggregation Theory, Decoupling, Counter-positioning, Helmer 7 Powers, and Thiel's Secret.",
+    "tags": ["disruption", "venture-ideation", "blue-ocean", "aggregation-theory", "innovation"]
+  },
+  {
+    "name": "assess-strategic-environment",
+    "path": "strategy/industry-analysis/assess-strategic-environment",
+    "domain": "strategy",
+    "description": "Diagnoses the competitive environment using BCG's Strategy Palette — Classical / Adaptive / Visionary / Shaping / Renewal — via the predictability / malleability / harshness discipline, and emits a sub-skill routing matrix.",
+    "tags": ["strategy-palette", "bcg-reeves", "competitive-environment", "diagnosis", "strategy"]
+  },
+  {
+    "name": "size-market",
+    "path": "strategy/industry-analysis/size-market",
+    "domain": "strategy",
+    "description": "Granular market sizing using McKinsey G3 granular-growth decomposition plus an arenas qualification screen, with top-down and bottom-up triangulation — TAM/SAM/SOM and sub-segment growth rates with provenance tags on every numeric claim.",
+    "tags": ["market-sizing", "tam-sam-som", "g3-growth", "triangulation", "strategy"]
+  },
+  {
+    "name": "map-five-forces",
+    "path": "strategy/industry-analysis/map-five-forces",
+    "domain": "strategy",
+    "description": "Porter Five Forces analysis extended with complementors (sixth force) and AI-as-named-force; names the single governing force that determines an industry's profit distribution.",
+    "tags": ["porter-five-forces", "industry-structure", "complementors", "ai-as-force", "attractiveness"]
+  },
+  {
+    "name": "map-value-chain-profit-pools",
+    "path": "strategy/industry-analysis/map-value-chain-profit-pools",
+    "domain": "strategy",
+    "description": "Paired Porter value-chain decomposition and Bain/Gadiesh-Gilbert profit-pool overlay showing absolute EBIT / economic profit per stage and which stage holds structural profit concentration.",
+    "tags": ["value-chain", "profit-pools", "bain", "economic-profit", "strategy"]
+  },
+  {
+    "name": "map-competitive-arena",
+    "path": "strategy/industry-analysis/map-competitive-arena",
+    "domain": "strategy",
+    "description": "Porter strategic-group map overlaid with McKinsey Arenas framing — identifies strategic groups, names a winner archetype, and assesses mobility barriers between adjacent groups.",
+    "tags": ["strategic-groups", "competitive-landscape", "arenas", "winner-archetypes", "mobility-barriers"]
+  },
+  {
+    "name": "analyze-trajectory",
+    "path": "strategy/industry-analysis/analyze-trajectory",
+    "domain": "strategy",
+    "description": "Forward-looking industry trajectory analysis — dual S-curve, Three Horizons overlay, discontinuities catalog, Helmer Power Progression, and base/bear/bull scenarios with named swing variables over a 5-year horizon.",
+    "tags": ["s-curve", "three-horizons", "scenarios", "discontinuities", "7-powers"]
+  },
+  {
+    "name": "assess-moat-sources",
+    "path": "strategy/industry-analysis/assess-moat-sources",
+    "domain": "strategy",
+    "description": "Assesses which of Helmer's 7 Powers protect incumbents in an industry, how durable each is over the analysis horizon, and which Power combination the winning archetype must hold.",
+    "tags": ["7-powers", "moat", "helmer", "durability", "competitive-advantage"]
+  },
+  {
+    "name": "analyze-demand",
+    "path": "strategy/industry-analysis/analyze-demand",
+    "domain": "strategy",
+    "description": "Structural demand-side analysis for an industry — Jobs-to-be-Done, JTBD-based segmentation, substitution risk per segment, willingness-to-pay drivers, and named leading demand signals.",
+    "tags": ["jtbd", "segmentation", "substitution-risk", "willingness-to-pay", "demand-analysis"]
   }
 ]

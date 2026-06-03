@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{DECK_TITLE}}</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<!-- PASTE chartjs-cdn.html snippet here (optional — only if charts are used) -->
+
+<style>
+  /* ─── Deck chrome ─── */
+  body {
+    background: var(--brand-text);  /* slate frame around slides */
+    margin: 0;
+    padding: 0;
+  }
+
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-5) var(--s-3);
+  }
+
+  /* 16:9 slide — fixed 1280×720 frame, scales down responsively */
+  .slide {
+    width: min(1280px, 96vw);
+    aspect-ratio: 16 / 9;
+    background: var(--brand-bg);
+    color: var(--brand-primary);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    border-radius: var(--radius-md);
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 48px 64px 32px;
+    page-break-after: always;
+  }
+
+  /* ─── Slide title — action title pattern ─── */
+  .slide__title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--brand-primary);
+    border-bottom: 3px solid var(--brand-accent);
+    padding-bottom: var(--s-3);
+    margin: 0 0 var(--s-4);
+    max-width: 90%;
+  }
+
+  /* ─── Slide body — flexible layout ─── */
+  .slide__body { display: flex; gap: var(--s-4); align-items: stretch; min-height: 0; }
+  .slide__body--single { display: block; }
+  .slide__exhibit { flex: 3; min-width: 0; }
+  .slide__sowhat {
+    flex: 1;
+    background: var(--brand-primary);
+    color: var(--brand-bg);
+    padding: var(--s-4);
+    border-radius: var(--radius-md);
+    align-self: flex-start;
+    max-width: 280px;
+  }
+  .slide__sowhat h4 {
+    color: var(--brand-accent);
+    margin: 0 0 var(--s-2);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+  .slide__sowhat p { color: var(--brand-bg); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+
+  /* ─── Slide footer — exhibit / source / footnote ─── */
+  .slide__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--brand-text);
+    border-top: 1px solid var(--brand-rule);
+    padding-top: var(--s-2);
+    margin-top: var(--s-3);
+    font-family: var(--font-display);
+    letter-spacing: 0.04em;
+  }
+  .slide__exhibit-num { text-transform: uppercase; letter-spacing: 0.12em; color: var(--brand-accent); font-weight: 500; }
+
+  /* ─── Cover slide ─── */
+  .slide--cover {
+    background: var(--brand-primary);
+    color: var(--brand-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 64px;
+  }
+  .slide--cover .cover-eyebrow { color: var(--brand-accent); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.875rem; }
+  .slide--cover h1 { color: var(--brand-bg); font-size: clamp(2.5rem, 5vw, 4rem); max-width: 80%; margin: var(--s-4) 0 var(--s-3); }
+  .slide--cover .cover-dek { color: var(--brand-bg-2); font-size: 1.25rem; max-width: 70%; }
+  .slide--cover .cover-meta { color: var(--brand-bg-2); font-size: 0.875rem; font-family: var(--font-display); }
+
+  /* ─── Executive summary — bullet list ─── */
+  .exec-summary { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--s-3); }
+  .exec-summary li {
+    display: flex;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    background: var(--brand-white);
+    border-left: 4px solid var(--brand-accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    align-items: flex-start;
+  }
+  .exec-summary li .num { font-family: var(--font-display); font-weight: 700; color: var(--brand-accent); font-size: 1.5rem; line-height: 1; min-width: 32px; }
+  .exec-summary li .txt { font-size: 1rem; line-height: 1.5; color: var(--brand-primary); }
+
+  /* ─── 2×2 matrix ─── */
+  .matrix-2x2 {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    border: 2px solid var(--brand-primary);
+    background: var(--brand-white);
+  }
+  .matrix-2x2 .quad { padding: var(--s-3); border: 1px dashed var(--brand-rule); position: relative; }
+  .matrix-2x2 .quad-label { font-family: var(--font-display); font-weight: 700; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; }
+  .matrix-2x2 .dot {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--brand-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .matrix-2x2 .dot::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 18px; top: -4px;
+    font-size: 0.75rem;
+    font-family: var(--font-display);
+    color: var(--brand-primary);
+    white-space: nowrap;
+  }
+  .matrix-axis-x, .matrix-axis-y { font-family: var(--font-display); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-text); }
+  .matrix-axis-x { text-align: center; margin-top: var(--s-2); }
+  .matrix-axis-y { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; }
+
+  /* ─── Three-column MECE ─── */
+  .mece { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s-3); height: 100%; }
+  .mece__col { background: var(--brand-white); border-top: 4px solid var(--brand-primary); padding: var(--s-3); border-radius: 0 0 var(--radius-sm) var(--radius-sm); display: flex; flex-direction: column; }
+  .mece__col h3 { font-size: 1rem; margin-bottom: var(--s-2); }
+  .mece__col ul { padding-left: var(--s-3); margin: 0; font-size: 0.875rem; color: var(--brand-text); }
+  .mece__synthesis { grid-column: 1 / -1; background: var(--brand-accent); color: var(--brand-primary); padding: var(--s-3); border-radius: var(--radius-sm); font-family: var(--font-display); font-size: 1rem; }
+  .mece__synthesis strong { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: var(--s-1); }
+
+  /* ─── Waterfall chart container ─── */
+  .waterfall { display: flex; align-items: flex-end; gap: var(--s-2); height: 320px; padding: var(--s-3); background: var(--brand-white); border-radius: var(--radius-sm); }
+  .wf-bar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--s-1); position: relative; }
+  .wf-bar .bar { width: 100%; background: var(--brand-primary); }
+  .wf-bar.wf--up    .bar { background: #2F7D5B; }
+  .wf-bar.wf--down  .bar { background: #B5482E; }
+  .wf-bar.wf--total .bar { background: var(--brand-primary); }
+  .wf-bar .val   { font-family: var(--font-display); font-weight: 700; color: var(--brand-primary); font-size: 0.875rem; }
+  .wf-bar .label { font-size: 0.7rem; color: var(--brand-text); text-align: center; }
+
+  /* ─── Navigation chrome (screen only) ─── */
+  .deck-nav {
+    position: fixed;
+    bottom: var(--s-3);
+    right: var(--s-3);
+    background: var(--brand-bg);
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+  }
+  .deck-nav button { background: var(--brand-primary); color: var(--brand-bg); border: 0; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; }
+  .deck-nav button:hover { background: var(--brand-accent); color: var(--brand-primary); }
+
+  /* ─── Print mode: one slide per page, no chrome ─── */
+  @media print {
+    body { background: white; padding: 0; }
+    .deck { padding: 0; gap: 0; }
+    .slide { box-shadow: none; border-radius: 0; width: 100%; aspect-ratio: 16 / 9; margin: 0; }
+    .deck-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ═══════════════════════════════════
+       SLIDE 1 — Cover
+  ═══════════════════════════════════ -->
+  <section class="slide slide--cover" id="s1">
+    <div>
+      <div class="cover-eyebrow">{{CLIENT_OR_TOPIC}}</div>
+      <h1>{{DECK_TITLE}}</h1>
+      <p class="cover-dek">{{DECK_DEK}}</p>
+    </div>
+    <div class="cover-meta">
+      {{AUTHOR}} &nbsp;·&nbsp; {{DATE}} &nbsp;·&nbsp; CONFIDENTIAL DRAFT
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SLIDE 2 — Executive summary
+  ═══════════════════════════════════ -->
+  <section class="slide" id="s2">
+    <h2 class="slide__title">{{EXEC_TITLE — e.g. "Three findings reshape the 2026 investment case"}}</h2>
+    <div class="slide__body slide__body--single">
+      <ol class="exec-summary">
+        <li><span class="num">01</span><span class="txt">{{FINDING_1 — full action title of slide 3}}</span></li>
+        <li><span class="num">02</span><span class="txt">{{FINDING_2 — full action title of slide 4}}</span></li>
+        <li><span class="num">03</span><span class="txt">{{FINDING_3 — full action title of slide 5}}</span></li>
+        <li><span class="num">→</span><span class="txt">{{RECOMMENDATION — what should be done}}</span></li>
+      </ol>
+    </div>
+    <div class="slide__footer">
+      <span class="slide__exhibit-num">Exhibit 1</span>
+      <span>Source: {{SOURCE}}</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SLIDE 3 — Single chart slide (Chart.js bar)
+  ═══════════════════════════════════ -->
+  <section class="slide" id="s3">
+    <h2 class="slide__title">{{ACTION_TITLE_3 — finding stated as full sentence}}</h2>
+    <div class="slide__body">
+      <div class="slide__exhibit">
+        <canvas id="chart3" style="max-height: 380px;"></canvas>
+      </div>
+      <aside class="slide__sowhat">
+        <h4>So what</h4>
+        <p>{{SO_WHAT_3 — the implication, ~2 sentences}}</p>
+      </aside>
+    </div>
+    <div class="slide__footer">
+      <span class="slide__exhibit-num">Exhibit 2</span>
+      <span>Source: {{SOURCE_3}} &nbsp;·&nbsp; {{FOOTNOTE_3}}</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SLIDE 4 — 2×2 matrix
+  ═══════════════════════════════════ -->
+  <section class="slide" id="s4">
+    <h2 class="slide__title">{{ACTION_TITLE_4}}</h2>
+    <div class="slide__body">
+      <div class="slide__exhibit" style="display: flex; flex-direction: column; align-items: center; gap: var(--s-2);">
+        <div style="display: flex; gap: var(--s-2); align-items: center;">
+          <span class="matrix-axis-y">{{Y_AXIS}} →</span>
+          <div class="matrix-2x2">
+            <div class="quad"><div class="quad-label">{{Q_TL}}</div></div>
+            <div class="quad"><div class="quad-label">{{Q_TR}}</div></div>
+            <div class="quad"><div class="quad-label">{{Q_BL}}</div></div>
+            <div class="quad"><div class="quad-label">{{Q_BR}}</div></div>
+            <!-- Dots: position by % within the parent (relative to matrix) -->
+            <span class="dot" style="left: 30%; top: 35%;" data-label="{{ITEM_A}}"></span>
+            <span class="dot" style="left: 70%; top: 25%;" data-label="{{ITEM_B}}"></span>
+            <span class="dot" style="left: 55%; top: 70%;" data-label="{{ITEM_C}}"></span>
+          </div>
+        </div>
+        <div class="matrix-axis-x">{{X_AXIS}} →</div>
+      </div>
+      <aside class="slide__sowhat">
+        <h4>So what</h4>
+        <p>{{SO_WHAT_4}}</p>
+      </aside>
+    </div>
+    <div class="slide__footer">
+      <span class="slide__exhibit-num">Exhibit 3</span>
+      <span>Source: {{SOURCE_4}}</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SLIDE 5 — Waterfall
+  ═══════════════════════════════════ -->
+  <section class="slide" id="s5">
+    <h2 class="slide__title">{{ACTION_TITLE_5}}</h2>
+    <div class="slide__body slide__body--single">
+      <div class="waterfall">
+        <div class="wf-bar wf--total"><div class="val">$100</div><div class="bar" style="height: 200px;"></div><div class="label">{{WF_START}}</div></div>
+        <div class="wf-bar wf--up"><div class="val">+$18</div><div class="bar" style="height: 36px; margin-bottom: 200px;"></div><div class="label">{{WF_DRIVER_1}}</div></div>
+        <div class="wf-bar wf--down"><div class="val">-$12</div><div class="bar" style="height: 24px; margin-bottom: 188px;"></div><div class="label">{{WF_DRIVER_2}}</div></div>
+        <div class="wf-bar wf--up"><div class="val">+$6</div><div class="bar" style="height: 12px; margin-bottom: 200px;"></div><div class="label">{{WF_DRIVER_3}}</div></div>
+        <div class="wf-bar wf--total"><div class="val">$112</div><div class="bar" style="height: 224px;"></div><div class="label">{{WF_END}}</div></div>
+      </div>
+    </div>
+    <div class="slide__footer">
+      <span class="slide__exhibit-num">Exhibit 4</span>
+      <span>Source: {{SOURCE_5}}</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SLIDE 6 — Three-column MECE
+  ═══════════════════════════════════ -->
+  <section class="slide" id="s6">
+    <h2 class="slide__title">{{ACTION_TITLE_6}}</h2>
+    <div class="slide__body slide__body--single">
+      <div class="mece">
+        <div class="mece__col">
+          <h3>{{COL_1_HEADER}}</h3>
+          <ul><li>{{C1_P1}}</li><li>{{C1_P2}}</li><li>{{C1_P3}}</li></ul>
+        </div>
+        <div class="mece__col">
+          <h3>{{COL_2_HEADER}}</h3>
+          <ul><li>{{C2_P1}}</li><li>{{C2_P2}}</li><li>{{C2_P3}}</li></ul>
+        </div>
+        <div class="mece__col">
+          <h3>{{COL_3_HEADER}}</h3>
+          <ul><li>{{C3_P1}}</li><li>{{C3_P2}}</li><li>{{C3_P3}}</li></ul>
+        </div>
+        <div class="mece__synthesis"><strong>Therefore</strong>{{SYNTHESIS}}</div>
+      </div>
+    </div>
+    <div class="slide__footer">
+      <span class="slide__exhibit-num">Exhibit 5</span>
+      <span>Source: {{SOURCE_6}}</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SLIDE 7 — Recommendation / next steps
+  ═══════════════════════════════════ -->
+  <section class="slide" id="s7">
+    <h2 class="slide__title">{{RECO_ACTION_TITLE}}</h2>
+    <div class="slide__body slide__body--single">
+      <ol class="exec-summary">
+        <li><span class="num">→</span><span class="txt"><strong>{{NEXT_STEP_1_TITLE}}</strong> — {{NEXT_STEP_1_DETAIL}}</span></li>
+        <li><span class="num">→</span><span class="txt"><strong>{{NEXT_STEP_2_TITLE}}</strong> — {{NEXT_STEP_2_DETAIL}}</span></li>
+        <li><span class="num">→</span><span class="txt"><strong>{{NEXT_STEP_3_TITLE}}</strong> — {{NEXT_STEP_3_DETAIL}}</span></li>
+        <li><span class="num">!</span><span class="txt"><strong>Decision required by {{DEADLINE}}:</strong> {{DECISION}}</span></li>
+      </ol>
+    </div>
+    <div class="slide__footer">
+      <span class="slide__exhibit-num">Exhibit 6</span>
+      <span>{{AUTHOR}} · {{DATE}}</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- Deck navigation -->
+<nav class="deck-nav no-print">
+  <button onclick="navSlide(-1)">←</button>
+  <span id="slideCounter">1 / 7</span>
+  <button onclick="navSlide(1)">→</button>
+  <button onclick="window.print()">Print</button>
+</nav>
+
+<script>
+  // Slide navigation — keyboard + buttons
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides[current].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('slideCounter').textContent = `${current + 1} / ${slides.length}`;
+  }
+  function navSlide(delta) { showSlide(current + delta); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') navSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   navSlide(-1);
+  });
+
+  // Example Chart.js exhibit on slide 3 — replace with real data
+  if (window.Chart) {
+    new Chart(document.getElementById('chart3'), {
+      type: 'bar',
+      data: {
+        labels: ['{{L1}}', '{{L2}}', '{{L3}}', '{{L4}}', '{{L5}}'],
+        datasets: [{
+          data: [12, 19, 14, 27, 9],
+          backgroundColor: (ctx) => ctx.dataIndex === 3 ? BRAND.accent : BRAND.primary,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: { grid: { display: false } },
+          y: { grid: { color: 'rgba(74,85,104,0.1)' }, ticks: { color: BRAND.slate } }
+        }
+      }
+    });
+  }
+</script>
+
+<!-- PASTE export-footer.html snippet here (place INSIDE .deck above the </div> if needed) -->
+
+</body>
+</html>

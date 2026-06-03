@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<style>
+  .report-container { max-width: 760px; margin: 0 auto; padding: var(--s-7) var(--s-4); }
+  .report-header { margin-bottom: var(--s-6); }
+  .report-header .dek { font-size: 1.125rem; color: var(--brand-text); margin-top: var(--s-3); }
+  .report-meta { font-size: 0.875rem; color: var(--brand-text); margin-top: var(--s-3); }
+
+  .toc { background: var(--brand-bg-2); border-radius: var(--radius-md); padding: var(--s-4); margin-bottom: var(--s-6); }
+  .toc h4 { margin-bottom: var(--s-2); }
+  .toc ol { padding-left: var(--s-4); margin: 0; }
+  .toc a { text-decoration: none; }
+
+  .section { margin-bottom: var(--s-6); }
+  .section__num { color: var(--brand-accent); font-family: var(--font-display); font-weight: 500; }
+
+  .pull-quote {
+    border-left: 3px solid var(--brand-accent);
+    padding: var(--s-3) var(--s-4);
+    margin: var(--s-4) 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--brand-primary);
+  }
+
+  .source-list { font-size: 0.875rem; }
+  .source-list li { margin-bottom: var(--s-2); }
+</style>
+</head>
+<body>
+<div class="report-container">
+
+  <header class="report-header">
+    <div class="eyebrow">{{EYEBROW}}</div>
+    <h1>{{TITLE}}</h1>
+    <p class="dek">{{DEK}}</p>
+    <div class="report-meta">{{AUTHOR}} · {{DATE}} · {{READ_TIME}}</div>
+  </header>
+
+  <nav class="toc">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#s1">{{S1_TITLE}}</a></li>
+      <li><a href="#s2">{{S2_TITLE}}</a></li>
+      <li><a href="#s3">{{S3_TITLE}}</a></li>
+      <li><a href="#s4">{{S4_TITLE}}</a></li>
+    </ol>
+  </nav>
+
+  <section class="section" id="s1">
+    <h2><span class="section__num">01 ·</span> {{S1_TITLE}}</h2>
+    <p>{{S1_BODY}}</p>
+    <blockquote class="pull-quote">{{S1_QUOTE}}</blockquote>
+  </section>
+
+  <section class="section" id="s2">
+    <h2><span class="section__num">02 ·</span> {{S2_TITLE}}</h2>
+    <p>{{S2_BODY}}</p>
+  </section>
+
+  <section class="section" id="s3">
+    <h2><span class="section__num">03 ·</span> {{S3_TITLE}}</h2>
+    <p>{{S3_BODY}}</p>
+  </section>
+
+  <section class="section" id="s4">
+    <h2><span class="section__num">04 ·</span> {{S4_TITLE}}</h2>
+    <p>{{S4_BODY}}</p>
+  </section>
+
+  <hr>
+
+  <section class="section">
+    <h3>Sources &amp; methodology</h3>
+    <ol class="source-list">
+      <li>{{SOURCE_1}}</li>
+      <li>{{SOURCE_2}}</li>
+    </ol>
+  </section>
+
+  <!-- PASTE export-footer.html snippet here -->
+
+</div>
+</body>
+</html>

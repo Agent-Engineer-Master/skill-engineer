@@ -56,6 +56,7 @@ Presentation and visual asset creation skills for designers and creative teams.
 | Skill | Description | When to Use |
 |---|---|---|
 | [marp-slides](design/marp-slides/) | Creates MARP presentation decks (.md files rendered to PDF/HTML/PPTX via marp CLI) with custom CSS themes, SVG inline charts, dashboard components, and speaker notes | Creating slides, building a deck, making a presentation, generating MARP output, editing existing slides |
+| [html-output](design/html-output/) | Renders complex information as a single self-contained HTML file — dashboards, analytical reports, comparison tables, timelines, diagrams, data explainers — with a brand-token design system and optional Mermaid/Chart.js | Turning analysis into a visual report, dashboard, one-pager, or rendered diagram |
 
 ---
 
@@ -95,6 +96,7 @@ Strategic analysis, planning, and research optimization skills for operations te
 
 | Skill | Description | When to Use |
 |---|---|---|
+| [analysis-quality-review](operations/analysis-quality-review/) | Review-only multi-mode quality grader for reader-facing analytical deliverables — authoring templates, storyline judging, and audits of argument structure (Minto/MECE/SCQA/Rumelt) and readability | Grading the rigour and readability of a report, strategy deck, or industry analysis |
 | [auto-research](operations/auto-research/) | Autonomously optimizes any Claude skill (SKILL.md) or CLAUDE.md file through a closed hypothesis→test→evaluate→keep/discard loop | Improving a skill's output quality against measurable criteria |
 | [morning-brief](operations/morning-brief/) | Generates a structured morning brief from current priorities, active task board, competitor digest, and content pipeline status | Daily morning planning, intention setting |
 | [stress-test](operations/stress-test/) | Three-phase strategic decision analysis combining verbalized sampling, customizable analytical lenses, and a structured decision brief — surfaces non-obvious tail-distribution insights | Any high-stakes decision: pivots, category selection, positioning, pricing, hiring |
@@ -108,6 +110,24 @@ User research, feedback analysis, and idea validation skills for product teams.
 |---|---|---|
 | [analyzing-feedback](product/analyzing-feedback/) | Parses raw customer feedback into categorized severity-ranked themes, scans the codebase to identify affected files, and proposes 3 structural edit options per theme | Translating customer complaints into file-level engineering proposals |
 | [find-my-business](product/find-my-business/) | Guides a founder from "no idea" through idea generation, rapid validation, and commitment to a business — synthesizing PG, YC, Lean Startup, Mom Test, and JTBD methodology | Finding a business to start, exploring startup ideas, getting unstuck on what to build |
+
+---
+
+### strategy/
+MBB-grade industry and competitive analysis skills for founders, operators, and investors. The **industry-analysis** family below shares methodology in `industry-analysis/_shared/`; `analyze-industry` orchestrates the rest, and every sub-skill also runs standalone.
+
+| Skill | Description | When to Use |
+|---|---|---|
+| [analyze-industry](strategy/industry-analysis/analyze-industry/) | Orchestrates the sub-skills into a senior-analyst industry-structure brief — Strategy Palette, G3 sizing, Five Forces, profit pools, arenas, S-curve, 7 Powers, JTBD — shipped as a quality-reviewed HTML report ending in where-to-play / how-to-win | Industry attractiveness, market entry, PE deal screening, roll-up thesis |
+| [reimagine-industry](strategy/industry-analysis/reimagine-industry/) | Ranked shortlist of venture concepts to disrupt an industry via a 6-phase workflow (Blue Ocean ERRC, Aggregation Theory, Decoupling, Counter-positioning, 7 Powers, Thiel's Secret) | Finding disruption angles or venture concepts in an industry |
+| [assess-strategic-environment](strategy/industry-analysis/assess-strategic-environment/) | Diagnoses the competitive environment (BCG Strategy Palette — Classical / Adaptive / Visionary / Shaping / Renewal) and emits a sub-skill routing matrix | Classifying an industry's environment before choosing analytical tools |
+| [size-market](strategy/industry-analysis/size-market/) | Granular market sizing (McKinsey G3 decomposition + arenas screen) with top-down / bottom-up triangulation, TAM/SAM/SOM, sub-segment growth rates | Sizing an industry or sub-segment; TAM SAM SOM |
+| [map-five-forces](strategy/industry-analysis/map-five-forces/) | Porter Five Forces extended with complementors (sixth force) and AI-as-force; names the governing force that determines profit distribution | Assessing industry structural attractiveness |
+| [map-value-chain-profit-pools](strategy/industry-analysis/map-value-chain-profit-pools/) | Paired Porter value-chain decomposition + Bain profit-pool overlay showing absolute EBIT / economic profit per stage | Finding where the money sits in an industry |
+| [map-competitive-arena](strategy/industry-analysis/map-competitive-arena/) | Porter strategic-group map with McKinsey Arenas overlay — groups, winner archetypes, mobility-barrier matrix | Mapping the competitive landscape and who competes with whom |
+| [analyze-trajectory](strategy/industry-analysis/analyze-trajectory/) | Forward-looking trajectory — dual S-curve, Three Horizons, discontinuities catalog, Power Progression, base/bear/bull scenarios | Understanding where an industry is heading; scenario analysis |
+| [assess-moat-sources](strategy/industry-analysis/assess-moat-sources/) | Assesses which of Helmer's 7 Powers protect incumbents, their durability, and the winning archetype's Power profile | Judging moat durability in an industry |
+| [analyze-demand](strategy/industry-analysis/analyze-demand/) | Structural demand-side analysis — JTBD, JTBD-based segmentation, substitution risk, WTP drivers, leading demand signals | Understanding demand structure and substitution risk |
 
 ---
 

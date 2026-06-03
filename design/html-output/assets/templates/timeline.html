@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Timeline</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<style>
+  .timeline {
+    position: relative;
+    padding: var(--s-5) 0 var(--s-5) var(--s-6);
+    border-left: 2px solid var(--brand-rule);
+    margin-left: var(--s-4);
+  }
+  .tl-event {
+    position: relative;
+    margin-bottom: var(--s-5);
+  }
+  .tl-event::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--s-6) - 8px);
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--brand-primary);
+    border: 3px solid var(--brand-bg);
+  }
+  .tl-event--accent::before { background: var(--brand-accent); }
+
+  .tl-date { font-family: var(--font-display); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-accent); margin-bottom: var(--s-1); }
+  .tl-title { font-family: var(--font-display); font-size: 1.25rem; color: var(--brand-primary); margin-bottom: var(--s-2); }
+  .tl-body { color: var(--brand-text); }
+
+  .tl-phase {
+    background: var(--brand-bg-2);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: inline-block;
+    margin-bottom: var(--s-4);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header style="margin-bottom: var(--s-4);">
+    <div class="eyebrow">{{EYEBROW}}</div>
+    <h1>{{TITLE}}</h1>
+    <p>{{INTRO}}</p>
+  </header>
+
+  <div class="timeline">
+
+    <div class="tl-phase">Phase 1 — {{PHASE_1}}</div>
+
+    <div class="tl-event">
+      <div class="tl-date">{{DATE_1}}</div>
+      <div class="tl-title">{{EVENT_1_TITLE}}</div>
+      <div class="tl-body">{{EVENT_1_BODY}}</div>
+    </div>
+
+    <div class="tl-event tl-event--accent">
+      <div class="tl-date">{{DATE_2}}</div>
+      <div class="tl-title">{{EVENT_2_TITLE}}</div>
+      <div class="tl-body">{{EVENT_2_BODY}}</div>
+    </div>
+
+    <div class="tl-phase">Phase 2 — {{PHASE_2}}</div>
+
+    <div class="tl-event">
+      <div class="tl-date">{{DATE_3}}</div>
+      <div class="tl-title">{{EVENT_3_TITLE}}</div>
+      <div class="tl-body">{{EVENT_3_BODY}}</div>
+    </div>
+
+  </div>
+
+  <!-- PASTE export-footer.html snippet here -->
+
+</div>
+</body>
+</html>

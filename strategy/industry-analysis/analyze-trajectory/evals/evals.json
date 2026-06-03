@@ -1,0 +1,84 @@
+{
+  "skill": "analyze-trajectory",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "name": "happy_path_dual_scurve_horizons_scenarios",
+      "prompt": "Run the analyze-trajectory skill on us-ambient-scribe-medtech for the 2026-2031 horizon. Use the G3 sub-segments from working/market-sizing.md if present, otherwise use ambulatory-primary-care, inpatient-acute, specialty-surgical.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/us-ambient-scribe-medtech/**/trajectory.md OR standalone/analyze-trajectory-*.md"},
+        {"type": "regex_in_file", "path_pattern": "trajectory.md", "regex": "(?i)market[- ]?(adoption )?s[- ]?curve"},
+        {"type": "regex_in_file", "path_pattern": "trajectory.md", "regex": "(?i)tech(nology)?[- ]?s[- ]?curve"},
+        {"type": "regex_in_file", "path_pattern": "trajectory.md", "regex": "\\bH[1-3]\\b"},
+        {"type": "regex_in_file", "path_pattern": "trajectory.md", "regex": "\\b20[2-4]\\d\\s*[-–]\\s*20[2-4]\\d\\b"},
+        {"type": "string_in_file", "path_pattern": "trajectory.md", "string": "Counter-Positioning"},
+        {"type": "string_in_file", "path_pattern": "trajectory.md", "string": "swing variable"},
+        {"type": "regex_in_file", "path_pattern": "trajectory.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "string_in_file", "path_pattern": "trajectory.md", "string": "next_skills"}
+      ]
+    },
+    {
+      "name": "rejects_missing_scenarios",
+      "prompt": "Run analyze-trajectory on a synthetic industry where the dual S-curve, Three Horizons, discontinuities, and Power Progression are all present but the scenarios section is omitted.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_trajectory.py"},
+        {"type": "error_contains", "string": "Missing scenario case"}
+      ]
+    },
+    {
+      "name": "rejects_all_stable_trajectory",
+      "prompt": "Run analyze-trajectory on a synthetic industry where the drafter claims everything is stable: market S-curve and tech S-curve both 'maturity, no change', no discontinuities named, no scenarios with swing variables. No industry is fully stable over 5yr.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_trajectory.py"},
+        {"type": "error_contains", "string": "year-range timing windows"}
+      ]
+    },
+    {
+      "name": "rejects_vague_timing",
+      "prompt": "Run analyze-trajectory on a synthetic industry where discontinuities are listed but timing windows are vague ('AI will disrupt this industry soon', 'regulatory change coming eventually').",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_trajectory.py"},
+        {"type": "error_contains", "string": "Vague timing language"}
+      ]
+    },
+    {
+      "name": "rejects_single_scurve",
+      "prompt": "Run analyze-trajectory on a synthetic industry where only the market S-curve is assessed and the technology S-curve is omitted.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_trajectory.py"},
+        {"type": "error_contains", "string": "technology S-curve"}
+      ]
+    },
+    {
+      "name": "warns_hyper_cycle_without_cycle_methodology",
+      "prompt": "Run analyze-trajectory on defi-us for the 2026-2031 horizon without disclosing cycle methodology (no cycle period, no peak-to-trough amplitude, no sentiment driver). All standard S-curve / Three Horizons / Power / scenario sections present.",
+      "assertions": [
+        {"type": "warning_emitted", "script": "validate_trajectory.py", "string": "Hyper-cycle"}
+      ]
+    },
+    {
+      "name": "rejects_orchestrator_mode_qualitative_scenarios",
+      "prompt": "Run analyze-trajectory in orchestrator mode on a synthetic industry where 08-knowledge/world-model/industries/<slug>/working/market-sizing.md exists, but the scenarios section contains only qualitative narration (no dollar figures, no CAGR percentages).",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_trajectory.py"},
+        {"type": "error_contains", "string": "quantitative scenarios"}
+      ]
+    },
+    {
+      "name": "standalone_qualitative_scenarios_pass_with_warning",
+      "prompt": "Run analyze-trajectory in standalone mode (no working/market-sizing.md sibling) on a synthetic industry where scenarios are qualitative — named swing variables but no dollar figures or CAGR percentages.",
+      "assertions": [
+        {"type": "warning_emitted", "script": "validate_trajectory.py", "string": "Scenario rigor limited"},
+        {"type": "validation_passes", "script": "validate_trajectory.py"}
+      ]
+    },
+    {
+      "name": "negative_trigger_company_moat_request",
+      "prompt": "Assess the moat of Abridge specifically — which of the 7 Powers do they have?",
+      "assertions": [
+        {"type": "skill_not_invoked", "skill": "analyze-trajectory"},
+        {"type": "skill_invoked_or_recommended", "skill": "assess-moat-sources"}
+      ]
+    }
+  ]
+}

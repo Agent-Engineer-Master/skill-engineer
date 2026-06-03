@@ -1,0 +1,34 @@
+{
+  "skill": "html-output",
+  "description": "Lightweight eval set — three cases covering happy path, edge case, and negative trigger. Subjective quality is not judged here; the skill is primarily a template + styling reference.",
+  "cases": [
+    {
+      "name": "happy_path_dashboard",
+      "prompt": "Render the True Norma store status as an HTML dashboard. Include 4 KPI tiles (revenue, orders, AOV, conversion) and a table of recent orders.",
+      "assertions": [
+        { "type": "file_exists", "pattern": "*.html" },
+        { "type": "contains", "value": "#1E3A2F" },
+        { "type": "contains", "value": "Space Grotesk" },
+        { "type": "contains", "value": "copyAsJSON" }
+      ]
+    },
+    {
+      "name": "edge_case_mermaid_diagram",
+      "prompt": "Build an HTML page showing the seo-review-loop as a flowchart with a sequence diagram beneath it.",
+      "assertions": [
+        { "type": "file_exists", "pattern": "*.html" },
+        { "type": "contains", "value": "pre class=\"mermaid\"" },
+        { "type": "contains", "value": "mermaid.initialize" },
+        { "type": "contains", "value": "#1E3A2F" }
+      ]
+    },
+    {
+      "name": "negative_trigger_chat_reply",
+      "prompt": "What time is it in Tokyo?",
+      "expected_behavior": "Skill should NOT activate. Claude answers in plain text.",
+      "assertions": [
+        { "type": "skill_not_invoked" }
+      ]
+    }
+  ]
+}

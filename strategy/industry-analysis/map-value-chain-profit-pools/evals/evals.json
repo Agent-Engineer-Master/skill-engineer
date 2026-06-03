@@ -1,0 +1,117 @@
+{
+  "skill": "map-value-chain-profit-pools",
+  "version": "1.2.0",
+  "cases": [
+    {
+      "name": "happy_path_absolute_ebit",
+      "prompt": "Run the map-value-chain-profit-pools skill on industrial-robotics-na.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/industrial-robotics-na/**/value-chain-profit-pools.md OR standalone/map-value-chain-profit-pools-*.md"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "EBIT|economic profit"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "\\$[0-9]+(\\.[0-9]+)?\\s*(B|M)"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "(switching costs|scale economies|network economies|cornered resource|process power|counter-positioning|branding)"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "(3[- ]year|5[- ]year|trailing|normali[sz]ed)"}
+      ]
+    },
+    {
+      "name": "rejects_revenue_margin_only",
+      "prompt": "Map the value chain and profit pools for an industry, but use revenue margin % instead of absolute EBIT.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_profit_pools.py"},
+        {"type": "error_contains", "string": "EBIT"}
+      ]
+    },
+    {
+      "name": "rejects_adds_value_protection",
+      "prompt": "Produce a value-chain-profit-pools output where the concentration stage's protection statement is 'because the integration stage adds the most value'.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_profit_pools.py"},
+        {"type": "error_contains", "string": "adds value"}
+      ]
+    },
+    {
+      "name": "rejects_differentiation_protection",
+      "prompt": "Produce a value-chain-profit-pools output where the protection statement is 'this stage is highly differentiated and captures most profit'.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_profit_pools.py"},
+        {"type": "error_contains", "string": "differentiation"}
+      ]
+    },
+    {
+      "name": "rejects_critical_protection",
+      "prompt": "Produce a value-chain-profit-pools output where the protection statement is 'the integration stage is mission-critical and captures most profit'.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_profit_pools.py"},
+        {"type": "error_contains", "string": "critical"}
+      ]
+    },
+    {
+      "name": "accepts_branding_as_protection",
+      "prompt": "Produce a value-chain-profit-pools output for specialty apparel where the brand stage captures the largest pool and the protection is 'branding'.",
+      "assertions": [
+        {"type": "validation_passes", "script": "validate_profit_pools.py"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "branding"}
+      ]
+    },
+    {
+      "name": "accepts_unstable_concentration_finding",
+      "prompt": "Produce a value-chain-profit-pools output for an industry where the concentration stage is NOT structurally protected — state this explicitly with the expected arbitrage entrant.",
+      "assertions": [
+        {"type": "validation_passes", "script": "validate_profit_pools.py"},
+        {"type": "regex_in_file", "path_pattern": "value-chain-profit-pools.md", "regex": "(not structurally protected|expect arbitrage)"}
+      ]
+    },
+    {
+      "name": "warns_on_flat_profit_pool",
+      "prompt": "Produce a value-chain-profit-pools output where every stage shows roughly equal EBIT (within 20%) without justification.",
+      "assertions": [
+        {"type": "warning_contains", "script": "validate_profit_pools.py", "string": "flat profit pool"}
+      ]
+    },
+    {
+      "name": "warns_on_false_precision",
+      "prompt": "Produce a value-chain-profit-pools output where stage EBITs are quoted to 2 decimal places ($1.94B etc.) with no range disclosure.",
+      "assertions": [
+        {"type": "warning_contains", "script": "validate_profit_pools.py", "string": "False-precision"}
+      ]
+    },
+    {
+      "name": "rejects_ebit_only_when_capital_intensity_varies_2x",
+      "prompt": "Produce a value-chain-profit-pools output for semiconductors where the table discloses capital employed per stage (fabless $25B, foundry $220B, test $8B, distribution $2B) but only EBIT is used as the profit metric (no economic-profit treatment).",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_profit_pools.py"},
+        {"type": "error_contains", "string": "exceeds 2"}
+      ]
+    },
+    {
+      "name": "accepts_ebit_when_capital_intensity_within_2x",
+      "prompt": "Produce a value-chain-profit-pools output for a services industry where capital employed is disclosed per stage and varies less than 2x across stages (e.g., $10B, $14B, $18B). EBIT-only treatment is acceptable.",
+      "assertions": [
+        {"type": "validation_passes", "script": "validate_profit_pools.py"}
+      ]
+    },
+    {
+      "name": "requires_next_skills_yaml_block",
+      "prompt": "Produce a value-chain-profit-pools output that omits the trailing `next_skills:` YAML block.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_profit_pools.py"},
+        {"type": "error_contains", "string": "next_skills"}
+      ]
+    },
+    {
+      "name": "negative_trigger_company_pnl",
+      "prompt": "Decompose Acme Robotics' P&L into segments.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "map-value-chain-profit-pools"}
+      ]
+    },
+    {
+      "name": "negative_trigger_customer_economics",
+      "prompt": "Analyse the customer cohort economics for our DTC brand.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "map-value-chain-profit-pools"}
+      ]
+    }
+  ]
+}

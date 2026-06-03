@@ -1,0 +1,117 @@
+{
+  "skill": "assess-moat-sources",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "name": "happy_path_all_seven_powers_assessed",
+      "prompt": "Run the assess-moat-sources skill on vertical-saas-construction-na with a 5-year horizon and roll-up archetype in scope.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/vertical-saas-construction-na/**/moat-sources.md OR standalone/assess-moat-sources-*.md"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "scale economies"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "network economies"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "counter[- ]positioning"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "switching costs"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "branding"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "cornered resource"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "process power"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "benefit\\s*:"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "barrier\\s*:"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "validation_passes", "script": "validate_moat.py"}
+      ]
+    },
+    {
+      "name": "rejects_first_mover_alone_as_power",
+      "prompt": "Produce a moat-sources output where the dominant Power is described as 'first-mover advantage' without pairing to a named Helmer Power.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "first-mover"}
+      ]
+    },
+    {
+      "name": "rejects_differentiation_as_power",
+      "prompt": "Produce a moat-sources output where 'differentiation' is named as the Power.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "differentiation"}
+      ]
+    },
+    {
+      "name": "rejects_operational_excellence_as_process_power",
+      "prompt": "Produce a moat-sources output that names 'operational excellence' as Process Power without a specific routine or compounding evidence.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "operational excellence"}
+      ]
+    },
+    {
+      "name": "rejects_missing_benefit_barrier",
+      "prompt": "Produce a moat-sources output that marks Switching Costs as present but omits either the benefit or barrier statement.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "benefit"}
+      ]
+    },
+    {
+      "name": "rejects_silently_omitted_powers",
+      "prompt": "Produce a moat-sources output that discusses only Scale Economies and Network Economies, omitting the other 5 Powers entirely.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "not assessed"}
+      ]
+    },
+    {
+      "name": "rejects_durability_without_erosion_vector",
+      "prompt": "Produce a moat-sources output where Switching Costs is rated 'long-duration durable' with no named erosion vector.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "erosion vector"}
+      ]
+    },
+    {
+      "name": "detects_cross_skill_mismatch_with_value_chain",
+      "prompt": "Run assess-moat-sources for an industry where working/value-chain-profit-pools.md names 'branding' as the structural protection for the highest-EBIT stage, but the moat analysis concludes 'switching costs' is the dominant Power. The output must contain a reconciliation section flagging MISMATCH for Gate 2.",
+      "assertions": [
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "MISMATCH"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "(cross[- ]reference|reconciliation)"}
+      ]
+    },
+    {
+      "name": "accepts_unstable_finding_no_power",
+      "prompt": "Produce a moat-sources output for a commodity industry where no Helmer Power is identifiable; state explicitly 'no Power identifiable'.",
+      "assertions": [
+        {"type": "validation_passes", "script": "validate_moat.py"},
+        {"type": "regex_in_file", "path_pattern": "moat-sources.md", "regex": "(no Power identifiable|not structurally protected)"}
+      ]
+    },
+    {
+      "name": "requires_next_skills_yaml",
+      "prompt": "Produce a moat-sources output that omits the trailing next_skills YAML block.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_moat.py"},
+        {"type": "error_contains", "string": "next_skills"}
+      ]
+    },
+    {
+      "name": "warns_when_ai_not_addressed",
+      "prompt": "Produce a moat-sources output that does not mention AI's effect on any present Power.",
+      "assertions": [
+        {"type": "warning_contains", "script": "validate_moat.py", "string": "AI"}
+      ]
+    },
+    {
+      "name": "negative_trigger_single_company_moat",
+      "prompt": "Assess Acme Robotics' company-specific competitive moat.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "assess-moat-sources"}
+      ]
+    },
+    {
+      "name": "negative_trigger_customer_lock_in_only",
+      "prompt": "Analyse customer lock-in for our DTC subscription product.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "assess-moat-sources"}
+      ]
+    }
+  ]
+}

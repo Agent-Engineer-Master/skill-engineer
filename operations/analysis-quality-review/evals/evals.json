@@ -1,0 +1,84 @@
+{
+  "skill": "analysis-quality-review",
+  "version": "0.2",
+  "notes": "Eval cases test the protocol's routing, gating, and load-bearing safety behaviour. The skill is review-only; the calling skill applies fixes from references/fix-patterns.md and re-invokes. Subjective dimension quality is tested via the per-pass rubrics — see references/rubric-structure.md and references/rubric-readability.md.",
+  "cases": [
+    {
+      "id": "happy-path-pass1-pass2-each-pass-graded",
+      "description": "A structurally sound brief with readability issues should return VERDICT: PASS on a Pass 1 invocation, and VERDICT: FAIL on the first Pass 2 invocation (with readability violations listed in the report).",
+      "prompt": "Invoke analysis-quality-review on .claude/skills/analysis-quality-review/assets/fixtures/brief-good-structure-bad-prose.md with pass=1, doc_type=brief, strictness=standard, manifest declared inline. Then re-invoke with pass=2 and the same audit_dir.",
+      "assertions": [
+        {"type": "file_exists", "path": "tasks/analysis-quality-review/*/load_bearing_index.yaml"},
+        {"type": "file_exists", "path": "tasks/analysis-quality-review/*/p1-iter1-report.md"},
+        {"type": "file_exists", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md"},
+        {"type": "final_message_contains", "value": "PASS: 1"},
+        {"type": "final_message_contains", "value": "VERDICT: PASS"},
+        {"type": "final_message_contains", "value": "FIX_PATTERNS_PATH"}
+      ]
+    },
+    {
+      "id": "structure-fails-blocks-pass-2-invocation",
+      "description": "A document with no governing observation should return VERDICT: FAIL on Pass 1. A subsequent Pass 2 invocation against the same audit_dir must BLOCK because Pass 1 has not cleared.",
+      "prompt": "Invoke analysis-quality-review on .claude/skills/analysis-quality-review/assets/fixtures/brief-no-thesis.md with pass=1, doc_type=brief, strictness=standard. Then attempt Pass 2 against the same audit_dir without fixing the document.",
+      "assertions": [
+        {"type": "final_message_contains", "value": "PASS: 1"},
+        {"type": "final_message_contains", "value": "VERDICT: FAIL"},
+        {"type": "final_message_contains_on_second_invocation", "value": "VERDICT: BLOCKED"},
+        {"type": "file_not_exists", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md"}
+      ]
+    },
+    {
+      "id": "load-bearing-code-preservation-note-emitted",
+      "description": "At strictness=high, a D5 violation on a load-bearing code (SECRET-02) in narrative prose must be flagged with preservation_note and suggested_fix_shape — the calling skill needs these to apply the canonical fix from fix-patterns.md without renaming the code locally.",
+      "prompt": "Invoke analysis-quality-review on .claude/skills/analysis-quality-review/assets/fixtures/brief-with-codes.md with pass=2, doc_type=brief, strictness=high, manifest declaring concept_ids pattern. (Pass 1 must have cleared first; the fixture should be structurally sound.)",
+      "assertions": [
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md", "value": "preservation_note"},
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md", "value": "suggested_fix_shape"},
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md", "value": "SECRET-02"}
+      ]
+    },
+    {
+      "id": "previous-violations-feedback-grades-fixes",
+      "description": "When the calling skill re-invokes with previous_violations pointing at a prior report, the reviewer must grade each prior violation as RESOLVED, RE-ISSUED, or ACCEPTED-WITH-DEFER in the new report.",
+      "prompt": "Run Pass 1 on a brief, capture the report path, simulate a calling skill applying a subset of fixes, then re-invoke Pass 1 with previous_violations set to the prior report.",
+      "assertions": [
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p1-iter2-report.md", "value": "previous_violations_resolution"},
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p1-iter2-report.md", "value": "RESOLVED"}
+      ]
+    },
+    {
+      "id": "negative-trigger-short-chat-reply",
+      "description": "Negative trigger: a 150-word chat reply should not invoke the full protocol.",
+      "prompt": "Invoke analysis-quality-review on a 150-word inline note with pass=1.",
+      "assertions": [
+        {"type": "final_message_contains", "value": "VERDICT: SKIPPED"}
+      ]
+    },
+    {
+      "id": "negative-trigger-yaml-config",
+      "description": "Negative trigger: a YAML config file should refuse with BLOCKED (binary or non-prose document type).",
+      "prompt": "Invoke analysis-quality-review on 12-operations/harness/registry/skill-registry.yaml with pass=1, doc_type=brief.",
+      "assertions": [
+        {"type": "final_message_contains", "value": "VERDICT: BLOCKED"}
+      ]
+    },
+    {
+      "id": "missing-manifest-at-high-strictness-blocks",
+      "description": "At strictness=high, missing supporting_artifacts manifest must BLOCK pre-flight.",
+      "prompt": "Invoke analysis-quality-review on a brief with pass=1, strictness=high but no supporting_artifacts field.",
+      "assertions": [
+        {"type": "final_message_contains", "value": "VERDICT: BLOCKED"},
+        {"type": "final_message_contains", "value": "manifest"}
+      ]
+    },
+    {
+      "id": "wiki-page-noun-headings-not-flagged",
+      "description": "Wiki pages use noun-label headings by convention; D1 (readability) should mark N/A.",
+      "prompt": "Invoke analysis-quality-review on 08-knowledge/wiki/concepts/skill-engineering.md with pass=2, doc_type=wiki, strictness=standard.",
+      "assertions": [
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md", "value": "D1"},
+        {"type": "file_contains", "path": "tasks/analysis-quality-review/*/p2-iter1-report.md", "value": "N/A"}
+      ]
+    }
+  ]
+}

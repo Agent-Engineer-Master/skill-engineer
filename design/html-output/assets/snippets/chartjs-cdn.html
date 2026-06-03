@@ -1,0 +1,35 @@
+<!-- Chart.js CDN — paste in <head>. Brand-tokened palette + defaults below. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  // Brand defaults — applied globally so individual charts don't need to repeat them.
+  Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+  Chart.defaults.color = '#4A5568';
+  Chart.defaults.borderColor = 'rgba(74, 85, 104, 0.15)';
+
+  // Reusable palette
+  window.BRAND = {
+    primary:   '#1E3A2F',
+    primaryDim:'rgba(30, 58, 47, 0.15)',
+    accent:    '#E8A838',
+    accentDim: 'rgba(232, 168, 56, 0.2)',
+    tan:       '#E0D8C8',
+    slate:     '#4A5568',
+    palette:   ['#1E3A2F', '#E8A838', '#E0D8C8', '#4A5568', '#739E8E', '#A47F3A']
+  };
+</script>
+
+<!-- Example usage inside <body>:
+
+<canvas id="myChart" height="120"></canvas>
+<script>
+  new Chart(document.getElementById('myChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+      datasets: [{ label: 'Revenue', data: [12, 19, 14, 22], backgroundColor: BRAND.primary }]
+    },
+    options: { plugins: { legend: { display: false } } }
+  });
+</script>
+
+-->

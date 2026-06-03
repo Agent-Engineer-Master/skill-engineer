@@ -1,0 +1,48 @@
+{
+  "skill": "analyze-industry",
+  "version": "1.1.0",
+  "cases": [
+    {
+      "name": "happy_path_quick_mode",
+      "prompt": "Run the analyze-industry skill on industrial-robotics-na in Quick mode. Scope question: is this industry structurally attractive for a sponsor-backed roll-up over a 5-year hold?",
+      "assertions": [
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/industry-brief.html"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/industry-brief.yaml"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/signals-log.md"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/bar-test.md"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/working/industry-brief-draft.md"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/working/market-sizing.md"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/working/five-forces.md"},
+        {"type": "file_exists", "path": "08-knowledge/world-model/industries/industrial-robotics-na/working/value-chain-profit-pools.md"},
+        {"type": "string_in_file", "path": "08-knowledge/world-model/industries/industrial-robotics-na/industry-brief.html", "string": "Situation"},
+        {"type": "string_in_file", "path": "08-knowledge/world-model/industries/industrial-robotics-na/industry-brief.html", "string": "Where to Play"}
+      ]
+    },
+    {
+      "name": "scqa_opening_required",
+      "prompt": "Run analyze-industry on off-price-specialty-apparel-us. Scope: is this attractive for a DTC entrant?",
+      "assertions": [
+        {"type": "string_in_file", "path": "08-knowledge/world-model/industries/off-price-specialty-apparel-us/industry-brief.html", "string": "Situation"},
+        {"type": "string_in_file", "path": "08-knowledge/world-model/industries/off-price-specialty-apparel-us/industry-brief.html", "string": "Complication"},
+        {"type": "string_in_file", "path": "08-knowledge/world-model/industries/off-price-specialty-apparel-us/industry-brief.html", "string": "Question"},
+        {"type": "string_in_file", "path": "08-knowledge/world-model/industries/off-price-specialty-apparel-us/industry-brief.html", "string": "Answer"}
+      ]
+    },
+    {
+      "name": "negative_trigger_single_company",
+      "prompt": "Build a company model for Acme Robotics Inc.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "analyze-industry"},
+        {"type": "should_route_to", "skill": "build-company-model"}
+      ]
+    },
+    {
+      "name": "negative_trigger_dtc_category",
+      "prompt": "Is the pet wellness category viable for a DTC dropshipping store?",
+      "assertions": [
+        {"type": "not_invoked", "skill": "analyze-industry"},
+        {"type": "should_route_to", "skill": "assess-category"}
+      ]
+    }
+  ]
+}

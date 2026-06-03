@@ -1,0 +1,42 @@
+<!-- Drop this as the last element inside <body>. Requires no libraries. -->
+<footer class="no-print" style="margin-top: var(--s-6); padding-top: var(--s-4); border-top: 1px solid var(--brand-rule); display: flex; gap: var(--s-2); justify-content: flex-end; align-items: center;">
+  <span style="font-size: 0.75rem; color: var(--brand-text); margin-right: auto; font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.08em;">Export</span>
+  <button class="btn" onclick="copyAsJSON()">Copy JSON</button>
+  <button class="btn" onclick="copyAsMarkdown()">Copy Markdown</button>
+  <button class="btn" onclick="window.print()">Print / PDF</button>
+</footer>
+
+<!-- Data block — populate with the structured payload that backs this artifact -->
+<script type="application/json" id="artifact-data">
+{
+  "title": "REPLACE",
+  "generated_at": "REPLACE",
+  "data": {}
+}
+</script>
+
+<script>
+  function copyAsJSON() {
+    const data = document.getElementById('artifact-data').textContent.trim();
+    navigator.clipboard.writeText(data).then(() => flash(event.target, 'Copied'));
+  }
+  function copyAsMarkdown() {
+    // Walk the document and produce a markdown approximation.
+    const md = [];
+    document.querySelectorAll('h1, h2, h3, p, li, th, td').forEach(el => {
+      const t = el.innerText.trim();
+      if (!t) return;
+      if (el.tagName === 'H1') md.push('# ' + t);
+      else if (el.tagName === 'H2') md.push('\n## ' + t);
+      else if (el.tagName === 'H3') md.push('\n### ' + t);
+      else if (el.tagName === 'LI') md.push('- ' + t);
+      else md.push(t);
+    });
+    navigator.clipboard.writeText(md.join('\n')).then(() => flash(event.target, 'Copied'));
+  }
+  function flash(btn, msg) {
+    const orig = btn.textContent;
+    btn.textContent = msg;
+    setTimeout(() => { btn.textContent = orig; }, 1200);
+  }
+</script>

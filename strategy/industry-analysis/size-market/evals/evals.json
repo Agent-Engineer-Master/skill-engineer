@@ -1,0 +1,119 @@
+{
+  "skill": "size-market",
+  "version": "1.2.0",
+  "cases": [
+    {
+      "name": "happy_path_with_g3_decomposition",
+      "prompt": "Run the size-market skill on industrial-robotics-na. Geography: North America. Horizon: current + 5yr. Mode: deep.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/industrial-robotics-na/**/market-sizing.md OR standalone/size-market-*.md"},
+        {"type": "string_in_file", "path_pattern": "market-sizing.md", "string": "de-averaging"},
+        {"type": "regex_in_file", "path_pattern": "market-sizing.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "regex_in_file", "path_pattern": "market-sizing.md", "regex": "(Arena|Pre-arena|Mature|Contested mature|Declining)"},
+        {"type": "min_count_in_file", "path_pattern": "market-sizing.md", "pattern": "sub-segment", "min": 3},
+        {"type": "string_in_file", "path_pattern": "market-sizing.md", "string": "triangulation"},
+        {"type": "regex_in_file", "path_pattern": "market-sizing.md", "regex": "(USD|base currency)"}
+      ]
+    },
+    {
+      "name": "rejects_single_rate_sizing",
+      "prompt": "Size the industrial robotics NA market but skip sub-segment decomposition.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "sub-segment"}
+      ]
+    },
+    {
+      "name": "rejects_tam_sam_som_ordering_violation",
+      "prompt": "Size SaaS observability with TAM $50B, SAM $80B (wrong ordering), SOM $5B.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "ordering violation"}
+      ]
+    },
+    {
+      "name": "rejects_llm_aggregator_only_citation",
+      "prompt": "Size GLP-1 obesity drugs US with figures sourced from Perplexity without underlying source.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "LLM-aggregator"}
+      ]
+    },
+    {
+      "name": "rejects_stale_sources",
+      "prompt": "Size industrial robotics using only 2021 IFR data, no recency justification.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "Stale source"}
+      ]
+    },
+    {
+      "name": "rejects_vague_provenance",
+      "prompt": "Size US cybersecurity market with tags '[V: industry report]' only.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "Malformed provenance"}
+      ]
+    },
+    {
+      "name": "rejects_missing_arenas_classification",
+      "prompt": "Size US payments market with G3 decomposition but skip the arenas screen.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "arenas classification"}
+      ]
+    },
+    {
+      "name": "rejects_arena_with_fewer_than_seven_subsegments",
+      "prompt": "Size humanoid-robotics-global (classified as Arena) with only 5 G3 sub-segments.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "Arena-classified market requires >=7"}
+      ]
+    },
+    {
+      "name": "rejects_saas_market_missing_value_theory",
+      "prompt": "Size US observability software market with top-down and customers x spend bottom-up only — no value-theory leg.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "value-theory"}
+      ]
+    },
+    {
+      "name": "passes_non_saas_without_value_theory",
+      "prompt": "Size industrial-robotics-na (hardware) with volume x price and customers x spend triangulation only (no value-theory leg).",
+      "assertions": [
+        {"type": "validation_passes", "script": "validate_sizing.py"}
+      ]
+    },
+    {
+      "name": "rejects_missing_next_skills_block",
+      "prompt": "Size US cybersecurity market without appending a trailing next_skills YAML block.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_sizing.py"},
+        {"type": "error_contains", "string": "next_skills"}
+      ]
+    },
+    {
+      "name": "negative_trigger_single_company",
+      "prompt": "What is Acme Robotics' revenue forecast for 2027?",
+      "assertions": [
+        {"type": "not_invoked", "skill": "size-market"}
+      ]
+    },
+    {
+      "name": "negative_trigger_customer_segment",
+      "prompt": "Analyze the buyer-persona demand profile for our enterprise CISO segment.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "size-market"}
+      ]
+    },
+    {
+      "name": "negative_trigger_competitive_share",
+      "prompt": "What is the competitive share dynamic between Fortinet, Palo Alto and CrowdStrike?",
+      "assertions": [
+        {"type": "not_invoked", "skill": "size-market"}
+      ]
+    }
+  ]
+}

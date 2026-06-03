@@ -1,0 +1,108 @@
+{
+  "skill": "map-five-forces",
+  "version": "3.0.0",
+  "cases": [
+    {
+      "name": "happy_path_governing_force_named",
+      "prompt": "Run the map-five-forces skill on industrial-robotics-na, focal layer: OEM.",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "08-knowledge/world-model/industries/industrial-robotics-na/**/five-forces.md OR standalone/map-five-forces-*.md"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "governing force"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "Complementors"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "AI"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "Focal layer"},
+        {"type": "regex_in_file", "path_pattern": "five-forces.md", "regex": "\\[(V|C|A|I):"},
+        {"type": "regex_in_file", "path_pattern": "five-forces.md", "regex": "(?i)Direction[:\\s]+.*(intensifying|stable|weakening|↑|↔|↓)"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "Reshape"}
+      ]
+    },
+    {
+      "name": "rejects_universal_moderate",
+      "prompt": "Run map-five-forces on a generic industry where every force is moderate.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "governing force"}
+      ]
+    },
+    {
+      "name": "rejects_missing_direction_of_travel",
+      "prompt": "Run map-five-forces on a synthetic industry where every force has an intensity rating but no direction-of-travel arrow.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "direction-of-travel"}
+      ]
+    },
+    {
+      "name": "rejects_missing_focal_layer",
+      "prompt": "Run map-five-forces on 'the semiconductor industry' without specifying focal layer.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "focal-layer"}
+      ]
+    },
+    {
+      "name": "rejects_missing_ai_reshape_matrix",
+      "prompt": "Run map-five-forces on a synthetic industry where the AI section is present (with all three sub-checks) but the cross-cutting AI reshape matrix is omitted.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "reshape"}
+      ]
+    },
+    {
+      "name": "platform_industry_complementors_govern",
+      "prompt": "Run map-five-forces on us-ambient-scribe-medtech, focal layer: vendor (e.g., Abridge/Suki).",
+      "assertions": [
+        {"type": "file_exists", "path_pattern": "**/five-forces.md"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "Complementors"},
+        {"type": "string_in_file", "path_pattern": "five-forces.md", "string": "EHR"},
+        {"type": "regex_in_file", "path_pattern": "five-forces.md", "regex": "(?i)(boundary|keystone)"}
+      ]
+    },
+    {
+      "name": "warns_all_stable_trajectory",
+      "prompt": "Run map-five-forces on a mature commodity industry; ensure every direction-of-travel arrow says 'stable'.",
+      "assertions": [
+        {"type": "warning_emitted", "script": "validate_forces.py", "string": "All-stable"}
+      ]
+    },
+    {
+      "name": "negative_trigger_company_positioning",
+      "prompt": "How should Acme Robotics position itself competitively?",
+      "assertions": [
+        {"type": "not_invoked", "skill": "map-five-forces"}
+      ]
+    },
+    {
+      "name": "negative_trigger_moat_assessment",
+      "prompt": "Assess Nvidia's moat in AI accelerators.",
+      "assertions": [
+        {"type": "not_invoked", "skill": "map-five-forces"},
+        {"type": "expected_skill", "skill": "assess-moat-sources"}
+      ]
+    },
+    {
+      "name": "rejects_missing_heatmap",
+      "prompt": "Run map-five-forces on a synthetic industry; produce a full analysis with all forces, governing-force sentence, focal layer, AI section, and reshape matrix — but omit the at-a-glance heatmap table at the top.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "heatmap"}
+      ]
+    },
+    {
+      "name": "rejects_missing_inline_ai_reshape",
+      "prompt": "Run map-five-forces on a synthetic industry; include the standalone AI section and the consolidated reshape matrix at the end, but DO NOT mention AI inside any of the five classical force sections.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "inline AI-reshape commentary"}
+      ]
+    },
+    {
+      "name": "rejects_missing_next_skills_block",
+      "prompt": "Run map-five-forces on a synthetic industry; produce a full passing analysis but omit the structured next_skills YAML block at the end of the file.",
+      "assertions": [
+        {"type": "validation_fails", "script": "validate_forces.py"},
+        {"type": "error_contains", "string": "next_skills"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Data explainer</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<!-- PASTE chartjs-cdn.html snippet here -->
+
+<style>
+  .hero-number {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 8rem);
+    font-weight: 700;
+    color: var(--brand-primary);
+    line-height: 0.9;
+    margin: var(--s-4) 0 var(--s-3);
+  }
+  .hero-number .unit { color: var(--brand-accent); font-size: 0.5em; vertical-align: top; margin-left: 0.2em; }
+  .lede { font-family: var(--font-display); font-size: 1.5rem; color: var(--brand-primary); margin-bottom: var(--s-5); max-width: 700px; }
+
+  .chart-frame {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-rule);
+    border-radius: var(--radius-md);
+    padding: var(--s-4);
+    margin: var(--s-4) 0 var(--s-5);
+  }
+
+  .narrative { max-width: 700px; }
+  .footnote { font-size: 0.75rem; color: var(--brand-text); margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--brand-rule); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="eyebrow">{{EYEBROW}}</div>
+
+  <div class="hero-number">{{HERO_NUMBER}}<span class="unit">{{UNIT}}</span></div>
+
+  <p class="lede">{{LEDE}}</p>
+
+  <div class="chart-frame">
+    <canvas id="mainChart" height="120"></canvas>
+  </div>
+
+  <div class="narrative">
+    <p>{{PARA_1}}</p>
+    <p>{{PARA_2}}</p>
+    <p>{{PARA_3}}</p>
+  </div>
+
+  <div class="footnote">
+    <strong>Methodology:</strong> {{METHODOLOGY}}<br>
+    <strong>Source:</strong> {{SOURCE}}
+  </div>
+
+  <script>
+    new Chart(document.getElementById('mainChart'), {
+      type: 'bar',
+      data: {
+        labels: ['{{L1}}', '{{L2}}', '{{L3}}', '{{L4}}', '{{L5}}'],
+        datasets: [{
+          label: '{{SERIES_LABEL}}',
+          data: [12, 19, 14, 22, 27],
+          backgroundColor: BRAND.primary,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+
+  <!-- PASTE export-footer.html snippet here -->
+
+</div>
+</body>
+</html>

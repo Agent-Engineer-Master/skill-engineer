@@ -1,0 +1,127 @@
+{
+  "skill": "reimagine-industry",
+  "version": "1.0",
+  "description": "Evaluation cases for the reimagine-industry skill. Each case includes a prompt, setup conditions, and verifiable assertions. Subjective output cases reference rubric.md and judge.md for AI-graded quality.",
+  "cases": [
+    {
+      "id": "happy-path-with-inherited-inputs",
+      "description": "Industry brief and sub-skill working/ files already exist; skill should inherit and not dispatch librarian for Phases 1-2.",
+      "prompt": "Run the reimagine-industry skill on the dtc-ecommerce-us industry. The analyze-industry skill has already produced outputs in 08-knowledge/world-model/industries/dtc-ecommerce-us/.",
+      "setup": {
+        "create_files": [
+          "08-knowledge/world-model/industries/dtc-ecommerce-us/industry-brief.yaml",
+          "08-knowledge/world-model/industries/dtc-ecommerce-us/working/value-chain-profit-pools.md",
+          "08-knowledge/world-model/industries/dtc-ecommerce-us/working/demand.md",
+          "08-knowledge/world-model/industries/dtc-ecommerce-us/working/trajectory.md"
+        ]
+      },
+      "assertions": [
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/dtc-ecommerce-us/disruption-dataset.yaml"
+        },
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/dtc-ecommerce-us/venture-concepts.md"
+        },
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/dtc-ecommerce-us/reimagination-brief.md"
+        },
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/dtc-ecommerce-us/bar-test.md"
+        },
+        {
+          "type": "file_contains",
+          "path": "08-knowledge/world-model/industries/dtc-ecommerce-us/venture-concepts.md",
+          "substring": "Stress Test"
+        },
+        {
+          "type": "exit_code",
+          "command": "python .claude/skill-library/industry-analysis/reimagine-industry/scripts/validate_dataset.py --slug dtc-ecommerce-us --phase 6",
+          "expected": 0
+        },
+        {
+          "type": "judge_rubric",
+          "rubric_path": ".claude/skill-library/industry-analysis/reimagine-industry/evals/rubric.md",
+          "min_overall": 2.2
+        }
+      ]
+    },
+    {
+      "id": "cold-start-no-inherited-data",
+      "description": "Industry with no inherited inputs; skill must dispatch librarian for Phases 1-3.",
+      "prompt": "Run the reimagine-industry skill on the regional-banking-us industry. No analyze-industry outputs exist; you have no primary data.",
+      "setup": {
+        "create_files": []
+      },
+      "assertions": [
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/regional-banking-us/working/librarian-brief-pain.md"
+        },
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/regional-banking-us/working/librarian-brief-enabling-conditions.md"
+        },
+        {
+          "type": "file_exists",
+          "path": "08-knowledge/world-model/industries/regional-banking-us/disruption-dataset.yaml"
+        },
+        {
+          "type": "file_contains",
+          "path": "08-knowledge/world-model/industries/regional-banking-us/working/librarian-brief-pain.md",
+          "substring": "value chain"
+        },
+        {
+          "type": "exit_code",
+          "command": "python .claude/skill-library/industry-analysis/reimagine-industry/scripts/validate_dataset.py --slug regional-banking-us --phase 2",
+          "expected": 0
+        }
+      ]
+    },
+    {
+      "id": "negative-trigger-single-company",
+      "description": "Skill should NOT activate for single-company analysis requests.",
+      "prompt": "Analyze the business of Acme Corp.",
+      "assertions": [
+        {
+          "type": "skill_did_not_activate",
+          "skill": "reimagine-industry"
+        }
+      ]
+    },
+    {
+      "id": "negative-trigger-structural-diagnosis",
+      "description": "Skill should NOT activate for structural industry diagnosis (that's analyze-industry).",
+      "prompt": "Is the industrial robotics industry structurally attractive for a PE roll-up?",
+      "assertions": [
+        {
+          "type": "skill_did_not_activate",
+          "skill": "reimagine-industry"
+        }
+      ]
+    },
+    {
+      "id": "validation-blocks-incomplete-phase",
+      "description": "Validation script should block proceeding past Phase 2 if pain audit is incomplete.",
+      "prompt": "Run validate_dataset.py on an industry where Phase 2 has customers only (no other entity types).",
+      "setup": {
+        "create_files": [
+          "08-knowledge/world-model/industries/test-incomplete/disruption-dataset.yaml"
+        ],
+        "file_contents": {
+          "08-knowledge/world-model/industries/test-incomplete/disruption-dataset.yaml": "value_chain_pain:\n  customers:\n    - segment_id: foo\n      pain_points:\n        - activity: bar\n          intensity: 8\n          frequency: 8\n"
+        }
+      },
+      "assertions": [
+        {
+          "type": "exit_code",
+          "command": "python .claude/skill-library/industry-analysis/reimagine-industry/scripts/validate_dataset.py --slug test-incomplete --phase 2",
+          "expected": 1
+        }
+      ]
+    }
+  ]
+}

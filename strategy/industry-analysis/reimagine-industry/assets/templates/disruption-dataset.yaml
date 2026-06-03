@@ -1,0 +1,69 @@
+# disruption-dataset.yaml — populated by reimagine-industry skill
+# Schema: v1.0 (see skill's references/dataset-schema.yaml)
+
+schema_version: "1.0"
+
+# ===== PHASE 1: INDUSTRY DECONSTRUCTION =====
+
+industry:
+  name: ""
+  slug: ""
+  definition: ""
+  total_market_size:
+    value: ""
+    tag: ""
+  growth_rate:
+    value: ""
+    tag: ""
+  geography: ""
+
+value_chain:
+  nodes: []
+  flows: []
+
+market_structure:
+  fragmentation: ""
+  top_3_share:
+    value: 0
+    tag: ""
+  distribution_channels: []
+  information_asymmetries: []
+
+# ===== PHASE 2: VALUE CHAIN PAIN AUDIT =====
+
+value_chain_pain:
+  customers: []
+  suppliers: []
+  intermediaries: []
+  adjacent_players: []
+
+# ===== PHASE 3: ENABLING CONDITIONS SCAN =====
+
+enabling_conditions:
+  technology_unlocks: []
+  cost_curves: []
+  behavioral_shifts: []
+  regulatory: []
+  supply_side: []
+  intersections: []
+  why_now_paragraph: ""
+
+# ===== PHASE 4: FRAMEWORK SIGNALS =====
+
+incumbents: []
+framework_signals: []
+
+# ===== PHASE 5-6: VENTURE CONCEPTS =====
+
+venture_concepts: []
+
+# ===== METADATA =====
+
+metadata:
+  industry_slug: ""
+  scope_question: ""
+  created: ""
+  last_phase_completed: 0
+  gate_approvals: []
+  inherited_inputs: []
+  librarian_dispatches: []

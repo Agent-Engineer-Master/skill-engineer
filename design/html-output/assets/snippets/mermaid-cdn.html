@@ -1,0 +1,32 @@
+<!-- Mermaid CDN — paste in <head> after the brand-tokens <style> block. -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#1E3A2F',
+      primaryTextColor: '#F4F1EB',
+      primaryBorderColor: '#1E3A2F',
+      lineColor: '#4A5568',
+      secondaryColor: '#E0D8C8',
+      tertiaryColor: '#E8A838',
+      background: '#F4F1EB',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', padding: 16 },
+    sequence: { actorMargin: 50, messageMargin: 35 }
+  });
+</script>
+
+<!-- Diagram blocks use <pre class="mermaid">, NOT <code>:
+
+<pre class="mermaid">
+flowchart TD
+  A[Start] --> B{Decision}
+  B -->|Yes| C[Path 1]
+  B -->|No| D[Path 2]
+</pre>
+
+-->

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Dashboard</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<style>
+  .hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--s-5);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--brand-rule);
+  }
+  .hero h1 { margin: 0; }
+  .hero .meta { color: var(--brand-text); font-size: 0.875rem; }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--s-3);
+    margin-bottom: var(--s-5);
+  }
+  .kpi {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-rule);
+    border-radius: var(--radius-md);
+    padding: var(--s-4);
+  }
+  .kpi__label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-text); margin-bottom: var(--s-2); }
+  .kpi__value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--brand-primary); line-height: 1; }
+  .kpi__delta { font-size: 0.875rem; margin-top: var(--s-2); }
+  .kpi__delta--up   { color: #2F7D5B; }
+  .kpi__delta--down { color: #B5482E; }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--s-4);
+    margin-bottom: var(--s-5);
+  }
+  @media (max-width: 800px) {
+    .panel-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">{{EYEBROW}}</div>
+      <h1>{{TITLE}}</h1>
+    </div>
+    <div class="meta">As of {{DATE}} · <span class="pill pill--accent">{{STATUS}}</span></div>
+  </header>
+
+  <section class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi__label">{{KPI_1_LABEL}}</div>
+      <div class="kpi__value">{{KPI_1_VALUE}}</div>
+      <div class="kpi__delta kpi__delta--up">▲ {{KPI_1_DELTA}}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">{{KPI_2_LABEL}}</div>
+      <div class="kpi__value">{{KPI_2_VALUE}}</div>
+      <div class="kpi__delta kpi__delta--down">▼ {{KPI_2_DELTA}}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">{{KPI_3_LABEL}}</div>
+      <div class="kpi__value">{{KPI_3_VALUE}}</div>
+      <div class="kpi__delta">— {{KPI_3_DELTA}}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">{{KPI_4_LABEL}}</div>
+      <div class="kpi__value">{{KPI_4_VALUE}}</div>
+      <div class="kpi__delta kpi__delta--up">▲ {{KPI_4_DELTA}}</div>
+    </div>
+  </section>
+
+  <section class="panel-grid">
+    <div class="card">
+      <h3>{{PANEL_1_TITLE}}</h3>
+      <!-- Chart, table, or content -->
+      {{PANEL_1_CONTENT}}
+    </div>
+    <div class="card card--tan">
+      <h3>{{PANEL_2_TITLE}}</h3>
+      {{PANEL_2_CONTENT}}
+    </div>
+  </section>
+
+  <section class="card" style="margin-bottom: var(--s-5);">
+    <h3>{{TABLE_TITLE}}</h3>
+    <table>
+      <thead>
+        <tr><th>{{COL_1}}</th><th>{{COL_2}}</th><th>{{COL_3}}</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>{{ROW_1_A}}</td><td>{{ROW_1_B}}</td><td>{{ROW_1_C}}</td><td><span class="pill">On track</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PASTE export-footer.html snippet here -->
+
+</div>
+</body>
+</html>

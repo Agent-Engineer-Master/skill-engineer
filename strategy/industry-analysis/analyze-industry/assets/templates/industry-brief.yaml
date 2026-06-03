@@ -1,0 +1,64 @@
+---
+industry_slug: ""
+date_analyzed: ""
+mode: ""               # quick | deep
+analyst: claude-analyze-industry
+brief_path: ""
+
+scope_question: ""
+
+market_definition:
+  sub_sector: ""
+  geography: ""
+  customer_segment: ""
+  size_band: ""        # optional
+  framing_chosen: ""   # broad | sharpened | surgical
+
+strategic_environment: ""    # Classical | Adaptive | Visionary | Shaping | Renewal
+environment_reasoning: ""
+
+sizing:
+  tam_usd_b: null
+  sam_usd_b: null
+  som_usd_b: null
+  cagr_pct: null
+  cagr_years: ""
+  arena_classification: ""    # Arena | Pre-arena | Mature | Declining
+  sub_segments: []
+  # - name: ""
+  #   size_usd_b: 0
+  #   cagr_pct: 0
+  #   source_tag: ""
+
+five_forces:
+  governing_force: ""
+  governing_force_sentence: ""
+  rivalry: ""                  # low | moderate | high
+  supplier_power: ""
+  buyer_power: ""
+  threat_new_entry: ""
+  threat_substitutes: ""
+  complementors: ""
+  ai_as_force:
+    cost_structure_impact: ""   # low | moderate | high
+    new_entry_vector: ""        # present | absent
+    data_intermediary_position: ""  # contested | concentrated | none
+
+profit_pools:
+  total_industry_ebit_usd_b: null
+  concentration_stage: ""
+  structural_protection: ""    # switching_costs | scale_economies | network_economies | regulatory_barrier | cornered_resource | process_power | counter_positioning | none
+  stages: []
+  # - name: ""
+  #   ebit_usd_b: 0
+  #   ebit_share_pct: 0
+
+where_to_play: ""
+how_to_win: ""
+verdict: ""                     # attractive | conditionally_attractive | unattractive
+verdict_one_line: ""
+
+bar_test_passed: false
+bar_test_path: ""
+provenance_tag_coverage_pct: 0
+---

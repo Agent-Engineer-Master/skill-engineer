@@ -1,0 +1,256 @@
+# disruption-dataset.yaml schema — v1.0
+#
+# Authoritative schema for the reimagine-industry skill's structured dataset.
+# Every field marked `required: true` must be populated before the Phase validation gate
+# at which it's introduced. Provenance tags (V/C/A/I) per ../_shared/provenance-tagging.md.
+
+schema_version: "1.0"
+
+# ===== PHASE 1: INDUSTRY DECONSTRUCTION =====
+
+industry:
+  name: string                              # required, human-readable
+  slug: string                              # required, lowercase-hyphens
+  definition: string                        # required, what's in scope and what's not
+  total_market_size:
+    value: string                           # required, with currency and year
+    tag: string                             # required, V/C/A/I with source
+  growth_rate:
+    value: string                           # required, % with timeframe
+    tag: string                             # required
+  geography: string                         # required
+
+value_chain:
+  nodes:                                    # required, ≥3 nodes
+    - id: string                            # required, slug
+      name: string                          # required
+      type: enum                            # required: supplier | manufacturer | distributor | platform | retailer | intermediary | customer | regulator | complementor
+      description: string                   # required
+      margin_range:                         # required for non-customer nodes
+        low: number                         # % EBIT or gross margin
+        high: number
+        basis: enum                         # ebit | gross | revenue-share
+        tag: string                         # V/C/A/I
+      player_examples:                      # required, ≥2
+        - string
+      customer_relationship_owner: boolean  # required, does this node own the end-customer relationship?
+      data_owner: boolean                   # required, does this node own load-bearing data?
+  flows:                                    # required, ≥N-1 flows for N nodes
+    - from: node_id
+      to: node_id
+      type: enum                            # money | goods | information | relationship
+      friction_level: enum                  # low | medium | high
+      notes: string
+
+market_structure:
+  fragmentation: enum                       # required: highly_fragmented | fragmented | consolidated | oligopoly | monopoly
+  top_3_share:
+    value: number                           # required, %
+    tag: string
+  distribution_channels:                    # required, ≥1
+    - string
+  information_asymmetries:                  # required, ≥1 — these are disruption signals
+    - who_knows: string
+      what: string
+      who_doesnt_know: string
+      exploitability: enum                  # low | medium | high
+      tag: string
+
+# ===== PHASE 2: VALUE CHAIN PAIN AUDIT =====
+
+value_chain_pain:                           # keyed by entity type, NOT just customers
+  customers:                                # required, ≥1 segment
+    - segment_id: string                    # required, slug
+      name: string                          # required, behavioral or situational (NOT demographic)
+      defining_attribute: string            # required
+      size_estimate:
+        value: string
+        tag: string
+      jobs_to_be_done:                      # required, ≥5 jobs across types
+        - job: string                       # required
+          type: enum                        # required: functional | emotional | social
+          current_solution: string          # required
+          importance: number                # required, 1-10
+          satisfaction: number              # required, 1-10
+          gap: number                       # computed: importance - satisfaction
+      pain_points:                          # required, ≥3 along customer journey
+        - activity: string                  # required, journey stage
+          intensity: number                 # required, 1-10
+          frequency: number                 # required, 1-10
+          score: number                     # computed: intensity × frequency
+          workaround: string                # required, OR explicit "no workaround — pain may be hypothetical"
+          workaround_tag: string            # V/C/A/I if workaround named
+      non_consumption:                      # required, ≥1
+        - excluded_group: string
+          exclusion_type: enum              # cost | complexity | access | formality
+          size_estimate: string
+          evidence: string
+          tag: string
+  suppliers:                                # required if value_chain has supplier nodes
+    - entity_type: string
+      pain_points: [...]                    # same structure as customer pain_points
+      workarounds: [...]
+  intermediaries:                           # required if value_chain has intermediary nodes
+    - entity_type: string
+      pain_points: [...]
+  adjacent_players:                         # optional — regulators, complementors
+    - entity_type: string
+      pain_points: [...]
+
+# ===== PHASE 3: ENABLING CONDITIONS SCAN =====
+
+enabling_conditions:
+  technology_unlocks:                       # required, ≥1 attempted (else explicit "no relevant tech unlock — [reason]")
+    - id: string
+      what_changed: string                  # required, specific capability
+      when: string                          # required, year and quarter
+      maturity: enum                        # required: emerging | available | commoditized
+      relevance: string                     # required, how it removes a constraint in this industry
+      tag: string                           # required, V/C/A/I
+  cost_curves:
+    - id: string
+      what_changed: string
+      when: string
+      direction: enum                       # falling | stable | rising
+      rate: string
+      relevance: string
+      tag: string
+  behavioral_shifts:
+    - id: string
+      what_changed: string
+      when: string
+      evidence: string
+      relevance: string
+      tag: string
+  regulatory:
+    - id: string
+      what_changed: string
+      when: string
+      direction: enum                       # enabling | restricting
+      relevance: string
+      tag: string
+  supply_side:
+    - id: string
+      what_changed: string
+      when: string
+      relevance: string
+      tag: string
+
+  intersections:                            # required, ≥1 two-way intersection
+    - id: string
+      conditions: [string, string, ...]     # condition IDs that intersect
+      thesis: string                        # required, one-sentence: why these together open a window now
+      window_timing: enum                   # required: wide-open | open-with-competition | closing | closed
+      phase: enum                           # required, Benedict Evans: access | use
+      estimated_window_remaining: string    # required, time before consolidation
+
+  why_now_paragraph: string                 # required, generated at end of Phase 3 — load-bearing for Phase 6
+
+# ===== PHASE 4: FRAMEWORK SIGNALS =====
+
+incumbents:                                 # required for Phase 4.4 counter-positioning
+  - name: string
+    market_share:
+      value: number
+      tag: string
+    business_model:
+      revenue_model: string
+      key_cost_drivers: [string]
+      profit_pool_source: string            # required — the load-bearing revenue line
+    structural_constraints:                 # required, ≥1 — why they can't easily change
+      - constraint: string
+        reason: string
+    assets:
+      customer_relationships: enum          # weak | moderate | strong
+      data_advantage: enum                  # none | some | strong
+      supply_relationships: enum
+      brand: enum
+
+framework_signals:
+  # See references/frameworks-cheatsheet.md for prompts per framework.
+  # Each signal must cite specific Phase 1-3 dataset entries.
+  - signal_id: string
+    framework: enum                         # blue-ocean-errc | aggregation-theory | decoupling | counter-positioning | seven-powers | thiel-secret
+    description: string                     # required
+    cites: [string]                         # required, paths into Phases 1-3 dataset (e.g. "phase2.customers.gifting-shoppers.pain[evaluate]")
+    entry_power: enum                       # required (added in Phase 4.5): counter-positioning | cornered-resource | none-at-entry
+    scale_power: enum                       # required: scale-economies | network-economies | switching-costs | branding | cornered-resource | process-power
+    strength: enum                          # high | medium | low
+    framework_specific_fields: {}           # see frameworks-cheatsheet.md
+
+  # Framework-specific extensions:
+  #   blue-ocean-errc: action (eliminate|reduce|raise|create), factor
+  #   aggregation-theory: diagnostic_passes (count of 3 conditions), margin_cost_regression_risk
+  #   decoupling: pain_source (path), incumbent_conflict_test
+  #   counter-positioning: target_incumbent, structural_trap, response_timeline
+  #   thiel-secret: human_endorsed (bool, required true to be load-bearing), falsifiable_by
+
+# ===== PHASE 5: VENTURE CONCEPTS =====
+
+venture_concepts:                           # required, 3-5 after filter
+  - concept_id: string
+    move: integer                           # 1-7 from seven structural moves
+    one_line: string                        # required, single sentence
+    who: string                             # required, segment from Phase 2
+    what: string                            # required, job/pain from Phase 2
+    how: string                             # required, structural mechanic
+    why_now: string                         # required, citing Phase 3 intersection
+    who_it_displaces: [string]              # required, incumbents from Phase 4.4
+    what_they_cant_copy: string             # required, counter-positioning rationale
+    signals_cited: [string]                 # required, ≥1 framework signal
+    human_endorsed_thesis: string           # required if concept rests on a Thiel Secret
+
+    # Phase 5.4 enrichment:
+    market_size_hypothesis:
+      sam: string
+      tag: string
+    wedge_product:
+      mvp: string
+      early_customer_pays_for: string
+    year_one_metric:
+      kpi: string
+      success_threshold: string
+      failure_threshold: string
+
+# ===== PHASE 6: STRESS TEST RESULTS =====
+
+    stress_tests:                           # populated in Phase 6
+      why_now: enum                         # STRONG | ITERATE | KILL
+      idea_maze:
+        verdict: enum
+        prior_attempts: [{}]                # see stress-test-prompts.md
+        failure_cluster_analysis: string
+        whats_different_now: [{}]
+        unaddressed_failure_modes: [string]
+      incumbent_response:
+        verdict: enum
+        war_games: [{}]                     # per incumbent
+      moat_durability:
+        verdict: enum
+        entry_power: string
+        wedge_to_platform_mechanism: string
+        scale_moat: string
+        counter_positioning_expiry: string  # required if entry_power is counter-positioning
+
+    overall_verdict: enum                   # SHIP | PROCEED | RECONSIDER | KILL
+    required_iteration: [string]
+    confidence: enum                        # HIGH | MEDIUM | LOW
+    final_status: enum                      # set at Gate 3: shipped | iterating | rejected
+    rejection_rationale: string             # required if final_status = rejected
+
+# ===== METADATA =====
+
+metadata:
+  industry_slug: string
+  scope_question: string
+  created: timestamp
+  last_phase_completed: integer
+  gate_approvals:
+    - gate: integer
+      timestamp: timestamp
+  inherited_inputs: [string]                # paths to working/ files used
+  librarian_dispatches:                     # for traceability
+    - phase: integer
+      brief_path: string
+      output_path: string
+      timestamp: timestamp

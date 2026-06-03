@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Diagram</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<!-- PASTE mermaid-cdn.html snippet here -->
+
+<style>
+  .diagram-frame {
+    background: var(--brand-white);
+    border: 1px solid var(--brand-rule);
+    border-radius: var(--radius-md);
+    padding: var(--s-5);
+    margin: var(--s-4) 0;
+    overflow-x: auto;
+  }
+  .diagram-frame pre.mermaid { background: transparent; margin: 0; text-align: center; }
+
+  .legend {
+    display: flex;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    margin-top: var(--s-3);
+  }
+  .legend__item { display: flex; align-items: center; gap: var(--s-2); }
+  .legend__swatch { width: 16px; height: 16px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header style="margin-bottom: var(--s-4);">
+    <div class="eyebrow">{{EYEBROW}}</div>
+    <h1>{{TITLE}}</h1>
+    <p>{{CONTEXT}}</p>
+  </header>
+
+  <div class="diagram-frame">
+    <pre class="mermaid">
+flowchart TD
+  A[Start: {{START_NODE}}] --> B{{{DECISION}}}
+  B -->|Yes| C[{{PATH_YES}}]
+  B -->|No| D[{{PATH_NO}}]
+  C --> E[End: {{END_NODE}}]
+  D --> E
+    </pre>
+  </div>
+
+  <div class="legend">
+    <div class="legend__item"><span class="legend__swatch" style="background: var(--brand-primary);"></span> Primary path</div>
+    <div class="legend__item"><span class="legend__swatch" style="background: var(--brand-accent);"></span> Decision point</div>
+    <div class="legend__item"><span class="legend__swatch" style="background: var(--brand-bg-2);"></span> Terminal state</div>
+  </div>
+
+  <!-- Other Mermaid types — uncomment one as needed:
+
+  <pre class="mermaid">
+sequenceDiagram
+  actor User
+  participant Skill
+  participant Agent
+  User->>Skill: invoke
+  Skill->>Agent: delegate
+  Agent-->>User: response
+  </pre>
+
+  <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Draft
+  Draft --> Review : submit
+  Review --> Published : approve
+  Review --> Draft : reject
+  Published --> [*]
+  </pre>
+
+  <pre class="mermaid">
+mindmap
+  root((Topic))
+    Branch A
+      Leaf 1
+      Leaf 2
+    Branch B
+      Leaf 3
+  </pre>
+
+  <pre class="mermaid">
+gantt
+  title Project plan
+  dateFormat YYYY-MM-DD
+  section Phase 1
+    Task A :a1, 2026-05-01, 14d
+    Task B :after a1, 10d
+  </pre>
+
+  -->
+
+  <!-- PASTE export-footer.html snippet here -->
+
+</div>
+</body>
+</html>

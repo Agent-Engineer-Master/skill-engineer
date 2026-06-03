@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Comparison</title>
+
+<!-- PASTE brand-tokens.md <style> block here -->
+
+<style>
+  .compare-table {
+    background: var(--brand-white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .compare-table th, .compare-table td {
+    padding: var(--s-3);
+    vertical-align: top;
+    border-bottom: 1px solid var(--brand-rule);
+  }
+  .compare-table thead th {
+    background: var(--brand-primary);
+    color: var(--brand-bg);
+    font-family: var(--font-display);
+    font-weight: 500;
+    text-align: left;
+  }
+  .compare-table thead th.recommended {
+    background: var(--brand-accent);
+    color: var(--brand-primary);
+    position: relative;
+  }
+  .compare-table thead th.recommended::after {
+    content: 'Recommended';
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+  .compare-table .criterion {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--brand-primary);
+    width: 200px;
+  }
+  .check { color: #2F7D5B; font-weight: 700; }
+  .cross { color: #B5482E; font-weight: 700; }
+  .partial { color: var(--brand-accent); font-weight: 700; }
+
+  .score-bar {
+    display: inline-block;
+    width: 80px;
+    height: 8px;
+    background: var(--brand-bg-2);
+    border-radius: 4px;
+    overflow: hidden;
+    vertical-align: middle;
+    margin-right: var(--s-2);
+  }
+  .score-bar__fill { height: 100%; background: var(--brand-primary); }
+
+  .total-row td {
+    background: var(--brand-bg-2);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header style="margin-bottom: var(--s-5);">
+    <div class="eyebrow">{{EYEBROW}}</div>
+    <h1>{{TITLE}}</h1>
+    <p>{{INTRO}}</p>
+  </header>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th class="criterion">Criterion</th>
+        <th>{{OPTION_A}}</th>
+        <th class="recommended">{{OPTION_B}}</th>
+        <th>{{OPTION_C}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="criterion">{{CRIT_1}}</td>
+        <td><span class="check">✓</span> {{A_1}}</td>
+        <td><span class="check">✓</span> {{B_1}}</td>
+        <td><span class="cross">✗</span> {{C_1}}</td>
+      </tr>
+      <tr>
+        <td class="criterion">{{CRIT_2}}</td>
+        <td><span class="partial">~</span> {{A_2}}</td>
+        <td><span class="check">✓</span> {{B_2}}</td>
+        <td><span class="check">✓</span> {{C_2}}</td>
+      </tr>
+      <tr>
+        <td class="criterion">{{CRIT_3}}</td>
+        <td>{{A_3}}</td>
+        <td>{{B_3}}</td>
+        <td>{{C_3}}</td>
+      </tr>
+      <tr class="total-row">
+        <td>Overall</td>
+        <td><span class="score-bar"><span class="score-bar__fill" style="width:60%"></span></span>3 / 5</td>
+        <td><span class="score-bar"><span class="score-bar__fill" style="width:90%"></span></span>4.5 / 5</td>
+        <td><span class="score-bar"><span class="score-bar__fill" style="width:50%"></span></span>2.5 / 5</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <section class="card card--tan" style="margin-top: var(--s-5);">
+    <h3>Recommendation</h3>
+    <p>{{RECOMMENDATION}}</p>
+  </section>
+
+  <!-- PASTE export-footer.html snippet here -->
+
+</div>
+</body>
+</html>
