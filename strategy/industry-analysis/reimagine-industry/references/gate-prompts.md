@@ -81,7 +81,13 @@ Fires after Phase 4 completes, before Phase 5.
 > **Overlay:**
 > - 7 Powers (early): [tagged across N signals]
 >
-> Total signals: [N]; incumbent-anchored share: [M%] (must be ≤50%); flagged as high strength: [M]
+> Total signals: [N]; incumbent-anchored share: [M%]; flagged as high strength: [M]
+>
+> ### Lane allocation (proposed — ratify or override)
+> **[incumbent]% incumbent-anchored / [capability]% capability-first.**
+> Structure score [S/3] ([reads that fired]); frontier score [F/3] ([reads that fired]). Confidence: [high/low].
+> Rationale: [one sentence — e.g. "Non-consumption is broad and a capability inflected in 2025 while incumbents are weak, so I'm proposing 30/70 toward capability-first."]
+> Approve this mix, or override (e.g. "make it 50/50" / "lead incumbent"). The ≥1-per-lane floor holds either way. See `references/lane-allocation.md`.
 >
 > ### Thiel Secrets as bets (no truth-endorsement asked)
 > For each secret: grounded form + the venture it generates + its load-bearing hypothesis + the cheapest test (cost / time-to-signal / pass-fail) + prize if true. **You are not asked which secrets are true** — that's unknowable. These flow into Phase 5 as candidate bets you'll choose tests for at Gate 3.

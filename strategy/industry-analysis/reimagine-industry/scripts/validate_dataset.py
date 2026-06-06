@@ -199,15 +199,39 @@ def check_phase_4(data: dict, raw: str) -> list[str]:
         if "endorsement_type:" in fs_section or "human_endorsed:" in fs_section:
             failures.append("Phase 4.6: 'endorsement_type'/'human_endorsed' is obsolete — the human is never asked whether a Secret is true (RULE-2). Replace with the generated bet.")
 
-    # Source-balance rule: incumbent-anchored frameworks ≤50% of total signals
+    # Lane allocation must be computed (6.0) before signals are balanced
+    if "lane_allocation:" not in raw:
+        failures.append("Phase 4: missing lane_allocation block — compute the per-industry generation budget at Phase 4 start (6.0) per references/lane-allocation.md")
+
+    # Source-balance rule: incumbent-anchored signals must stay within the ALLOCATED
+    # incumbent share (not a fixed 50%). Read the target from lane_allocation; default 50
+    # if absent. Allow a +10pp tolerance. Floor: each lane needs ≥1 signal.
     incumbent_frameworks = ["blue-ocean-errc", "aggregation-theory", "decoupling", "counter-positioning"]
     framework_lines = re.findall(r"framework:\s*([a-z-]+)", fs_section)
     if framework_lines:
         incumbent_signal_count = sum(1 for f in framework_lines if f in incumbent_frameworks)
         total_signal_count = len(framework_lines)
-        if incumbent_signal_count * 2 > total_signal_count:
-            pct = round(100 * incumbent_signal_count / total_signal_count)
-            failures.append(f"Phase 4: incumbent-anchored signals are {pct}% of total ({incumbent_signal_count}/{total_signal_count}) — must be ≤50%. Generate more capability seeds + Thiel Secrets; do not pad with incumbent signals.")
+        capability_signal_count = total_signal_count - incumbent_signal_count
+
+        la_section = _extract_block(raw, "lane_allocation:")
+        share_match = re.search(r"final_incumbent_share:\s*(\d+)", la_section) or \
+            re.search(r"proposed_incumbent_share:\s*(\d+)", la_section)
+        target_incumbent_share = int(share_match.group(1)) if share_match else 50
+        tolerance = 10  # percentage points
+
+        actual_share = 100 * incumbent_signal_count / total_signal_count
+        if actual_share > target_incumbent_share + tolerance:
+            failures.append(
+                f"Phase 4: incumbent-anchored signals are {round(actual_share)}% of total "
+                f"({incumbent_signal_count}/{total_signal_count}) — over the allocated "
+                f"{target_incumbent_share}% (+{tolerance}pp tolerance). Generate more capability "
+                f"seeds + Thiel Secrets; do not pad with incumbent signals."
+            )
+        # ≥1-per-lane floor (holds at any allocation)
+        if incumbent_signal_count < 1:
+            failures.append("Phase 4: no incumbent-anchored signals — the ≥1-per-lane floor requires at least one.")
+        if capability_signal_count < 1:
+            failures.append("Phase 4: no first-principles signals (capability seeds / Thiel Secrets) — the ≥1-per-lane floor requires at least one.")
 
     # Incumbents must have structural_constraints
     if "incumbents:" in raw:
@@ -246,13 +270,16 @@ def check_phase_5(data: dict, raw: str) -> list[str]:
         if field_count < concept_count:
             failures.append(f"Phase 5: {concept_count - field_count} concepts missing bet field '{field}' — every concept must ship as a testable bet")
 
-    # First-principles lane must survive: ≥1 origin: capability-first concept
+    # Both lanes must survive the filter: ≥1 per lane (floor holds at any allocation)
     origin_count = vc_section.count("origin:")
     if origin_count < concept_count:
         failures.append(f"Phase 5: {concept_count - origin_count} concepts missing 'origin' tag (capability-first | incumbent-first)")
     capability_first_count = len(re.findall(r"origin:\s*capability-first", vc_section))
+    incumbent_first_count = len(re.findall(r"origin:\s*incumbent-first", vc_section))
     if capability_first_count < 1:
         failures.append("Phase 5: no 'origin: capability-first' concept in the kept set — the first-principles lane (Move 8 / Secrets) must survive the filter, else the shortlist triangulates from incumbents")
+    if incumbent_first_count < 1:
+        failures.append("Phase 5: no 'origin: incumbent-first' concept in the kept set — the ≥1-per-lane floor requires at least one from each lane")
 
     # AI-washing screen — look for "AI for X" patterns in one_line fields
     one_lines = re.findall(r"one_line:\s*[\"']([^\"'\n]+)[\"']", vc_section)

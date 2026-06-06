@@ -29,7 +29,7 @@ Each Phase 4 framework tends to surface signals that map to specific Phase 5 str
 | Phase 3 capability seeds | **first-principles** | **Move 8 (capability-first / new-to-the-world)** |
 | Thiel's Secret | **first-principles** | **Move 8** + Secret-derived concepts (any move the secret implies) |
 
-**Source-balance rule:** the four incumbent-anchored frameworks (Blue Ocean, Aggregation, Decoupling, Counter-positioning) must be **≤50% of total framework signals**. The remainder is the first-principles lane: Phase 3 `capability_seeds` + Thiel Secrets. If the first-principles lane is thin, generate more seeds and secrets — do not pad with incumbent signals.
+**Source-balance rule:** the four incumbent-anchored frameworks (Blue Ocean, Aggregation, Decoupling, Counter-positioning) must stay **within the `lane_allocation` incumbent share** computed at Phase 4 start (step 6.0; default 50% only if not yet computed) — see `references/lane-allocation.md`. The remainder is the first-principles lane: Phase 3 `capability_seeds` + Thiel Secrets. If a lane is under budget, generate more of it — do not pad the over-budget lane. A ≥1-signal-per-lane floor holds at any allocation.
 
 ## Entity-pain to structural-move mapping
 
@@ -216,6 +216,6 @@ After Phase 4 completes, `validate_dataset.py --phase 4` checks:
 - Decoupling signals pass all 3 tests
 - 7 Powers signals have entry + scale + mechanism specified
 - Counter-positioning entry_power → different scale_power (no infinite counter-pos)
-- **Incumbent-anchored signals (blue-ocean-errc, aggregation-theory, decoupling, counter-positioning) are ≤50% of total framework signals** (source-balance rule)
+- **`lane_allocation` block present, and incumbent-anchored signals within the allocated incumbent share** (+10pp tolerance); each lane ≥1 signal (source-balance rule + floor)
 - **Every Thiel Secret is in grounded form and emits a bet** (`load_bearing_hypothesis` + `validation_test`) — Secrets are never gated on truth (RULE-2)
 - All claims V/C/A/I tagged

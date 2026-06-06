@@ -158,6 +158,21 @@ enabling_conditions:
 
 # ===== PHASE 4: FRAMEWORK SIGNALS =====
 
+lane_allocation:                            # required, computed at Phase 4 start (6.0) — see references/lane-allocation.md
+  structure_score: integer                  # required, 0-3 (count of structure reads S1-S3 that fired)
+  frontier_score: integer                   # required, 0-3 (count of frontier reads F1-F3 that fired)
+  reads_fired:                              # required, which reads fired + the dataset path justifying each
+    - read: string                          # e.g. "S1" | "F2"
+      justification: string                 # dataset path / one-line reason
+  proposed_incumbent_share: integer         # required, percent from decision table (70 | 50 | 30)
+  proposed_capability_share: integer        # required, 100 - proposed_incumbent_share
+  rationale: string                         # required, one sentence
+  confidence: enum                          # required: high | low (low when both scores 0)
+  approved: boolean                         # set true at Gate 2 ratification
+  final_incumbent_share: integer            # = proposed unless human overrode at Gate 2
+  final_capability_share: integer
+  # Floor: ≥1 concept per lane in the kept set ALWAYS, regardless of these shares.
+
 incumbents:                                 # required for Phase 4.4 counter-positioning
   - name: string
     market_share:

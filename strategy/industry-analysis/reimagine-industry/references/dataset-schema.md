@@ -42,6 +42,9 @@ Five axes (tech, cost, behavioral, regulatory, supply). The block lists individu
 - **`why_now_paragraph`** is generated at Phase 3 end and quoted verbatim in every Phase 6 stress test. It's the single most-cited field in the dataset.
 - **`capability_seeds`** is the Phase 3 **seed step** — the change that makes Phase 3 feed *generation*, not just validation. For each intersection, list jobs that become *possible* (not merely cheaper) now that the capabilities co-exist — jobs no incumbent serves because they couldn't exist before. Each seed cites the capability, NOT an incumbent. These feed Phase 5 Move 8 (capability-first) and the Phase 4.6 Thiel Secret reframe. Without this block, the skill triangulates from existing players because the only generative inputs are incumbent-anchored. ≥1 seed is required.
 
+### `lane_allocation` (Phase 4, step 6.0)
+The per-industry generation budget — how much of each lane to run. Replaces the old hardcoded 50/50. Computed at Phase 4 start from Phase 1-3 via the decision table in `references/lane-allocation.md`: three structure reads (favour incumbent lane) + three frontier reads (favour capability lane) → an incumbent:capability share (70:30 / 50:50 / 30:70). Ratified by the human at Gate 2; `final_*` shares equal `proposed_*` unless overridden. A ≥1-per-lane floor overrides any allocation, so neither lane ever goes to zero. `confidence: low` flags an industry thin on both score sets (consider deeper Phase 1-3 research before generating). Over runs, per-lane hit-rate (normalised by concepts *generated*, not raw count) turns these defaults into a learned per-archetype prior.
+
 ### `incumbents` (populated in Phase 4)
 Per major player:
 - **`profit_pool_source`** is the critical field for counter-positioning. The incumbent's load-bearing revenue line is the thing a counter-position threatens.
