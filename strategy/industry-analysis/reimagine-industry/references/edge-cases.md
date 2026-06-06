@@ -37,19 +37,20 @@ These rules fail-loud if violated during a run. They override anti-patterns and 
 
 **Why:** structured-form concept descriptions read as "code" to senior readers — they require parsing rather than recognition. The handle + distillation is the recognition layer. Without it, the user has to ask twice, which is a sign the gate review failed.
 
-### RULE-2: Thiel Secrets are scenario lenses, not conviction filters, unless the user explicitly signals high conviction
+### RULE-2: Thiel Secrets are hypothesis generators, never truth gates
 
-**Source:** `dtc-ecommerce-us` 2026-05-19 closing feedback gate. The user endorsed 6 of 10 Secrets but clarified: "this is not high conviction, I just think these are positions where the data is inconclusive either way... They are really great lynch points that define the strategy, but perhaps they are better as different lenses that suggest experiments to run rather than directly filter ideas."
+**Source:** `dtc-ecommerce-us` 2026-05-19 closing feedback gate, then sharpened 2026-06-06. Original feedback: the user endorsed 6 of 10 Secrets but clarified "this is not high conviction... they are better as lenses that suggest experiments to run." The sharpening: asking the human *which secrets are true* is a broken gate — "I don't know the answers to those, that's why they are secrets." The useful move is to use the secret-generation process to **generate ideas**, carry forward the key assumption that would make each true, and produce a **test** to validate it.
 
-**Apply at:** Phase 4.6 candidate generation, Gate 2 endorsement step, Phase 5 concept generation.
+**Apply at:** Phase 4.6 candidate generation, Gate 2, Phase 5 concept generation and filter.
 
 **What it requires:**
-- At Gate 2 Thiel endorsement, frame the prompt explicitly as: "Which of these contrarian positions do you want to use as STRATEGIC LENSES that suggest experiments to run? Endorsing here doesn't filter out concepts that bet against the Secret — it surfaces the Secret as a defining hypothesis the brief should explicitly engage with."
-- Phase 5 concept generation should generate concepts that span both sides of each endorsed Secret where the Secret-bet matters. Each concept's `endorsed_secrets_dependency` block already captures "depends-on / survives-falsification / counter-bet" — preserve that, but interpret a `depends-on` as "this is the concept that wins if Secret is true," not "this Secret is required to be true for the concept to be considered."
-- The Phase 5 filter should compose a portfolio that is robust across the Secret hypothesis space rather than concentrated on Secrets being true.
-- If the user explicitly signals high conviction on a Secret (e.g., "I genuinely believe X and would bet the company on it"), THEN apply the original Thiel filter discipline. Default is scenario-lens framing.
+- The human is **never** asked whether a Secret is true. No truth-endorsement, no conviction-endorsement at the brief stage.
+- Each Secret is written in **grounded form** ("industry assumes X; held because Y; capability Z makes it false as of [date]") and **emits a venture concept** into the first-principles lane.
+- The secret restated as a single falsifiable claim becomes that concept's `load_bearing_hypothesis`, and the Secret ships with a `validation_test` (cheapest experiment + pass/fail thresholds + time-to-signal) and `value_if_true`.
+- The human gate is **test-worthiness**: "given the prize if true and the cost/speed of the test, which of these experiments are worth funding?" — answerable without possessing the secret.
+- Conviction is the *output* of running the test, not an input. There is no longer a `lens` vs `conviction` endorsement type — both are obsolete.
 
-**Why:** the literal Thiel framing of "Secret = load-bearing belief you'd stake the venture on" is correct for late-stage founder commitment, but at the brief-writing stage most contrarian positions are open empirical bets. Treating them as filters risks over-filtering Phase 5 and producing a thin or single-thesis concept set.
+**Why:** a secret you can endorse on the spot isn't a secret. The old gate collected noise (shrugs) or, worse, plausibility-matching that reintroduced the very triangulation-from-existing-startups bias the skill is meant to avoid. Reframing the secret as a bet (idea + load-bearing hypothesis + cheap test) gives the human a decision they can actually make, and turns the unknowable into a fundable experiment.
 
 ### RULE-3: Y1 metrics must be bottoms-up, not goal-seeked to clear an industry projection
 

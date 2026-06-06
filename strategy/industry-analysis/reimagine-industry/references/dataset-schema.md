@@ -40,6 +40,7 @@ Five axes (tech, cost, behavioral, regulatory, supply). The block lists individu
 
 - **`window_timing`** classifies how much time remains before consolidation. "Wide-open" with 0-12 months gone since the intersection became true is the strongest. "Closed" forces a sharper counter-positioning thesis.
 - **`why_now_paragraph`** is generated at Phase 3 end and quoted verbatim in every Phase 6 stress test. It's the single most-cited field in the dataset.
+- **`capability_seeds`** is the Phase 3 **seed step** — the change that makes Phase 3 feed *generation*, not just validation. For each intersection, list jobs that become *possible* (not merely cheaper) now that the capabilities co-exist — jobs no incumbent serves because they couldn't exist before. Each seed cites the capability, NOT an incumbent. These feed Phase 5 Move 8 (capability-first) and the Phase 4.6 Thiel Secret reframe. Without this block, the skill triangulates from existing players because the only generative inputs are incumbent-anchored. ≥1 seed is required.
 
 ### `incumbents` (populated in Phase 4)
 Per major player:
@@ -55,6 +56,10 @@ The intermediate output between dataset and concepts. Each signal cites specific
 ### `venture_concepts` (Phase 5-6)
 The final output. Concept fields populated in Phase 5; stress test fields populated in Phase 6; `final_status` set at Gate 3.
 
+- **Every concept ships as a bet.** `load_bearing_hypothesis` (the single claim that, if false, kills it), `validation_test` (cheapest experiment + pass/fail thresholds + time-to-signal), and `value_if_true` are required on every concept in both lanes. This is what turns the Phase 5 human gate from an unanswerable "is this true?" into a fundable "which tests are worth running?"
+- **`origin`** tags the generation lane: `capability-first` (Move 8 or a Secret-derived concept) or `incumbent-first` (Moves 1-7). The kept set MUST contain ≥1 `capability-first` concept — the first-principles lane has to survive the filter, not just be generated.
+- **`why_unknown`** is required for `capability-first` concepts: why the hypothesis can't be settled by desk research (usually a behavioural fact that doesn't exist in the data yet, needing a forward test). `incumbent-first` concepts may mark this `desk-researchable`.
+- `move` now ranges 1-8 (Move 8 = capability-first / new-to-the-world).
 - `rejection_rationale` is required for any concept with `final_status: rejected`. This goes into `signals-log.md` so future runs don't re-propose without reconsidering.
 
 ## Validation philosophy

@@ -19,14 +19,17 @@ Frameworks 4.1-4.4 and 4.6 run in **parallel**. Framework 4.5 (7 Powers mapping)
 
 Each Phase 4 framework tends to surface signals that map to specific Phase 5 structural moves. This isn't deterministic — surprise is the value — but it tells you where to expect each framework's signals to land:
 
-| Phase 4 framework | Tends to surface signals for Phase 5 move |
-|---|---|
-| Blue Ocean ERRC | Move 4 (attack value-eroding) + Move 5 (start narrow) |
-| Aggregation Theory | Move 1 (remove middleman) + Move 3 (transfer relationship) |
-| Decoupling | Move 4 (attack value-eroding) |
-| Counter-positioning | Move 6 (counter-position profit model) |
-| 7 Powers (early) | All moves — moat trajectory mapping |
-| Thiel's Secret | Often Move 5 (start narrow) or Move 7 (arm supply side) |
+| Phase 4 framework | Lane | Tends to surface signals for Phase 5 move |
+|---|---|---|
+| Blue Ocean ERRC | incumbent-anchored | Move 4 (attack value-eroding) + Move 5 (start narrow) |
+| Aggregation Theory | incumbent-anchored | Move 1 (remove middleman) + Move 3 (transfer relationship) |
+| Decoupling | incumbent-anchored | Move 4 (attack value-eroding) |
+| Counter-positioning | incumbent-anchored | Move 6 (counter-position profit model) |
+| 7 Powers (early) | overlay | All moves — moat trajectory mapping |
+| Phase 3 capability seeds | **first-principles** | **Move 8 (capability-first / new-to-the-world)** |
+| Thiel's Secret | **first-principles** | **Move 8** + Secret-derived concepts (any move the secret implies) |
+
+**Source-balance rule:** the four incumbent-anchored frameworks (Blue Ocean, Aggregation, Decoupling, Counter-positioning) must be **≤50% of total framework signals**. The remainder is the first-principles lane: Phase 3 `capability_seeds` + Thiel Secrets. If the first-principles lane is thin, generate more seeds and secrets — do not pad with incumbent signals.
 
 ## Entity-pain to structural-move mapping
 
@@ -138,65 +141,69 @@ Runs AFTER 4.1-4.4. For each candidate signal from those frameworks, tag entry p
 
 **Counter-positioning expiry warning:** if entry_power is counter-positioning, the scale_power MUST be different (counter-positioning expires as incumbents acclimate). Both fields equaling counter-positioning is a validation failure.
 
-## 4.6 Thiel's Secret — as scenario lens (default) or conviction filter (only on explicit signal)
+## 4.6 Thiel's Secret — hypothesis generator, NOT a truth gate
 
-**Default framing: scenario lens.** Per RULE-2 in `edge-cases.md`, Thiel Secrets at the brief-writing stage are typically open empirical bets, not high-conviction beliefs. Treat them as strategic lenses that suggest experiments to run — not as filters that eliminate concepts.
+**The core fix (RULE-2): the human is never asked whether a Secret is true.** A secret you can endorse on the spot isn't a secret — by definition you don't yet know the answer; that's why it's worth a venture. Asking "which of these is true?" produces a shrug or, worse, pattern-matching to what *sounds* plausible (which quietly reimports the triangulation bias). So the Secret is treated as a **generator**: it produces a venture concept and a falsifiable hypothesis, and the human's job is to decide which hypotheses are worth *testing* — not which are true.
 
-**Only switch to conviction-filter discipline** when the user explicitly signals "I'd bet the company on this" at endorsement time.
+### Grounded form (required)
+
+Every Secret must take this shape — it kills the "we believe AI changes everything" slogan failure mode:
+
+> This industry assumes **[orthodoxy]**. That held because **[structural reason it was true historically]**. Capability **[specific Phase 3 capability_seed / condition, dated]** makes it false as of **[date]**.
+
+A Secret that can't be written in this form (no structural reason, no dated capability) is an opinion, not a secret — discard it.
 
 ### AI candidate generation prompt
 
-> Generate 5-10 candidate "secrets" — load-bearing beliefs in [industry] that may be wrong. Use three prompts:
-> 1. What does this industry believe that's false? (Look for orthodoxies in Phase 1; ask whether they still hold given Phase 3 conditions.)
-> 2. What important truth do very few people agree with you on? (Inverse statements of Phase 2 customer pain rankings.)
-> 3. What's a popular belief in this industry that's wrong? (Trade press consensus statements that contradict Phase 2 evidence.)
+> Generate 5-10 candidate secrets — load-bearing orthodoxies in [industry] that the Phase 3 capabilities may have just falsified. Use three angles:
+> 1. What does this industry assume is *necessary* that a Phase 3 capability now makes optional? (Orthodoxies in Phase 1, tested against `capability_seeds`.)
+> 2. What does everyone assume customers *want* that the Phase 2 pain data quietly contradicts?
+> 3. What trade-press consensus statement contradicts the Phase 1-3 evidence?
 >
 > For each candidate, produce:
 > - **handle**: 3-5 word memorable name (e.g., "Personalization-is-overrated-for-gifting")
-> - **distillation**: one plain-English sentence stating the contrarian belief
-> - **evidence-for**: Phase 1-3 data points supporting the Secret being true
-> - **evidence-against**: Phase 1-3 data points supporting the Secret being false
-> - **falsifiable-by**: specific test that would disprove it
-> - **strategic-implication**: if true, what kinds of concepts win? If false, what kinds win?
+> - **grounded form**: the "industry assumes X; held because Y; capability Z makes it false as of [date]" sentence
+> - **the bet it generates**: the venture concept that wins if this secret is true — emitted into the first-principles lane (Move 8 or whichever move the secret implies)
+> - **load_bearing_hypothesis**: the secret restated as a single falsifiable claim specific to that venture
+> - **why_unknown**: why this can't be settled by desk research (usually a behavioural fact that doesn't exist in the data yet)
+> - **validation_test**: `{experiment, cost, time_to_signal, pass_threshold, fail_threshold}` — the cheapest experiment that resolves the hypothesis
+> - **value_if_true**: the prize if the hypothesis holds
 
-### Endorsement prompt (default — scenario lens)
+### Human gate prompt (test-worthiness, NOT truth)
 
-> Which of these contrarian positions do you want to use as STRATEGIC LENSES that suggest experiments to run?
+> Each of these secrets has produced a venture concept, a single load-bearing hypothesis, and the cheapest test that would tell you if the hypothesis holds. You are **not** being asked which secrets are true — you can't know that yet, which is the point.
 >
-> Endorsing here doesn't filter out concepts that bet against the Secret — Phase 5 will generate concepts that span the hypothesis space (concepts that depend-on the Secret, concepts that survive falsification, and concepts that counter-bet). The endorsement surfaces the Secret as a defining hypothesis the brief should explicitly engage with.
+> For each: given the prize if true (`value_if_true`), the cost and speed of the test (`validation_test`), and your strategic fit — **which of these experiments are worth funding?**
 >
-> Mark each endorsed Secret with `endorsement_type: lens`.
->
-> [Show candidates with handle + distillation + evidence-for / evidence-against / falsifiable-by]
+> [Show candidates with handle + grounded form + the generated concept + load_bearing_hypothesis + validation_test + value_if_true]
 
-### Endorsement prompt (only when user signals high conviction)
-
-> Do you have high conviction in any of these — would you bet the company on them?
->
-> For high-conviction Secrets, Phase 5 will FILTER concepts: only concepts that bet on the Secret being true survive.
->
-> Mark these with `endorsement_type: conviction`. Default to `lens` unless you're explicit.
+The selected bets carry into Phase 5 as first-principles-lane concepts. Conviction is the *output* of running the test, not an input to this gate.
 
 ### Required output per Secret
 
 ```yaml
 - signal_id: thiel-secret-1
-  handle: string  # 3-5 word memorable name
-  distillation: string  # one plain-English sentence
-  evidence_for: [string]
-  evidence_against: [string]
-  falsifiable_by: string
-  strategic_implication:
-    if_true: string
-    if_false: string
-  endorsement_type: lens | conviction | not-endorsed  # default lens for endorsed
-  phase_evidence_cites: [string]
+  framework: thiel-secret
+  handle: string                 # 3-5 word memorable name
+  grounded_form: string          # "industry assumes X; held because Y; capability Z makes it false as of [date]"
+  generates_concept: string      # concept_id of the venture this secret emits (origin: capability-first)
+  load_bearing_hypothesis: string  # the secret as a single falsifiable claim
+  why_unknown: string            # why desk research can't settle it
+  validation_test:
+    experiment: string
+    cost: string
+    time_to_signal: string
+    pass_threshold: string
+    fail_threshold: string
+  value_if_true: string
+  phase_evidence_cites: [string] # capability_seed IDs + Phase 1-3 paths
 ```
 
 **Anti-patterns:**
-- Thiel Secret as marketing slogan ("we believe AI changes everything") — must be falsifiable AND unpopular
-- Endorsement without explicit `endorsement_type` — forces Phase 5 to assume conviction, which over-filters
-- Treating a `lens`-endorsed Secret as a filter in Phase 5 — violates RULE-2
+- Secret as marketing slogan ("we believe AI changes everything") — fails the grounded-form requirement (no structural reason, no dated capability)
+- Asking the human "which of these is true?" — violates RULE-2; ask which tests are worth funding
+- A Secret with no `validation_test`, or a test too slow/expensive to actually run — an untestable secret is a daydream, not a bet
+- A Secret that doesn't emit a concept — Secrets generate ventures; one that doesn't is just commentary
 
 ## Validation summary
 
@@ -209,5 +216,6 @@ After Phase 4 completes, `validate_dataset.py --phase 4` checks:
 - Decoupling signals pass all 3 tests
 - 7 Powers signals have entry + scale + mechanism specified
 - Counter-positioning entry_power → different scale_power (no infinite counter-pos)
-- ≥1 Thiel Secret endorsed with `endorsement_type` recorded (lens or conviction) (RULE-2)
+- **Incumbent-anchored signals (blue-ocean-errc, aggregation-theory, decoupling, counter-positioning) are ≤50% of total framework signals** (source-balance rule)
+- **Every Thiel Secret is in grounded form and emits a bet** (`load_bearing_hypothesis` + `validation_test`) — Secrets are never gated on truth (RULE-2)
 - All claims V/C/A/I tagged

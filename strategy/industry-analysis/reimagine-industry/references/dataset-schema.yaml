@@ -146,6 +146,16 @@ enabling_conditions:
 
   why_now_paragraph: string                 # required, generated at end of Phase 3 — load-bearing for Phase 6
 
+  capability_seeds:                         # required, ≥1 — the Phase 3 seed step (feeds generation, not just why-now)
+    - id: string                            # required, slug
+      from_intersection: string             # required, intersection ID this seed derives from
+      capability: string                    # required, the specific capability that just became available
+      newly_possible_job: string            # required, a job that becomes POSSIBLE (not just cheaper) — no incumbent serves it because it couldn't exist before
+      previously_impossible_because: string # required, what made this job impossible before the capability
+      tag: string                           # required, V/C/A/I
+      # Note: capability_seeds do NOT cite an incumbent — the citation is to the capability.
+      # These feed Phase 5 Move 8 and the Phase 4.6 Thiel Secret reframe.
+
 # ===== PHASE 4: FRAMEWORK SIGNALS =====
 
 incumbents:                                 # required for Phase 4.4 counter-positioning
@@ -183,22 +193,33 @@ framework_signals:
   #   aggregation-theory: diagnostic_passes (count of 3 conditions), margin_cost_regression_risk
   #   decoupling: pain_source (path), incumbent_conflict_test
   #   counter-positioning: target_incumbent, structural_trap, response_timeline
-  #   thiel-secret: human_endorsed (bool, required true to be load-bearing), falsifiable_by
+  #   thiel-secret: grounded_form, generates_concept, load_bearing_hypothesis, why_unknown, validation_test, value_if_true (never gated on truth — see frameworks-cheatsheet.md §4.6)
 
 # ===== PHASE 5: VENTURE CONCEPTS =====
 
 venture_concepts:                           # required, 3-5 after filter
   - concept_id: string
-    move: integer                           # 1-7 from seven structural moves
+    move: integer                           # 1-8 (Moves 1-7 incumbent-anchored; Move 8 capability-first)
+    origin: enum                            # required: capability-first | incumbent-first — ≥1 capability-first in the kept set
     one_line: string                        # required, single sentence
     who: string                             # required, segment from Phase 2
-    what: string                            # required, job/pain from Phase 2
+    what: string                            # required, job/pain from Phase 2 (or capability_seed.newly_possible_job for Move 8)
     how: string                             # required, structural mechanic
-    why_now: string                         # required, citing Phase 3 intersection
-    who_it_displaces: [string]              # required, incumbents from Phase 4.4
-    what_they_cant_copy: string             # required, counter-positioning rationale
-    signals_cited: [string]                 # required, ≥1 framework signal
-    human_endorsed_thesis: string           # required if concept rests on a Thiel Secret
+    why_now: string                         # required, citing Phase 3 intersection or capability_seed
+    who_it_displaces: [string]              # required for incumbent-first; for capability-first may be "non-consumption — job did not exist"
+    what_they_cant_copy: string             # required, counter-positioning rationale (or capability lead-time for Move 8)
+    signals_cited: [string]                 # required, ≥1 framework signal or capability_seed ID
+
+    # Bet (required on EVERY concept, both lanes) — RULE-2 / Move 8:
+    load_bearing_hypothesis: string         # required, the single claim that, if false, kills the concept
+    why_unknown: string                     # required for capability-first (why desk research can't settle it); "desk-researchable" allowed for incumbent-first
+    validation_test:                        # required
+      experiment: string                    # the cheapest experiment that moves belief on the hypothesis
+      cost: string
+      time_to_signal: string
+      pass_threshold: string
+      fail_threshold: string
+    value_if_true: string                   # required, the prize if the hypothesis holds
 
     # Phase 5.4 enrichment:
     market_size_hypothesis:

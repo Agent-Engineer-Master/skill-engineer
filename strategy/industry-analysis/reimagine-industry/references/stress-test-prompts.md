@@ -167,9 +167,30 @@ Year 3 (steady state):
 - ITERATE: stages exist but mechanisms vague
 - KILL: depends entirely on first-mover advantage (first-mover isn't a moat)
 
+## Test 5: Bet-Validity Gate (forward test design)
+
+Tests 1-4 grade the *thesis*. This gate grades the *bet* — the forward experiment that resolves it. It runs on every concept and is **load-bearing for capability-first / Secret-derived concepts**, where the backward-looking idea-maze (Test 2) often returns thin ("novel category") and the only honest validation is a forward test.
+
+This is where the skill's existing forward machinery points the right way: the `load_bearing_hypothesis` is the secret restated as a falsifiable claim, and the `validation_test` is the cheapest experiment that resolves it — not a historical post-mortem.
+
+**Three bet checks per concept:**
+
+| Check | Pass criterion | Common failure |
+|---|---|---|
+| Hypothesis is the kill-switch | `load_bearing_hypothesis` names the single claim that, if false, kills the concept | A restated value-prop, not a falsifiable bet ("customers will love this") |
+| Test resolves the hypothesis | `validation_test` would actually move belief on that exact claim, with named pass/fail thresholds | A vanity metric that passes regardless of whether the hypothesis holds |
+| Test is fundable | Cost + time-to-signal are small enough that a founder would actually run it before committing | A "test" that requires building the whole company first |
+
+**Verdict:**
+- STRONG: all three pass — a cheap forward experiment resolves the load-bearing claim
+- ITERATE: hypothesis or test is vague; redesign the `validation_test` with sharper thresholds
+- KILL: no feasible cheap test exists — the bet is unfalsifiable until it's too late to matter
+
+For `origin: capability-first` concepts, a KILL here is decisive: a first-principles idea with no cheap forward test is a daydream, regardless of how compelling the thesis reads.
+
 ## Aggregate Verdict Matrix
 
-Per concept, combine the four test verdicts:
+Per concept, combine the four thesis-test verdicts. **Test 5 (Bet-Validity) is a separate gate: a KILL there kills the concept regardless of the matrix below.**
 
 | Pattern | Overall verdict |
 |---|---|

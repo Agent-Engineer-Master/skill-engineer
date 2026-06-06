@@ -1,8 +1,9 @@
-# Venture Concept — [concept-id]
+# Venture Concept — [handle] `[concept-id]`
 
 **One-line:** [single sentence describing the venture]
 
 **Structural move:** [#] — [move name]
+**Origin:** [capability-first / incumbent-first]
 
 **Verdict:** [SHIP / PROCEED / RECONSIDER / KILL]
 **Bar test:** [non-obvious / obvious]
@@ -14,19 +15,30 @@
 
 **Who** (customer segment): [segment from Phase 2 with citation path]
 
-**What** (job or pain): [JTBD or pain point with citation path]
+**What** (job or pain): [JTBD or pain point with citation path — for Move 8, the capability_seed.newly_possible_job]
 
 **How** (structural mechanic): [the specific mechanic — how the move plays out]
 
-**Why now** (enabling condition): [Phase 3 intersection citation]
+**Why now** (enabling condition): [Phase 3 intersection or capability_seed citation]
 
-**Who it displaces:** [Phase 1 incumbents]
+**Who it displaces:** [Phase 1 incumbents — or "non-consumption: this job did not exist before" for capability-first]
 
-**What they can't copy:** [counter-positioning rationale from Phase 4.4]
+**What they can't copy:** [counter-positioning rationale from Phase 4.4 — or capability lead-time for capability-first]
 
-## Underlying thesis
+## The Bet
 
-[The human-endorsed contrarian belief this rests on, if any, from Phase 4.6 Thiel Secret]
+**Load-bearing hypothesis:** [the single claim that, if false, kills this concept]
+
+**Why unknown:** [why desk research can't settle it — required for capability-first; "desk-researchable" for incumbent-first]
+
+**Validation test:**
+- Experiment: [the cheapest experiment that moves belief on the hypothesis]
+- Cost: [$ / effort]
+- Time to signal: [how long until you know]
+- Pass threshold: [result that says "pursue"]
+- Fail threshold: [result that says "kill"]
+
+**Value if true:** [the prize if the hypothesis holds]
 
 ## Wedge product
 
@@ -94,6 +106,10 @@
 **Counter-positioning expiry plan:** [required if entry_power is counter-positioning — what replaces it]
 
 **Inversion test:** [what happens if the dominant Phase 3 enabling condition stalls]
+
+### 5. Bet-Validity Gate — [STRONG / ITERATE / KILL]
+
+[Does the load-bearing hypothesis name the real kill-switch? Does the validation test resolve that exact claim with named pass/fail thresholds? Is the test cheap and fast enough to fund before committing? A KILL here kills the concept regardless of tests 1-4 — decisive for capability-first concepts.]
 
 ---
 

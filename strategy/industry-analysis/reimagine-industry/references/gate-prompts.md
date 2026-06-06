@@ -64,17 +64,27 @@ Fires after Phase 4 completes, before Phase 5.
 > - `market_structure`: [N information asymmetries identified]
 > - `value_chain_pain`: [N segments × M pain points across K entity types]
 > - `enabling_conditions`: [N conditions across 5 axes, M intersections]
+> - `capability_seeds`: [N newly-possible jobs seeded from intersections — first-principles lane]
 > - `incumbents`: [N major players with structural constraints named]
 >
-> ### Framework signals
+> ### Framework signals (two lanes)
+> **Incumbent-anchored (must be ≤50% of total):**
 > - Blue Ocean ERRC: [N signals] ([M Create candidates with Phase 2 evidence])
 > - Aggregation Theory: [diagnostic passed/failed; N signals OR non-fit rationale]
 > - Decoupling: [N signals citing top-3 pains]
 > - Counter-positioning: [N signals per incumbent with structural traps]
-> - 7 Powers (early): [tagged across N signals]
-> - Thiel's Secret: [N human-endorsed contrarian theses]
 >
-> Total signals: [N]; flagged as high strength: [M]
+> **First-principles:**
+> - Capability seeds: [N newly-possible jobs → feed Move 8]
+> - Thiel's Secrets: [N contrarian secrets, each in grounded form, each emitting a bet]
+>
+> **Overlay:**
+> - 7 Powers (early): [tagged across N signals]
+>
+> Total signals: [N]; incumbent-anchored share: [M%] (must be ≤50%); flagged as high strength: [M]
+>
+> ### Thiel Secrets as bets (no truth-endorsement asked)
+> For each secret: grounded form + the venture it generates + its load-bearing hypothesis + the cheapest test (cost / time-to-signal / pass-fail) + prize if true. **You are not asked which secrets are true** — that's unknowable. These flow into Phase 5 as candidate bets you'll choose tests for at Gate 3.
 >
 > ### Quality flags
 > - [N] signals rest on `[A]/[I]`-tagged claims — these will be load-bearing in Phase 6 stress test
@@ -84,7 +94,7 @@ Fires after Phase 4 completes, before Phase 5.
 >
 > ---
 >
-> **Why we're asking:** Phase 5 applies the Seven Structural Moves as templates against these signals. Weak signals produce weak concepts; filter happens here. Once Phase 5 runs, going back is expensive.
+> **Why we're asking:** Phase 5 applies the eight structural moves (Moves 1-7 incumbent-anchored + Move 8 capability-first) as templates against these signals. Weak signals produce weak concepts; filter happens here. Once Phase 5 runs, going back is expensive.
 > **Default if unsure:** approve and proceed; revisit specific signals at Gate 3 if Phase 6 surfaces problems.
 > **Tradeoff:** aggressive filtering now = fewer concepts in Phase 5 shortlist; permissive = more candidates to stress-test in Phase 6.
 > **Or:** send specific signals back for rework (re-run a framework against new data, or dispatch librarian for additional evidence on a load-bearing claim).
@@ -105,9 +115,12 @@ Fires after Phase 6 stress test + bar test, before final write.
 >
 > Phases 1-6 complete. Bar test verdict: [PASS / verdict reasoning].
 >
-> ### Ranked shortlist
-> 1. **[concept_id]** — [one-line]
+> ### Ranked shortlist (each is a bet)
+> 1. **[handle]** `[concept_id]` — [one-line] — `origin: [capability-first | incumbent-first]`
 >    - Verdict: [SHIP / PROCEED / RECONSIDER]
+>    - Load-bearing hypothesis: [the one claim that, if false, kills it]
+>    - Cheapest test: [experiment — cost / time-to-signal / pass-fail threshold]
+>    - Prize if true: [value_if_true]
 >    - Non-obvious because: [specific reason from bar test]
 >    - Top risk: [specific failure mode surfaced in Phase 6]
 >    - Required iteration before ship: [list, or "none"]
@@ -129,10 +142,10 @@ Fires after Phase 6 stress test + bar test, before final write.
 >
 > ---
 >
-> **Why we're asking:** Phase 6 surfaces the rank; the human owns the choice of what to actually pursue. The AI cannot fully measure conviction or strategic fit.
-> **Default if unsure:** approve top-ranked concept(s) marked SHIP; flag iteration items for follow-up.
-> **Tradeoff:** pursuing top-ranked maximizes analytical defensibility; pursuing a lower-ranked concept may reflect conviction the AI can't measure. Both are valid.
-> **Or:** send specific concepts back for further iteration (re-run a specific stress test with more research) before final approval.
+> **Why we're asking:** Phase 6 surfaces the rank; the human owns the choice of which **experiments to fund**. The decision is test-worthiness — prize if true × cost/speed of test × strategic fit — not whether you believe the hypothesis (conviction is the test's output, not its input).
+> **Default if unsure:** fund the test for the top-ranked bet(s) marked SHIP; flag iteration items for follow-up.
+> **Tradeoff:** funding the top-ranked maximizes analytical defensibility; funding a lower-ranked bet may reflect a cheaper/faster test or better strategic fit. Both are valid.
+> **Or:** send specific concepts back for further iteration (re-run a specific stress test, or redesign a `validation_test` that's too slow/expensive) before final approval.
 >
 > Approve / iterate / reject.
 

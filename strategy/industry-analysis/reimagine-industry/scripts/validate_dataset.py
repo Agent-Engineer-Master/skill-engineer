@@ -153,6 +153,14 @@ def check_phase_3(data: dict, raw: str) -> list[str]:
     if when_count > 0 and year_match_count < when_count:
         failures.append(f"Phase 3: {when_count} 'when' fields but only {year_match_count} include a year — date specificity required")
 
+    # Seed step — capability_seeds feed generation (Move 8 + Thiel reframe), not just why-now
+    if "capability_seeds:" not in ec_section:
+        failures.append("Phase 3: capability_seeds block missing — the seed step is what makes Phase 3 feed generation; without it the skill triangulates from incumbents (need ≥1 seed)")
+    else:
+        seed_count = ec_section.count("newly_possible_job:")
+        if seed_count < 1:
+            failures.append("Phase 3: capability_seeds present but no 'newly_possible_job' populated — need ≥1 job that becomes POSSIBLE (not just cheaper)")
+
     return failures
 
 
@@ -180,9 +188,26 @@ def check_phase_4(data: dict, raw: str) -> list[str]:
     if signal_count > 0 and entry_power_count < signal_count:
         failures.append(f"Phase 4.5: {signal_count - entry_power_count} signals missing entry_power tag — 'feature, not company' risk unflagged")
 
-    # ≥1 Thiel Secret must be human_endorsed
-    if "thiel-secret" in fs_section and "human_endorsed: true" not in fs_section:
-        failures.append("Phase 4.6: Thiel Secret signals present but none marked human_endorsed: true — AI cannot supply conviction")
+    # Thiel Secrets are bet generators, NOT truth gates (RULE-2):
+    # each must be in grounded form and emit a bet (load_bearing_hypothesis + validation_test).
+    if "thiel-secret" in fs_section:
+        if "grounded_form:" not in fs_section:
+            failures.append("Phase 4.6: Thiel Secrets present but no 'grounded_form' — Secrets must take the 'industry assumes X; held because Y; capability Z makes it false' form")
+        if "load_bearing_hypothesis:" not in fs_section or "validation_test:" not in fs_section:
+            failures.append("Phase 4.6: Thiel Secrets must emit a bet — missing 'load_bearing_hypothesis' and/or 'validation_test' (Secrets are converted to testable hypotheses, never gated on truth — RULE-2)")
+        # Old model is forbidden: no truth/conviction endorsement
+        if "endorsement_type:" in fs_section or "human_endorsed:" in fs_section:
+            failures.append("Phase 4.6: 'endorsement_type'/'human_endorsed' is obsolete — the human is never asked whether a Secret is true (RULE-2). Replace with the generated bet.")
+
+    # Source-balance rule: incumbent-anchored frameworks ≤50% of total signals
+    incumbent_frameworks = ["blue-ocean-errc", "aggregation-theory", "decoupling", "counter-positioning"]
+    framework_lines = re.findall(r"framework:\s*([a-z-]+)", fs_section)
+    if framework_lines:
+        incumbent_signal_count = sum(1 for f in framework_lines if f in incumbent_frameworks)
+        total_signal_count = len(framework_lines)
+        if incumbent_signal_count * 2 > total_signal_count:
+            pct = round(100 * incumbent_signal_count / total_signal_count)
+            failures.append(f"Phase 4: incumbent-anchored signals are {pct}% of total ({incumbent_signal_count}/{total_signal_count}) — must be ≤50%. Generate more capability seeds + Thiel Secrets; do not pad with incumbent signals.")
 
     # Incumbents must have structural_constraints
     if "incumbents:" in raw:
@@ -213,6 +238,21 @@ def check_phase_5(data: dict, raw: str) -> list[str]:
         field_count = vc_section.count(field)
         if field_count < concept_count:
             failures.append(f"Phase 5: {concept_count - field_count} concepts missing '{field}' — required for Phase 6 stress test")
+
+    # Every concept ships as a bet (both lanes) — RULE-2 / Move 8
+    bet_fields = ["load_bearing_hypothesis:", "validation_test:", "value_if_true:"]
+    for field in bet_fields:
+        field_count = vc_section.count(field)
+        if field_count < concept_count:
+            failures.append(f"Phase 5: {concept_count - field_count} concepts missing bet field '{field}' — every concept must ship as a testable bet")
+
+    # First-principles lane must survive: ≥1 origin: capability-first concept
+    origin_count = vc_section.count("origin:")
+    if origin_count < concept_count:
+        failures.append(f"Phase 5: {concept_count - origin_count} concepts missing 'origin' tag (capability-first | incumbent-first)")
+    capability_first_count = len(re.findall(r"origin:\s*capability-first", vc_section))
+    if capability_first_count < 1:
+        failures.append("Phase 5: no 'origin: capability-first' concept in the kept set — the first-principles lane (Move 8 / Secrets) must survive the filter, else the shortlist triangulates from incumbents")
 
     # AI-washing screen — look for "AI for X" patterns in one_line fields
     one_lines = re.findall(r"one_line:\s*[\"']([^\"'\n]+)[\"']", vc_section)
