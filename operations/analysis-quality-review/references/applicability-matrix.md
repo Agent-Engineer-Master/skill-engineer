@@ -46,10 +46,16 @@ Readability dimensions grade prose quality; they do not depend on the storyline 
 | D1 (action titles) | M | M (mandatory) | M | M | no — noun labels OK | no |
 | D2 (so-what) | M | M | M | M | O | no |
 | D3 (specificity) | M | M | M | M | M | O |
-| D4 (jargon discipline) | M | M | M | M | M | O |
-| D5 (no internal codes in prose) | M | M | M | M | M | M |
+| D4 (active voice) | M | M | M | M | M | O |
+| D5 (code/jargon discipline, incl. no internal codes — load-bearing) | M | M | M | M | M | M |
 | D6 (Frankenstein, high-only) | H | H | H | H | H | no |
 | D7 (one-message discipline, high-only) | H | H | H | H | H | no |
+| D8 (concept density) | M | M | M | M | O | no |
+| D9 (register fit) | M | M | M | M | O | no |
+
+D4 (active voice) and D5 (code/jargon, incl. internal codes) follow the canonical Pass 2 numbering used by `readability-reviewer.md`, `rubric-readability.md`, `fix-patterns.md`, and `worked-examples.md`. D5 merges jargon discipline and the load-bearing no-internal-codes check under one number; the codes check is the reason D5 is the only Pass 2 dimension that fires even for `daily-note` (internal codes must never leak to a reader, however informal the document).
+
+D8 and D9 grade prose against `references/tone-of-voice.md`. They fire at standard+ for the analytical doc types (brief, deck, memo, decision-record). For `wiki` they are optional (concept pages tolerate denser definitional prose); for `daily-note` they do not apply. The D1 narrative-tension extension is high-only and never mandatory.
 
 ## Doc-type definitions
 

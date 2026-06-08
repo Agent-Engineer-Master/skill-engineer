@@ -228,7 +228,27 @@ If a flagged sentence contains a `numeric_claims_with_citations` element, the nu
 
 ---
 
-## D4 — Code and Jargon Discipline
+## D4 — Active Voice and Verb Strength
+
+**Description:** Active voice dominates argumentative sentences; weak verbs (`is`, `has`, `provides`) are rare.
+
+**Canonical fix pattern.** Convert passive to active in recommendations and findings:
+
+- "It is recommended that..." → "We recommend..."
+- "It was found that..." → "The data shows..." or "We found..."
+- "It has been observed..." → "Our research observed..."
+
+Body narration that legitimately uses passive (describing a measurement process) is acceptable — only fix what was flagged.
+
+**Common mistakes.** Forcing active voice on descriptive prose where passive is natural. Only fix flagged occurrences.
+
+---
+
+## D5 — Code and Jargon Discipline (incl. no internal codes — LOAD-BEARING)
+
+D5 covers two related fixes the reviewer reports under one number: jargon/consultantese (swap for plain language) and internal cross-reference codes leaking into prose (the load-bearing case).
+
+### D5a — Jargon / consultantese
 
 **Description:** Domain jargon is defined on first use or replaced with plain language.
 
@@ -242,14 +262,13 @@ If a flagged sentence contains a `numeric_claims_with_citations` element, the nu
 - "key X" → drop "key" or replace with a specific modifier
 - "buckets" / "silos" → "categories", "groups"
 - "using 7 Powers, we find Y" → "Y is a [specific power], because [mechanism]"
+- Framework labels (SCQA, JTBD, MECE, 7-Powers / Helmer) in headings or prose → replace with the insight, often in the reader's own words. See `tone-of-voice.md` "Frameworks stay backstage".
 
-For domain jargon (`MECE`, `Wardley map`, `kernel`) used in audience-appropriate contexts: define on first use OR omit, based on `intent_summary`.
+For domain jargon (`MECE`, `Wardley map`, `kernel`) used in audience-appropriate contexts: define on first use OR omit, based on `intent_summary`. Acronyms: expand on first use with the acronym in parentheses, then use the acronym freely.
 
 **Common mistakes.** Flattening voice while removing jargon. The fix removes consultantese, not personality.
 
----
-
-## D5 — No Internal Codes in Reader-Facing Prose (LOAD-BEARING)
+### D5b — No internal codes in reader-facing prose (LOAD-BEARING)
 
 **Description:** Internal cross-reference codes (`M1-DTC`, `SECRET-02`, `CP-4`, `AUTH-DTC`) belong in reference tables, not in narrative sentences.
 
@@ -277,19 +296,13 @@ Subsequent paragraphs use only "retailer-AI dominance signal" and "switching-cos
 
 ---
 
-## D6 — Active Voice and Verb Strength
+## D6 — Frankenstein / Consultantese Drift (high-strictness only)
 
-**Description:** Active voice dominates argumentative sentences; weak verbs (`is`, `has`, `provides`) are rare.
+**Description:** The document reads as authored, not assembled — no copy-pasted phrasing, abrupt voice shifts, or slide-deck-flattened-into-paragraphs density.
 
-**Canonical fix pattern.** Convert passive to active in recommendations and findings:
+**Canonical fix pattern.** This is a structural-readability fix the calling skill applies because it owns the broader narrative: rewrite transitions between the stitched sections so each follows from the last; collapse duplicate framings of the same point; convert "and also" triadic lists into a progression. Do not flatten the author's register while smoothing — see general rule 2.
 
-- "It is recommended that..." → "We recommend..."
-- "It was found that..." → "The data shows..." or "We found..."
-- "It has been observed..." → "Our research observed..."
-
-Body narration that legitimately uses passive (describing a measurement process) is acceptable — only fix what was flagged.
-
-**Common mistakes.** Forcing active voice on descriptive prose where passive is natural. Only fix flagged occurrences.
+**Common mistakes.** Treating Frankenstein as a sentence-level fix. It is a section-flow fix; smoothing one paragraph rarely resolves it.
 
 ---
 
@@ -305,6 +318,48 @@ Body narration that legitimately uses passive (describing a measurement process)
 **Cross-reference safety.** Splitting a section creates a new anchor. Update any cross-references that pointed at the old anchor.
 
 **Common mistakes.** Leaving the original section heading and just splitting body prose — the heading still claims two beats. Rewrite the heading.
+
+---
+
+## D8 — Concept Density (standard+)
+
+**Description:** One claim per sentence; evidence in footnotes; the document reads at three depths (skim / argument / evidence). The positive target is `references/tone-of-voice.md` rules 1, 2, 5 — read it before applying.
+
+**Canonical fix pattern — unstack the sentence.** When a sentence stacks a finding, its mechanisms, and its evidence, split it:
+1. Lead with the claim in its own short sentence.
+2. Give each supporting mechanism its own sentence.
+3. Relocate every inline evidence tag (`[C: ...]`, `[I: ...]`, `[V: ...]`, `[A: ...]`) to a numbered footnote — content verbatim, never stripped.
+
+**Broken (one sentence, ~5 concepts + 2 tags):**
+> Commercial valuation firms (Savills, CBRE, JLL, Knight Frank) capture approximately £79M EBIT at 13–17% margins [C: Savills Annual Report 2024] — the largest single profit pool — protected by switching costs (institutional clients face 6–18 months of onboarding friction [I: estimated from framework agreements]) and a regulatory cornered resource (RICS Red Book + MRICS credential, legally required for lender-accepted valuations).
+
+**Fixed (claim leads, mechanisms separated, evidence footnoted):**
+> **Commercial valuation is the market's largest profit pool.** Four firms — Savills, CBRE, JLL and Knight Frank — earn about £79M EBIT on it, at margins of 13–17%.¹
+>
+> Two things protect that pool. Switching is slow: an institutional client needs six to eighteen months to onboard a new valuer.² And regulation gates the work — only an MRICS-credentialled valuer using the RICS Red Book can sign a valuation a lender will accept.³
+
+**Load-bearing safety (the critical case).** The evidence-tag relocation touches `evidence_tags` / `phase_citations`. Relocate as a unit: the tag's full content moves to the footnote body unchanged. Never strip a tag, never split its content, never local-rewrite. If you cannot place the footnote without breaking the chain, mark DEFERRED.
+
+**Common mistakes.** Shortening the sentence by *deleting* a mechanism or a citation rather than relocating it — that loses analysis or breaks the evidence chain. The fix redistributes; it does not cut content.
+
+---
+
+## D9 — Register Fit (standard+)
+
+**Description:** Anglo-Saxon backbone; Latinate/jargon only where nuance refines the point; conversational-educated, not stuffy; acronyms expanded on first use. Positive target: `references/tone-of-voice.md` rule 4 and its word-swap table.
+
+**Canonical fix pattern.** Swap the default-Latinate word for the plain one — UNLESS the formal word carries a distinction the reader needs:
+
+- "utilise / leverage (verb)" → "use", "draw on" (always)
+- "in order to" → "to"; "prior to" → "before"; "subsequent to" → "after"
+- "a number of" → "several" or the actual count; "the majority of" → "most"
+- "facilitate" → "help", "ease"; "ascertain" → "find out", "check"
+
+**Keep the formal word when nuance demands it.** Do NOT flatten "institutional client" → "big client", "marginal cost" → "extra cost", or "terminate a contract" → "end a contract". The longer word is carrying a real distinction. The test: does the word add a distinction the reader needs, or is it decoration?
+
+**Acronyms.** On first use, expand with the acronym in parentheses: "Royal Institution of Chartered Surveyors (RICS)". Afterwards use the acronym. Skip expansion only for acronyms universal to this reader (judge by `intent_summary`).
+
+**Common mistakes.** Over-correcting toward consumer-app plainness — stripping every technical term until the prose loses the nuance a sophisticated reader came for. This register is the *midpoint*, not Monzo. Flattening voice while swapping words: the swap removes stuffiness, not the author's register.
 
 ---
 

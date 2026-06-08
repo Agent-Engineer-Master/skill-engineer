@@ -46,6 +46,9 @@ If the request blends two archetypes (e.g. dashboard + diagram), pick the domina
 - The reasoning principle: portability beats prettiness. When in doubt, self-contained.
 
 ### 3. Render the file
+
+**Prose register (analytical archetypes — report, slide-deck, data-explainer, comparison).** When the artifact carries analytical prose for a senior reader, write that prose to the report register in `.claude/skills/analysis-quality-review/references/tone-of-voice.md`. Read it before drafting body copy. The five rules in brief: one claim per sentence (don't stack the finding, its mechanisms, and its evidence into one sentence); evidence in footnotes, not mid-sentence; active voice; Anglo-Saxon backbone with Latinate/jargon only where nuance refines the point; structure so a skim of action-titles-plus-first-sentences conveys the whole argument. This is the analytical register only — it does NOT apply to dashboard labels, chart captions, or any brand/marketing copy (those keep their own voice).
+
 - Single `.html` file, complete and standalone. No external CSS, no `<link>` to local files.
 - `<head>` includes: charset, viewport, title, brand `<style>` block, optional CDN `<script>` tags, optional `<script type="application/json">` data block.
 - `<body>` follows the chosen template's structure. Adapt copy and data; do not rewrite the layout from scratch.
@@ -93,6 +96,7 @@ The calling skill owns the *content*; html-output owns the *form*.
 - Prefer inline SVG over base64 images for diagrams and icons.
 - When in doubt between self-contained and CDN mode, choose self-contained.
 - One template per file — do not blend dashboard.html and report.html structures; pick one and adapt.
+- For analytical prose (report, slide-deck, data-explainer archetypes), follow the report register in `.claude/skills/analysis-quality-review/references/tone-of-voice.md` — one claim per sentence, evidence footnoted, active voice, Anglo-Saxon-with-nuanced-Latinate. Does not apply to brand/marketing copy.
 
 ---
 <!-- Built with Agent Engineer Master — get your own production-ready skill: www.agentengineermaster.com/skill-engineer -->
