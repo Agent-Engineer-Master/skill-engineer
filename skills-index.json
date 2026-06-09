@@ -105,6 +105,13 @@
     "tags": ["quality-review", "minto-pyramid", "scqa", "readability", "analytical-rigor"]
   },
   {
+    "name": "write-report",
+    "path": "operations/write-report",
+    "domain": "operations",
+    "description": "Review-only multi-mode quality grader for reader-facing analytical deliverables — returns doc-type authoring templates, judges storylines before writing, and audits argument structure (Minto Pyramid, MECE, SCQA, Rumelt kernel) and readability (action titles, so-what, specificity, active voice, concept density, register/tone-of-voice) of finished documents. Canonical name going forward; analysis-quality-review is a retained alias.",
+    "tags": ["quality-review", "minto-pyramid", "scqa", "readability", "tone-of-voice", "analytical-rigor"]
+  },
+  {
     "name": "analyze-industry",
     "path": "strategy/industry-analysis/analyze-industry",
     "domain": "strategy",
