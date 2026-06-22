@@ -104,6 +104,57 @@ The analytical frameworks that shaped the report — SCQA, MECE, JTBD, Rumelt's 
 
 The fastest way out of jargon is to write the concept as the person you're describing would actually say it. A "job to be done" stated in the customer's voice lands harder and reads cleaner than the abstraction. "Homebuyer regret-avoidance need" is a label; "Tell me what's wrong with this house before I commit" is the same idea the reader can feel. Lead with the human voice or the concrete number, not the construct that generated it.
 
+## Openings, closings and verbs: the Economist moves (high strictness)
+
+These techniques are borrowed from The Economist's prose discipline and sit on top of our consulting structure. The structure is unchanged: conclusion-first, action-title headers, Minto grouping all stay. These govern the *prose underneath* the headers.
+
+### No em-dashes (punctuation rule, graded by D9)
+
+Do not use em-dashes anywhere in a reader-facing report. They are a documented house preference and a frequent AI tell. Every job an em-dash does has a cleaner replacement:
+
+- For a payoff or contrast, use a **colon**: "The strategy has one flaw: it assumes the market stays stable."
+- For a hard break between two thoughts, use a **full stop**. Two short sentences beat one spliced sentence.
+- For a parenthetical aside, use **commas** or **brackets**.
+
+This is absolute, not a preference to weigh. A report that ships with an em-dash fails D9 on a mechanical check. (En-dashes in numeric ranges such as "15 to 20%" are fine, and are not em-dashes.)
+
+### Open the section body with something concrete (extends D8)
+
+The action title already carries the answer, so the first sentence of the body does **not** need to restate it, and must never be a preamble ("This section examines...", "It is important to consider...", "We now turn to..."). Spend the opening sentence on something concrete that pulls the reader in: a specific number, a named example, a scene, a sharp comparison. The verdict lives in the heading. Velocity lives in the first line.
+
+> **Weak:** *This section examines the competitive threat from new entrants.*
+> **Strong:** *Three logistics startups have entered the Nordic market since 2024, each undercutting incumbent pricing by 15 to 20%.*
+
+Guardrail: the opener is a tool, not a tic. It earns its place when it sharpens the point. If it reads as decoration bolted on for colour, cut it and open with the finding itself. A concrete finding always beats a decorative anecdote.
+
+### Land a kicker on each section (extends D7)
+
+The last sentence of a section should land, not trail off. A kicker is a pointed consequence, a crisp summation, or a reversal that makes the reader feel the conclusion. It is not a restatement of the header, and not a soft "this will be important going forward." Read the final sentence aloud. If it sounds like a trailing footnote, rewrite it.
+
+> **Trails off:** *These dynamics will therefore be relevant to the incumbent's strategic positioning over the medium term.*
+> **Lands:** *Incumbents who answer by cutting price will lose. Those who sell what the startups cannot, deep integration, will keep their margin.*
+
+A kicker does not announce its conclusion ("In conclusion, the threat is serious"). It delivers the consequence and stops.
+
+### Zinger verbs over verb-plus-adverb (extends D4)
+
+D4 already targets weak verbs (`is`, `provides`, `enables`). This extends it: a strong verb does the work of a weak verb *and* its adverb. Replace "significantly reduce" with "slash," "gradually increase" with "build," "strongly criticise" with "attack," "quickly grew" with "surged." The right verb removes the adverb. Search drafts for `-ly` adverbs sitting next to a flat verb. Most are a single stronger verb waiting to happen.
+
+### The colon as an emphasis device (register, supports D8)
+
+When a sentence builds to a payoff, a revelation, or a contrast, deliver it with a colon rather than a comma or a second sentence. The colon sets up the punch: it tells the reader something earned is coming. It is also the first replacement to reach for when you would once have used an em-dash.
+
+> *The strategy has one flaw: it assumes the market stays stable.*
+> *They win on speed, not scale: none of them owns a warehouse.*
+
+Use it for delivery, not decoration. One or two per page, where the payoff genuinely lands. Overused, it loses its snap.
+
+### No dead metaphors; fresh ones only (extends D9)
+
+A worn-out metaphor disguises the absence of thought. Banned: *perfect storm, low-hanging fruit, move the needle, boil the ocean, sea change, paradigm shift, double-edged sword*. Either invent a fresh, precise image or state the point plainly. A fresh metaphor that genuinely clarifies is prized. A stale one is filler and reads as such.
+
+---
+
 ## Acronyms and unfamiliar terms (extends D5)
 
 Spell out an acronym on first use, with the acronym in parentheses: "Royal Institution of Chartered Surveyors (RICS)." After that, use the acronym freely. The exception is acronyms so universal to the reader that expansion would be patronising (e.g. *CEO*, *GDP*, *API* for a technical reader) — judge by `intent_summary`. When in doubt, expand once; it costs four words and removes all doubt.

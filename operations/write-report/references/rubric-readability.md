@@ -57,6 +57,8 @@ D5 is **Code/Jargon Discipline**: it covers internal-code leakage (this Phase A 
 1. **Stuffy-word grep.** Grep for the default-Latinate list: `utilise|utilize|commence|terminate|endeavour|ascertain|facilitate|aforementioned|heretofore|pursuant|in order to|prior to|subsequent to|in the event that|with regard to`. Each hit is a candidate (some survive Phase B if nuance genuinely demands the formal word — e.g. "terminate a contract").
 2. **Acronym-on-first-use.** Grep for all-caps tokens (`\b[A-Z]{2,6}\b`, excluding the load-bearing `concept_ids` from the index). For each distinct acronym, check whether its first occurrence is followed by a parenthetical expansion. First use with no expansion anywhere prior → candidate for FAIL (Phase B confirms it is not a universally-known acronym for this reader).
 
+3. **Em-dash ban (mechanical, always fires standard+).** Grep the document body for the em-dash character (U+2014). Any em-dash in reader-facing prose is a D9 FAIL with a fixed swap: colon for a payoff or contrast, full stop for a hard break, commas or brackets for an aside. This is mechanical, not a judgment call. En-dashes (U+2013) in numeric ranges are exempt. See `references/tone-of-voice.md` "No em-dashes".
+
 ### D6 (high only) — Frankenstein Detection
 
 **Phase A test:** Find duplicate or near-duplicate sentences (cosine-shingle proxy via grep for repeated 5-word phrases). Find abrupt voice/tone shifts between paragraphs.
@@ -86,6 +88,8 @@ D5 is **Code/Jargon Discipline**: it covers internal-code leakage (this Phase A 
 **Rule:** Active voice dominates; weak verbs (`is`, `has`, `provides`, `enables`, `supports`) are rare in argumentative sentences.
 
 **Test:** Random-sample 5 sentences from argumentative sections. Count passive-voice constructions and weak-verb instances. >2 of 5 — FAIL.
+
+**Zinger-verb extension (high strictness):** also flag flat-verb-plus-adverb constructions where one stronger verb would do the work of both ("significantly reduce" to slash; "gradually increase" to build; "strongly criticise" to attack). Grep for `-ly` adverbs adjacent to a verb in argumentative sentences; each is a candidate. Not an automatic FAIL, flag as a fixable D4 weakness. See `references/tone-of-voice.md` "Zinger verbs over verb-plus-adverb".
 
 ### D5 (jargon check) — Code and Jargon Discipline
 
@@ -128,6 +132,8 @@ Second half of D5 (the first half is the Phase A internal-codes check above).
 **Rule:** Each section advances exactly one argumentative beat. Multi-beat sections fail.
 
 **Test:** For each section, can you write its single argumentative beat in one sentence? If you need "and also" — FAIL.
+
+**Opener and kicker extension (high strictness):** also check the section's first and last body sentences against `references/tone-of-voice.md` "Openings, closings and verbs". First sentence: flag a preamble opener ("This section examines...", "It is important to consider...") since the action title already carries the answer, so the opener should be concrete (a number, named example, scene). Last sentence: flag a trailing non-kicker that merely restates the header or fades out ("...will be relevant going forward"). Neither is an automatic FAIL on its own; flag as fixable readability weaknesses, not structural failures.
 
 ---
 
